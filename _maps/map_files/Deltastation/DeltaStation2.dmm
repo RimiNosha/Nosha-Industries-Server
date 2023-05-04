@@ -370,11 +370,6 @@
 /obj/effect/spawner/structure/window/reinforced,
 /turf/open/floor/plating,
 /area/station/construction/mining/aux_base)
-"adU" = (
-/obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
-/obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
-/turf/open/floor/iron,
-/area/station/security/prison)
 "aej" = (
 /obj/structure/chair/stool/directional/east,
 /obj/structure/sign/poster/random/directional/west,
@@ -68087,9 +68082,6 @@
 /obj/item/book/manual/wiki/medicine,
 /turf/open/floor/iron,
 /area/station/medical/treatment_center)
-"qEw" = (
-/turf/open/floor/plating,
-/area/station/security/prison/work)
 "qEB" = (
 /obj/structure/disposalpipe/segment{
 	dir = 4
@@ -79543,7 +79535,7 @@
 /obj/effect/spawner/random/structure/table_fancy,
 /obj/item/reagent_containers/cup/glass/bottle/beer{
 	desc = "Whatever it is, it reeks of foul, putrid froth.";
-	list_reagents = list(/datum/reagent/consumable/ethanol/bacchus_blessing = 15);
+	list_reagents = list(/datum/reagent/consumable/ethanol/bacchus_blessing=15);
 	name = "Delta-Down";
 	pixel_x = 5;
 	pixel_y = 5
@@ -152284,7 +152276,7 @@ bii
 nwN
 hMx
 bGi
-adU
+bGi
 tOY
 hLe
 bSl
@@ -154845,7 +154837,7 @@ ivM
 fIW
 fYO
 eYK
-qEw
+shc
 ewL
 gQZ
 eWh

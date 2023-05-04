@@ -72,6 +72,11 @@
 	airlock_paint = "#BBBBBB"
 	stripe_paint = "#2a7a25"
 
+/obj/machinery/door/airlock/pathfinders
+	assemblytype = /obj/structure/door_assembly/door_assembly_med
+	airlock_paint = "#847A96"
+	stripe_paint = "#575577"
+
 //////////////////////////////////
 /*
 	Station Airlocks Glass
@@ -164,6 +169,10 @@
 	opacity = FALSE
 	glass = TRUE
 	normal_integrity = 200
+
+/obj/machinery/door/airlock/pathfinders/glass
+	opacity = FALSE
+	glass = TRUE
 
 //////////////////////////////////
 /*

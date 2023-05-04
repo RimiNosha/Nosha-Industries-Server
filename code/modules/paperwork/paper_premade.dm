@@ -20,6 +20,24 @@
 	<br>Please stay safe,
 	<br>-Love, <i>Your Dearest</i>"}
 
+/obj/item/paper/fluff/jobs/command/gun_eula
+	name = "your firearm and you!"
+	default_raw_text = "End-User License Agreement (EULA) for Gun Usage on a Space Station:<br> \
+<br> \
+By accessing the firearms stored in the safe on this space station/vessel, you agree to the following terms and conditions:<br> \
+<br> \
+- The use of firearms on this space station/vessel is strictly prohibited, except in the event of an emergency where the use of lethal force is necessary to protect human life.<br> \
+<br> \
+- Any use of firearms on this space station/vessel, even in emergency situations, must be approved by the station commander or other designated authority.<br> \
+<br> \
+- Any unauthorized use of firearms on this space station/vessel will result in immediate disciplinary action, including possible expulsion from the station and revocation of all privileges.<br> \
+<br> \
+- It is important to remember that firing a gun on a space station/vessel can cause catastrophic damage to the station's structural integrity, life-support systems, and other vital components. Therefore, extreme caution must be exercised when handling firearms on this space station/vessel.<br> \
+<br> \
+- Any person accessing the firearms stored in the safe assumes all responsibility for their proper use and handling, and agrees to hold harmless the space station/vessel and its operators from any and all liability resulting from their actions.<br> \
+<br> \
+By accessing the firearms stored in the safe on this space station/vessel, you agree to all of the terms and conditions of this End-User License Agreement."
+
 
 //////////// Job guides n' fluff
 
