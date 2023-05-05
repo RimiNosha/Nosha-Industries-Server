@@ -368,6 +368,17 @@
 "nl" = (
 /turf/open/floor/iron,
 /area/station/command/heads_quarters/captain)
+"nm" = (
+/obj/docking_port/stationary{
+	dir = 8;
+	dwidth = 4;
+	height = 7;
+	name = "Cargo Bay";
+	shuttle_id = "cargo_home";
+	width = 12
+	},
+/turf/open/space/basic,
+/area/space)
 "nz" = (
 /turf/closed/wall,
 /area/station/security)
@@ -5818,7 +5829,7 @@ Xn
 Xn
 Xn
 Xn
-Xn
+nm
 Xn
 Xn
 Xn
