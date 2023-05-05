@@ -750,6 +750,9 @@
 /area/station/engineering/engine/central
 	name = "Central Ship Engines"
 
+/area/station/engineering/engine/central/lesser
+	name = "Lesser Central Ship Engines"
+
 /area/station/engineering/engine/port
 	name = "Port Ship Engines"
 
@@ -1078,6 +1081,10 @@
 	mood_bonus = 3
 	mood_message = "I feel at ease here."
 	ambientsounds = list('sound/ambience/aurora_caelus_short.ogg')
+
+/area/station/medical/emergency_shuttle_dock
+	name = "\improper Medbay Emergency Shuttle Dock"
+	icon_state = "pathfinders"
 
 //Security
 ///When adding a new area to the security areas, make sure to add it to /datum/bounty/item/security/paperwork as well!
