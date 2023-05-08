@@ -141,7 +141,7 @@
 	name = "medical shuttle airlock assembly"
 	base_name = "medical shuttle airlock"
 	glass_type = /obj/machinery/door/airlock/medical/shuttle/glass
-	airlock_type = /obj/machinery/door/airlock/medica/shuttle/glass
+	airlock_type = /obj/machinery/door/airlock/medical/shuttle
 
 /obj/structure/door_assembly/door_assembly_centcom
 	airlock_type = /obj/machinery/door/airlock/centcom
