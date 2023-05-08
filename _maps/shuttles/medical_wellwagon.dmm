@@ -1,0 +1,139 @@
+//MAP CONVERTED BY dmm2tgm.py THIS HEADER COMMENT PREVENTS RECONVERSION, DO NOT REMOVE
+"a" = (
+/obj/machinery/atmospherics/components/unary/engine{
+	pixel_y = -9
+	},
+/turf/closed/wall/mineral/titanium,
+/area/shuttle/overmap/aev_s/wellwagon)
+"b" = (
+/obj/effect/spawner/structure/window/reinforced/shuttle,
+/turf/open/floor/mineral/titanium,
+/area/shuttle/overmap/aev_s/wellwagon)
+"e" = (
+/obj/machinery/atmospherics/pipe/smart/manifold4w/orange/visible,
+/obj/machinery/vending/cigarette,
+/obj/effect/decal/cleanable/dirt,
+/turf/open/floor/mineral/titanium,
+/area/shuttle/overmap/aev_s/wellwagon)
+"g" = (
+/turf/closed/wall/mineral/titanium,
+/area/shuttle/overmap/aev_s/wellwagon)
+"h" = (
+/obj/structure/chair/comfy/shuttle{
+	dir = 1
+	},
+/obj/effect/decal/cleanable/dirt,
+/turf/open/floor/mineral/titanium,
+/area/shuttle/overmap/aev_s/wellwagon)
+"k" = (
+/obj/machinery/atmospherics/pipe/smart/manifold4w/orange/visible,
+/obj/machinery/iv_drip,
+/obj/structure/bed/roller,
+/obj/structure/cable,
+/obj/machinery/power/apc/auto_name/directional/south,
+/obj/effect/decal/cleanable/vomit,
+/turf/open/floor/mineral/titanium,
+/area/shuttle/overmap/aev_s/wellwagon)
+"z" = (
+/obj/structure/chair/office/light,
+/obj/item/cigbutt/cigarbutt,
+/obj/effect/decal/cleanable/ash,
+/turf/open/floor/mineral/titanium,
+/area/shuttle/overmap/aev_s/wellwagon)
+"C" = (
+/obj/machinery/atmospherics/components/unary/vent_pump/on,
+/obj/structure/cable,
+/turf/open/floor/mineral/titanium,
+/area/shuttle/overmap/aev_s/wellwagon)
+"D" = (
+/obj/machinery/portable_atmospherics/canister/carbon_dioxide,
+/obj/machinery/atmospherics/components/unary/portables_connector,
+/turf/open/floor/mineral/titanium,
+/area/shuttle/overmap/aev_s/wellwagon)
+"G" = (
+/obj/structure/window/reinforced/survival_pod{
+	dir = 8
+	},
+/obj/machinery/power/port_gen/pacman/shuttle,
+/obj/item/stack/sheet/mineral/engine_fuel/five,
+/obj/structure/cable,
+/turf/open/floor/mineral/titanium,
+/area/shuttle/overmap/aev_s/wellwagon)
+"M" = (
+/obj/machinery/computer/shuttle,
+/obj/item/paper{
+	default_raw_text = "There is no defibrillator on board. Blame administration for the budget cuts.";
+	name = "A Note From Maintenance"
+	},
+/turf/open/floor/mineral/titanium,
+/area/shuttle/overmap/aev_s/wellwagon)
+"P" = (
+/obj/structure/closet/crate/freezer,
+/obj/item/food/icecreamsandwich,
+/obj/item/reagent_containers/blood/o_minus,
+/obj/item/reagent_containers/hypospray/medipen/blood_loss,
+/obj/item/storage/pill_bottle/epinephrine,
+/obj/effect/decal/cleanable/dirt,
+/turf/open/floor/mineral/titanium,
+/area/shuttle/overmap/aev_s/wellwagon)
+"S" = (
+/turf/open/space/basic,
+/area/space)
+"T" = (
+/obj/machinery/door/airlock/titanium/glass,
+/obj/docking_port/mobile{
+	shuttle_id = "AEV-S Wellwagon"
+	},
+/obj/machinery/atmospherics/components/binary/valve,
+/turf/open/floor/mineral/titanium,
+/area/shuttle/overmap/aev_s/wellwagon)
+
+(1,1,1) = {"
+S
+S
+S
+S
+S
+"}
+(2,1,1) = {"
+S
+S
+S
+S
+S
+"}
+(3,1,1) = {"
+g
+g
+g
+G
+g
+"}
+(4,1,1) = {"
+b
+M
+h
+C
+T
+"}
+(5,1,1) = {"
+b
+P
+z
+k
+a
+"}
+(6,1,1) = {"
+g
+g
+D
+e
+a
+"}
+(7,1,1) = {"
+S
+g
+g
+g
+g
+"}

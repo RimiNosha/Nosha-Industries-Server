@@ -1,0 +1,131 @@
+//MAP CONVERTED BY dmm2tgm.py THIS HEADER COMMENT PREVENTS RECONVERSION, DO NOT REMOVE
+"a" = (
+/obj/machinery/atmospherics/components/unary/vent_pump/on,
+/obj/effect/decal/cleanable/dirt,
+/turf/open/floor/mineral/titanium,
+/area/shuttle/overmap/alv_s/jalopy)
+"b" = (
+/obj/structure/window/reinforced/survival_pod,
+/obj/structure/cable,
+/obj/item/stack/sheet/mineral/engine_fuel/five,
+/obj/item/circuitboard/machine/pacman,
+/obj/structure/frame/machine/wired/anchored,
+/turf/open/floor/mineral/titanium,
+/area/shuttle/overmap/alv_s/jalopy)
+"n" = (
+/obj/machinery/atmospherics/pipe/smart/manifold4w/orange/visible,
+/obj/structure/chair/comfy/shuttle{
+	dir = 1
+	},
+/obj/effect/decal/cleanable/oil/slippery,
+/turf/open/floor/mineral/titanium,
+/area/shuttle/overmap/alv_s/jalopy)
+"s" = (
+/obj/machinery/atmospherics/components/unary/engine{
+	pixel_y = -9
+	},
+/turf/closed/wall/mineral/titanium,
+/area/shuttle/overmap/alv_s/jalopy)
+"u" = (
+/obj/machinery/portable_atmospherics/canister/carbon_dioxide,
+/obj/machinery/atmospherics/components/unary/portables_connector/visible,
+/obj/effect/decal/cleanable/dirt,
+/turf/open/floor/mineral/titanium,
+/area/shuttle/overmap/alv_s/jalopy)
+"C" = (
+/obj/effect/spawner/structure/window/reinforced/shuttle,
+/turf/open/floor/mineral/titanium,
+/area/shuttle/overmap/alv_s/jalopy)
+"D" = (
+/turf/closed/wall/mineral/titanium,
+/area/shuttle/overmap/alv_s/jalopy)
+"E" = (
+/turf/open/space/basic,
+/area/space)
+"I" = (
+/obj/structure/chair/comfy/shuttle{
+	dir = 1
+	},
+/obj/effect/decal/cleanable/dirt,
+/turf/open/floor/mineral/titanium,
+/area/shuttle/overmap/alv_s/jalopy)
+"J" = (
+/obj/machinery/atmospherics/pipe/smart/manifold4w/orange/visible,
+/obj/structure/chair/comfy/shuttle{
+	dir = 1
+	},
+/obj/structure/cable,
+/obj/machinery/power/apc/auto_name/directional/east,
+/turf/open/floor/mineral/titanium,
+/area/shuttle/overmap/alv_s/jalopy)
+"M" = (
+/obj/machinery/door/airlock/titanium/glass,
+/obj/docking_port/mobile{
+	shuttle_id = "ALV-S Jalopy"
+	},
+/obj/machinery/atmospherics/components/binary/valve,
+/turf/open/floor/mineral/titanium,
+/area/shuttle/overmap/alv_s/jalopy)
+"T" = (
+/obj/structure/closet/malf/suits,
+/obj/effect/decal/cleanable/glass/titanium,
+/turf/open/floor/mineral/titanium,
+/area/shuttle/overmap/alv_s/jalopy)
+"U" = (
+/obj/machinery/computer/shuttle,
+/obj/item/paper{
+	default_raw_text = "The loud whirring sound is normal, just fly backwards to reduce it's volume a little.<br><br>The gyroscope is the only thing keeping this thing flying straight, if you must know.";
+	name = "A Note From Maintenance"
+	},
+/turf/open/floor/mineral/titanium,
+/area/shuttle/overmap/alv_s/jalopy)
+
+(1,1,1) = {"
+E
+D
+D
+D
+D
+"}
+(2,1,1) = {"
+E
+C
+U
+I
+D
+"}
+(3,1,1) = {"
+E
+C
+C
+T
+D
+"}
+(4,1,1) = {"
+E
+E
+C
+a
+M
+"}
+(5,1,1) = {"
+E
+C
+C
+n
+s
+"}
+(6,1,1) = {"
+E
+C
+u
+J
+b
+"}
+(7,1,1) = {"
+E
+D
+D
+D
+D
+"}

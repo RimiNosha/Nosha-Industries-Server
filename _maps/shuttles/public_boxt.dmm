@@ -1,0 +1,136 @@
+//MAP CONVERTED BY dmm2tgm.py THIS HEADER COMMENT PREVENTS RECONVERSION, DO NOT REMOVE
+"a" = (
+/obj/machinery/atmospherics/components/unary/engine{
+	pixel_y = -9
+	},
+/turf/closed/wall/mineral/titanium,
+/area/shuttle/overmap/alv_s/boxt)
+"b" = (
+/obj/effect/spawner/structure/window/reinforced/shuttle,
+/turf/open/floor/mineral/titanium,
+/area/shuttle/overmap/alv_s/boxt)
+"d" = (
+/obj/structure/chair/comfy/shuttle{
+	dir = 4
+	},
+/obj/effect/decal/cleanable/dirt,
+/turf/open/floor/mineral/titanium,
+/area/shuttle/overmap/alv_s/boxt)
+"e" = (
+/obj/machinery/portable_atmospherics/canister/carbon_dioxide,
+/obj/machinery/atmospherics/components/unary/portables_connector/visible{
+	dir = 8
+	},
+/turf/open/floor/mineral/titanium,
+/area/shuttle/overmap/alv_s/boxt)
+"g" = (
+/turf/closed/wall/mineral/titanium,
+/area/shuttle/overmap/alv_s/boxt)
+"h" = (
+/obj/structure/chair/comfy/shuttle{
+	dir = 1
+	},
+/turf/open/floor/mineral/titanium,
+/area/shuttle/overmap/alv_s/boxt)
+"k" = (
+/obj/machinery/atmospherics/pipe/smart/manifold4w/orange/visible,
+/obj/machinery/power/apc/auto_name/directional/south,
+/obj/structure/cable,
+/obj/effect/decal/cleanable/ash,
+/turf/open/floor/mineral/titanium,
+/area/shuttle/overmap/alv_s/boxt)
+"z" = (
+/obj/structure/closet/malf/suits{
+	contents_initialized = 1
+	},
+/obj/item/paper{
+	default_raw_text = "There is no emergency space suit for this one. Blame administration for the budget cuts.";
+	name = "A Note From Maintenance"
+	},
+/obj/structure/cable,
+/obj/effect/decal/cleanable/dirt,
+/turf/open/floor/mineral/titanium,
+/area/shuttle/overmap/alv_s/boxt)
+"C" = (
+/obj/machinery/atmospherics/components/unary/vent_pump/on,
+/obj/effect/decal/cleanable/dirt,
+/turf/open/floor/mineral/titanium,
+/area/shuttle/overmap/alv_s/boxt)
+"D" = (
+/obj/machinery/computer/shuttle,
+/obj/effect/decal/cleanable/dirt,
+/turf/open/floor/mineral/titanium,
+/area/shuttle/overmap/alv_s/boxt)
+"L" = (
+/obj/machinery/power/port_gen/pacman/shuttle,
+/obj/item/stack/sheet/mineral/engine_fuel/five,
+/obj/structure/cable,
+/turf/open/floor/mineral/titanium,
+/area/shuttle/overmap/alv_s/boxt)
+"M" = (
+/obj/structure/chair/comfy/shuttle{
+	dir = 4
+	},
+/turf/open/floor/mineral/titanium,
+/area/shuttle/overmap/alv_s/boxt)
+"S" = (
+/turf/open/space/basic,
+/area/space)
+"T" = (
+/obj/machinery/door/airlock/titanium/glass,
+/obj/docking_port/mobile{
+	shuttle_id = "ALV-S Boxt"
+	},
+/obj/machinery/atmospherics/components/binary/valve,
+/turf/open/floor/mineral/titanium,
+/area/shuttle/overmap/alv_s/boxt)
+
+(1,1,1) = {"
+S
+S
+S
+S
+S
+"}
+(2,1,1) = {"
+S
+S
+S
+S
+S
+"}
+(3,1,1) = {"
+g
+g
+g
+g
+g
+"}
+(4,1,1) = {"
+b
+d
+M
+C
+T
+"}
+(5,1,1) = {"
+b
+L
+z
+k
+a
+"}
+(6,1,1) = {"
+b
+D
+h
+e
+g
+"}
+(7,1,1) = {"
+g
+g
+g
+g
+g
+"}
