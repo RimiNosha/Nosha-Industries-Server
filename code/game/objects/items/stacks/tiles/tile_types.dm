@@ -36,6 +36,7 @@ GLOBAL_LIST_EMPTY(tile_stack_icon_cache)
 	. = ..()
 	pixel_x = rand(-3, 3)
 	pixel_y = rand(-3, 3) //randomize a little
+	AddElement(/datum/element/openspace_item_click_handler)
 	if(tile_reskin_types)
 		tile_reskin_types = tile_reskin_list(tile_reskin_types)
 	if(tile_rotate_dirs)
@@ -133,6 +134,10 @@ GLOBAL_LIST_EMPTY(tile_stack_icon_cache)
 	target_plating.setDir(turf_dir)
 	playsound(target_plating, 'sound/weapons/genhit.ogg', 50, TRUE)
 	return target_plating
+
+/obj/item/stack/tile/handle_openspace_click(turf/target, mob/user, proximity_flag, click_parameters)
+	if(proximity_flag)
+		target.attackby(src, user, click_parameters)
 
 //Grass
 /obj/item/stack/tile/grass
