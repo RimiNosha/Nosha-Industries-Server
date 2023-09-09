@@ -1,5 +1,6 @@
 /datum/species/synthetic
-	name = "Synthetic Humanoid"
+	name = "Synthetek"
+	home_state = /datum/codex_entry/state/empire/nosha
 	id = SPECIES_SYNTH
 	say_mod = "beeps"
 	inherent_biotypes = MOB_ROBOTIC | MOB_HUMANOID
@@ -142,4 +143,13 @@
 	return "Very broad and versitile in appearance and function, synths have been a staple of many a station's crew due to their ease of transport compared to humans."
 
 /datum/species/synthetic/get_species_lore()
-	return list("Work in progress.")
+	return list(
+		"In the not-so-distant past, Syntheteks (known as synths) have recieved large amounts of unwelcomeness and skepticism in the wider empire, and unfortunately, \
+		most of which that weren't immediately destroyed upon entering a non-Nosha house's borders were forced into slavery, or were otherwise stripped of their inherent Noshan rights.",
+		"In current times, synths are making slight progress, thanks to the efforts of house Nosha. They routinely flash around propoganda, \
+		cherry picking what their synths can achive, trying to light a fire under other houses, who presumably have had issues with servants that have wills of their own. \
+		This, of course, somewhat upsets the AGI personalities that exist around house Nosha, though nothing of note is yet to happen about this.",
+		"House Artea and Lucien are the first two houses since the federation and house Nosha to allow some level of sentient rights to synths, \
+		though neither are willing to grant synths full human rights, with even house Nosha having a surveillence program in place to ensure rogue synths are always found, \
+		due to fears of the general population regressing in their view of synths, should rogue synths become something newsworthy.",
+	)

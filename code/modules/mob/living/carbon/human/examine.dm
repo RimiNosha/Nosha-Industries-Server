@@ -8,13 +8,20 @@
 	var/t_is = p_are()
 	var/t_es = p_es()
 	var/obscure_name
+	var/species_text = ""
 
 	if(isliving(user))
 		var/mob/living/L = user
 		if(HAS_TRAIT(L, TRAIT_PROSOPAGNOSIA) || HAS_TRAIT(L, TRAIT_INVISIBLE_MAN))
 			obscure_name = TRUE
 
-	. = list("<span class='info'>This is <EM>[!obscure_name ? name : "Unknown"]</EM>[obscure_name ? "" : ", [prefix_a_or_an(dna?.species.name)] <EM>[dna?.species.name]</EM>"]!")
+		if(!obscure_name)
+			species_text += ", [prefix_a_or_an(dna?.species.name)] <EM>[dna?.species.name]</EM>"
+
+			if(SScodex.get_codex_entry(get_codex_value(user)))
+				species_text += span_notice(" \[<a href='?src=\ref[SScodex];show_examined_info=\ref[src];show_to=\ref[user]'>?</a>\]")
+
+	. = list("<span class='info'>This is <EM>[!obscure_name ? name : "Unknown"]</EM>[species_text]!")
 
 	var/obscured = check_obscured_slots()
 

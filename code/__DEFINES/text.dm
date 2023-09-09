@@ -18,6 +18,12 @@
 /// Simply removes the < and > characters, and limits the length of the message.
 #define STRIP_HTML_SIMPLE(text, limit) (GLOB.angular_brackets.Replace(copytext(text, 1, limit), ""))
 
+/**
+ * Strip out the special beyond characters for \proper and \improper
+ * from text that will be sent to the browser.
+ */
+#define STRIP_IMPROPER(input_text) replacetext(replacetext(input_text, "\proper", ""), "\improper", "")
+
 /// Folder directory for strings
 #define STRING_DIRECTORY "strings"
 
