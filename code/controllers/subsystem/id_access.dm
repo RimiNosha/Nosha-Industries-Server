@@ -130,7 +130,6 @@ SUBSYSTEM_DEF(id_access)
  * * check_forged - Boolean value. If TRUE, will not overwrite the card's assignment if the card has been forged.
  */
 /datum/controller/subsystem/id_access/proc/apply_trim_to_chameleon_card(obj/item/card/id/advanced/chameleon/id_card, assignment, /datum/id_department/department, /datum/id_department/subdepartment, check_forged = TRUE)
-	id_card.sechud_icon_state_override = sechud_icon_state
 	id_card.department_color_override = initial(department.color)
 	id_card.department_state_override = initial(department.icon_state)
 	id_card.subdepartment_color_override = initial(subdepartment.color)

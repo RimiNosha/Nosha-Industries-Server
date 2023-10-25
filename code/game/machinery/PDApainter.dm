@@ -346,7 +346,7 @@
 
 			stored_pda.reset_imprint()
 			return TRUE
-		if("trim_card")
+		if("department_card")
 			if((machine_stat & BROKEN) || !stored_id_card)
 				return TRUE
 

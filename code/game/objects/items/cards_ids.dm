@@ -422,7 +422,7 @@
 				update_label()
 				update_icon()
 			if(NAMEOF(src, department) || NAMEOF(src, subdepartment))
-				apply_departments(department, subdepartment)
+				apply_regions(department, subdepartment)
 
 /obj/item/card/id/attackby(obj/item/W, mob/user, params)
 	if(istype(W, /obj/item/rupee))
@@ -769,8 +769,6 @@
 	var/trim_assignment_override
 	/// If this is set, will manually override the icon state for the letter overlay in the bottom left. Intended for admins to VV edit and chameleon ID cards
 	var/trim_letter_state_override
-	/// If this is set, will manually override the trim shown for SecHUDs. Intended for admins to VV edit and chameleon ID cards.
-	var/sechud_icon_state_override = null
 
 /obj/item/card/id/advanced/Initialize(mapload)
 	. = ..()
