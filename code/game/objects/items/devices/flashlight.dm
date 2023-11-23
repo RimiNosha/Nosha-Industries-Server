@@ -17,6 +17,8 @@
 	light_range = 4
 	light_power = 1
 	light_on = FALSE
+	pickup_sound = 'sound/items/handling/device_pickup.ogg'
+	drop_sound = 'sound/items/handling/device_drop.ogg'
 	var/on = FALSE
 
 
@@ -186,7 +188,7 @@
 			holo_cooldown = world.time + 10 SECONDS
 			return
 
-// see: [/datum/wound/burn/proc/uv()]
+// see: [/datum/wound/burn/flesh/proc/uv()]
 /obj/item/flashlight/pen/paramedic
 	name = "paramedic penlight"
 	desc = "A high-powered UV penlight intended to help stave off infection in the field on serious burned patients. Probably really bad to look into."

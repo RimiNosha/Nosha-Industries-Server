@@ -26,6 +26,9 @@
 	comp_light_luminosity = 2.3 //this is what old PDAs were set to
 	looping_sound = FALSE
 
+	pickup_sound = 'sound/items/handling/device_pickup.ogg'
+	drop_sound = 'sound/items/handling/device_drop.ogg'
+
 	///The item currently inserted into the PDA, starts with a pen.
 	var/obj/item/inserted_item = /obj/item/pen
 
@@ -36,6 +39,7 @@
 		/datum/computer_file/program/messenger,
 		/datum/computer_file/program/notepad,
 		/datum/computer_file/program/crew_manifest,
+		/datum/computer_file/program/holomap,
 	)
 	///List of items that can be stored in a PDA
 	var/static/list/contained_item = list(
@@ -310,7 +314,7 @@
 		return ..()
 	return FALSE
 
-/obj/item/modular_computer/pda/silicon/get_ntnet_status(specific_action = 0)
+/obj/item/modular_computer/pda/silicon/get_ntnet_status()
 	//No borg found
 	if(!silicon_owner)
 		return FALSE

@@ -35,3 +35,27 @@ eject.ogg is by magedu, adapted from https://freesound.org/people/magedu/sounds/
 alien_explode.ogg is adapted from zimbot's Frozen Lettuce upload https://freesound.org/people/zimbot/sounds/89378/ and little_dog4000's balloon pop https://freesound.org/people/little_dog4000/sounds/478764/
 
 alien_organ_cut.ogg is adapted from some CC 0 flesh sound, lesaucisson's swoosh https://freesound.org/people/lesaucisson/sounds/585256/, and a snippet of EminYILDIRIM's tree cutting clip https://freesound.org/people/EminYILDIRIM/sounds/608343/
+
+clock.mp3 is adapted from Tetrisrocker's "Clock", which uses CC Attributions 0
+https://freesound.org/people/Tetrisrocker/sounds/458627/
+standard_stamp.ogg is adapted from tom_woysky's "Stamp.wav" https://freesound.org/people/tom_woysky/sounds/348316/
+
+chainsaw_loop.ogg is adapted from Audionautics "Chainsaw Idle Loops", which is licensed under CC Attribution 3.0
+https://freesound.org/people/Audionautics/sounds/171652/
+chainsaw_start.ogg is adapted from 8 Chainsaw Pulls.wav by Stefan021
+https://freesound.org/s/431740/ (CC 0)
+chainsaw_stop.ogg is adapted from kyles "chainsaw sawing short cuts +stop.flac" (CC 0)
+https://freesound.org/people/kyles/sounds/453256/
+
+fridge_open and fridge_close is adapted from "Fridge door open close.wav" under the CC0 License
+https://freesound.org/people/curara/sounds/556983/
+glass_drop is adapted from "Pickup or Set down glass bottle.wav" under the CC Attribution 4.0 License
+https://freesound.org/people/nicklas3799/sounds/467365/
+glass_pane_pickup is adapted from "Tapping, Window, Single, A.wav" under the CC Attribution 4.0 License
+https://freesound.org/people/InspectorJ/sounds/318929/
+can_drop is adapted from "Open Can Drop - Low Reverb" under the CC Attribution 3.0 License
+https://freesound.org/people/deleted_user_7709760/sounds/461973/
+glass_pane_drop, metal_pickup, and metal_drop are adapted from "Handling Metal Sheet 1" under the CC0 License
+https://freesound.org/people/Sheyvan/sounds/522926/
+wood_drop is adapted from "malexmedia_woodbangA.wav" under the CC Attribution 4.0 License
+https://freesound.org/people/malexmedia/sounds/31814/

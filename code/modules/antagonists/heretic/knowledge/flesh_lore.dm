@@ -258,8 +258,7 @@
 
 	var/mob/living/carbon/carbon_target = target
 	var/obj/item/bodypart/bodypart = pick(carbon_target.bodyparts)
-	var/datum/wound/slash/severe/crit_wound = new()
-	crit_wound.apply_wound(bodypart, attack_direction = get_dir(source, target))
+	carbon_target.cause_wound_of_type_and_severity(WOUND_SLASH, bodypart, WOUND_SEVERITY_SEVERE, WOUND_SEVERITY_CRITICAL)
 
 /datum/heretic_knowledge/summon/stalker
 	name = "Lonely Ritual"
@@ -301,7 +300,12 @@
 
 /datum/heretic_knowledge/ultimate/flesh_final/on_finished_recipe(mob/living/user, list/selected_atoms, turf/loc)
 	. = ..()
-	priority_announce("[generate_heretic_text()] Ever coiling vortex. Reality unfolded. ARMS OUTREACHED, THE LORD OF THE NIGHT, [user.real_name] has ascended! Fear the ever twisting hand! [generate_heretic_text()]", "[generate_heretic_text()]", ANNOUNCER_SPANOMALIES)
+	priority_announce(
+		text = "[generate_heretic_text()] Ever coiling vortex. Reality unfolded. ARMS OUTREACHED, THE LORD OF THE NIGHT, [user.real_name] has ascended! Fear the ever twisting hand! [generate_heretic_text()]",
+		title = "[generate_heretic_text()]",
+		sound = ANNOUNCER_SPANOMALIES,
+		color_override = "pink",
+	)
 
 	var/datum/action/cooldown/spell/shapeshift/shed_human_form/worm_spell = new(user.mind)
 	worm_spell.Grant(user)

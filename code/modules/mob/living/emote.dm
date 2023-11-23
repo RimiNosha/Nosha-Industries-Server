@@ -256,7 +256,7 @@
 	if(ishuman(user))
 		var/mob/living/carbon/human/H = user
 		if(H.dna.species.id == SPECIES_HUMAN && (!H.mind || !H.mind.miming))
-			if((!H.dna.voice_type && H.gender == FEMALE) || findtext(H.dna.voice_type, "Female"))
+			if((!H.dna.emote_voice_type && H.gender == FEMALE) || findtext(H.dna.emote_voice_type, "Female"))
 				return 'sound/voice/human/womanlaugh.ogg'
 			else
 				return pick('sound/voice/human/manlaugh1.ogg', 'sound/voice/human/manlaugh2.ogg')
@@ -345,6 +345,13 @@
 	message = "sighs."
 	message_mime = "acts out an exaggerated silent sigh."
 	emote_type = EMOTE_VISIBLE | EMOTE_AUDIBLE
+
+/datum/emote/living/sigh/run_emote(mob/living/user, params, type_override, intentional)
+	. = ..()
+	if(!ishuman(user))
+		return
+	var/image/emote_animation = image('icons/mob/species/human/emote_visuals.dmi', user, "sigh")
+	flick_overlay_global(emote_animation, GLOB.clients, 2.0 SECONDS)
 
 /datum/emote/living/sit
 	key = "sit"
@@ -607,6 +614,14 @@
 	message = custom_emote
 	emote_type = custom_emote_type
 	. = ..()
+	var/me_sound
+	if(ishuman(user))
+		var/mob/living/carbon/human/human = user
+		me_sound = GLOB.me_sounds[human.dna.me_sound_type]
+	else
+		me_sound = GLOB.me_sounds[pick(GLOB.me_sounds)]
+
+	playsound(user, me_sound, 75)
 	message = null
 	emote_type = EMOTE_VISIBLE
 

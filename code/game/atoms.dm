@@ -168,6 +168,9 @@
 	/// The manufacturer text to be shown on examine. Won't be updated post init, so you'll have to handle adding/removing the element post init.
 	var/manufacturer
 
+	/// The sound to play when our storage is opened.
+	var/rustle_sound = SFX_RUSTLE
+
 /**
  * Called when an atom is created in byond (built in engine proc)
  *
@@ -359,7 +362,7 @@
 	if(atom_storage)
 		QDEL_NULL(atom_storage)
 
-	atom_storage = new type(src, max_slots, max_specific_storage, max_total_storage, numerical_stacking, allow_quick_gather, collection_mode, attack_hand_interact)
+	atom_storage = new type(src, max_slots, max_specific_storage, max_total_storage, numerical_stacking, allow_quick_gather, allow_quick_empty, collection_mode, attack_hand_interact, rustle_sound)
 
 	if(canhold || canthold)
 		atom_storage.set_holdable(canhold, canthold)
@@ -595,6 +598,7 @@
 	SEND_SIGNAL(source, COMSIG_REAGENTS_EXPOSE_ATOM, src, reagents, methods, volume_modifier, show_message)
 	for(var/datum/reagent/current_reagent as anything in reagents)
 		. |= current_reagent.expose_atom(src, reagents[current_reagent])
+	SEND_SIGNAL(src, COMSIG_ATOM_AFTER_EXPOSE_REAGENTS, reagents, source, methods, volume_modifier, show_message)
 
 /// Are you allowed to drop this atom
 /atom/proc/AllowDrop()
@@ -1655,7 +1659,7 @@
 
 /// Sets the custom materials for an item.
 /atom/proc/set_custom_materials(list/materials, multiplier = 1)
-	if(custom_materials && material_flags & MATERIAL_EFFECTS) //Only runs if custom materials existed at first and affected src.
+	if(custom_materials && (material_flags & MATERIAL_EFFECTS)) //Only runs if custom materials existed at first and affected src.
 		for(var/current_material in custom_materials)
 			var/datum/material/custom_material = GET_MATERIAL_REF(current_material)
 			custom_material.on_removed(src, custom_materials[current_material] * material_modifier, material_flags) //Remove the current materials

@@ -10,6 +10,8 @@
 	possible_transfer_amounts = list(5, 10, 15, 25, 30)
 	volume = 30
 	fill_icon_thresholds = list(0, 1, 20, 40, 60, 80, 100)
+	pickup_sound = 'sound/items/handling/bottle_pickup.ogg'
+	drop_sound = 'sound/items/handling/bottle_drop.ogg'
 
 /obj/item/reagent_containers/cup/bottle/Initialize(mapload)
 	. = ..()
@@ -123,9 +125,6 @@
 	list_reagents = list(/datum/reagent/consumable/frostoil = 30)
 
 /obj/item/reagent_containers/cup/bottle/traitor
-	name = "syndicate bottle"
-	desc = "A small bottle. Contains a random nasty chemical."
-	icon = 'icons/obj/medical/chemical.dmi'
 	var/extra_reagent = null
 
 /obj/item/reagent_containers/cup/bottle/traitor/Initialize(mapload)

@@ -9,10 +9,11 @@
 #define MSG_MON_SCREEN_LOGS 1
 #define MSG_MON_SCREEN_REQUEST_LOGS 2
 #define MSG_MON_SCREEN_HACKED 3
+#define MSG_MON_SCREEN_TRADE_LOGS 4
 
 /obj/machinery/computer/message_monitor
 	name = "message monitor console"
-	desc = "Used to monitor the crew's PDA messages, as well as request console messages."
+	desc = "Used to monitor the crew's PDA messages, trade console messages, as well as request console messages."
 	icon_screen = "comm_logs"
 	circuit = /obj/item/circuitboard/computer/message_monitor
 	light_color = LIGHT_COLOR_GREEN
@@ -109,6 +110,11 @@
 			for(var/datum/data_rc_msg/rc in linkedServer.rc_msgs)
 				request_list += list(list("ref" = REF(rc), "message" = rc.message, "stamp" = rc.stamp, "id_auth" = rc.id_auth, "departament" = rc.send_dpt))
 			data["requests"] = request_list
+		if(MSG_MON_SCREEN_TRADE_LOGS)
+			var/list/trade_list = list()
+			for(var/datum/data_trade_msg/trade in linkedServer.trade_msgs)
+				trade_list += list(list("ref" = REF(trade), "message" = trade.message, "timestamp" = trade.timestamp))
+			data["trades"] = trade_list
 	return data
 
 /obj/machinery/computer/message_monitor/ui_act(action, params)
@@ -165,12 +171,19 @@
 		if("view_request_logs")
 			screen = MSG_MON_SCREEN_REQUEST_LOGS
 			return TRUE
+		if("view_trade_logs")
+			screen = MSG_MON_SCREEN_TRADE_LOGS
+			return TRUE
 		if("clear_message_logs")
 			linkedServer.pda_msgs = list()
 			notice_message = "NOTICE: Logs cleared."
 			return TRUE
 		if("clear_request_logs")
 			linkedServer.rc_msgs = list()
+			notice_message = "NOTICE: Logs cleared."
+			return TRUE
+		if("clear_trade_logs")
+			linkedServer.trade_msgs = list()
 			notice_message = "NOTICE: Logs cleared."
 			return TRUE
 		if("set_key")
@@ -197,6 +210,10 @@
 			linkedServer.rc_msgs -= locate(params["ref"]) in linkedServer.rc_msgs
 			success_message = "Log Deleted!"
 			return TRUE
+		if("delete_trade")
+			linkedServer.trade_msgs -= locate(params["ref"]) in linkedServer.trade_msgs
+			success_message = "Log Deleted!"
+			return TRUE
 		if("connect_server")
 			if(!linkedServer)
 				for(var/obj/machinery/telecomms/message_server/S in GLOB.telecomms_list)
@@ -208,14 +225,16 @@
 			var/job = tgui_input_text(usr, "What is the sender's job?", "Job")
 
 			var/recipient
+			var/list/tablet_to_messenger = list()
 			var/list/viewable_tablets = list()
-			for (var/obj/item/modular_computer/tablet as anything in GLOB.TabletMessengers)
-				var/datum/computer_file/program/messenger/message_app = locate() in tablet.stored_files
+			for (var/messenger_ref in GLOB.pda_messengers)
+				var/datum/computer_file/program/messenger/message_app = GLOB.pda_messengers[messenger_ref]
 				if(!message_app || message_app.invisible)
 					continue
-				if(!tablet.saved_identification)
+				if(!message_app.computer.saved_identification)
 					continue
-				viewable_tablets += tablet
+				viewable_tablets += message_app.computer
+				tablet_to_messenger[message_app.computer] = message_app
 			if(length(viewable_tablets) > 0)
 				recipient = tgui_input_list(usr, "Select a tablet from the list", "Tablet Selection", viewable_tablets)
 			else
@@ -232,14 +251,11 @@
 				notice_message = "NOTICE: No message entered!"
 				return attack_hand(usr)
 
-			var/datum/signal/subspace/messaging/tablet_msg/signal = new(src, list(
-				"name" = "[sender]",
-				"job" = "[job]",
-				"message" = html_decode(message),
-				"ref" = REF(src),
-				"targets" = list(recipient),
-				"rigged" = FALSE,
-				"automated" = FALSE,
+			var/datum/signal/subspace/messaging/tablet_message/signal = new(src, list(
+				"fakename" = "[sender]",
+				"fakejob" = "[job]",
+				"message" = message,
+				"targets" = list(tablet_to_messenger[recipient]),
 			))
 			// This will log the signal and transmit it to the target
 			linkedServer.receive_information(signal, null)
@@ -267,6 +283,7 @@
 #undef MSG_MON_SCREEN_LOGS
 #undef MSG_MON_SCREEN_REQUEST_LOGS
 #undef MSG_MON_SCREEN_HACKED
+#undef MSG_MON_SCREEN_TRADE_LOGS
 #undef LINKED_SERVER_NONRESPONSIVE
 
 /// Monitor decryption key paper
