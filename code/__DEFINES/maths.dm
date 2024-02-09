@@ -23,6 +23,8 @@
 
 #define SHORT_REAL_LIMIT 16777216
 
+#define LIGHT_SPEED 299792458 // meters per second
+
 //"fancy" math for calculating time in ms from tick_usage percentage and the length of ticks
 //percent_of_tick_used * (ticklag * 100(to convert to ms)) / 100(percent ratio)
 //collapsed to percent_of_tick_used * tick_lag
@@ -236,6 +238,8 @@
 // )
 
 #define GET_TRUE_DIST(a, b) (a == null || b == null) ? -1 : max(abs(a.x -b.x), abs(a.y-b.y), abs(a.z-b.z))
+
+#define GET_DIST_2D_NUMERICAL(x1, y1, x2, y2) sqrt(((x1-x2) * (x1-x2)) + ((y1-y2) * (y1-y2)))
 
 /// The number of cells in a taxicab circle (rasterized diamond) of radius X.
 #define DIAMOND_AREA(X) (1 + 2*(X)*((X)+1))

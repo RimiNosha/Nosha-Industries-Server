@@ -13,11 +13,10 @@
 	///Required chemicals that must be present in the container but are not USED.
 	var/list/required_catalysts = new/list()
 
-	// Both of these variables are mostly going to be used with slime cores - but if you want to, you can use them for other things
-	/// the exact container path required for the reaction to happen
-	var/required_container
+	/// the exact container path required for the reaction to happen, typepath
+	var/atom/required_container
 	/// an integer required for the reaction to happen
-	var/required_other = 0
+	var/required_other = FALSE
 
 	///Determines if a chemical reaction can occur inside a mob
 	var/mob_react = TRUE
@@ -61,7 +60,14 @@
 /datum/chemical_reaction/proc/update_info()
 	return
 
+
 ///REACTION PROCS
+
+/**
+ * Checks if this reaction can occur. Only is ran if required_other is set to TRUE.
+ */
+/datum/chemical_reaction/proc/pre_reaction_other_checks(datum/reagents/holder)
+	return TRUE
 
 /**
  * Shit that happens on reaction
@@ -432,7 +438,8 @@
 				equilibrium.data["[id]_y"] += increment
 	var/turf/holder_turf = get_turf(holder.my_atom)
 	var/turf/target = locate(holder_turf.x + equilibrium.data["[id]_x"], holder_turf.y + equilibrium.data["[id]_y"], holder_turf.z)
-	new /obj/effect/hotspot(target)
+	//new /obj/effect/hotspot(target)
+	target.create_fire(1, 10)
 	debug_world("X: [equilibrium.data["[id]_x"]], Y: [equilibrium.data["[id]_x"]]")
 
 /*
@@ -444,10 +451,12 @@
 /datum/chemical_reaction/proc/explode_fire_square(datum/reagents/holder, datum/equilibrium/equilibrium, fire_range = 1)
 	var/turf/location = get_turf(holder.my_atom)
 	if(fire_range == 0)
-		new /obj/effect/hotspot(location)
+		//new /obj/effect/hotspot(location)
+		location.create_fire(1, 10)
 		return
 	for(var/turf/turf as anything in RANGE_TURFS(fire_range, location))
-		new /obj/effect/hotspot(turf)
+		//new /obj/effect/hotspot(turf)
+		turf.create_fire(1, 10)
 
 ///////////END FIRE BASED EXPLOSIONS
 

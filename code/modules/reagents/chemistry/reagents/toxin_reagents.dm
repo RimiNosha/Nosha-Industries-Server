@@ -115,8 +115,11 @@
 		return
 	if((holder.flags & SEALED_CONTAINER) && (holder.chem_temp < LIQUID_PLASMA_IG))
 		return
-	var/atom/A = holder.my_atom
-	A.atmos_spawn_air("plasma=[volume];TEMP=[holder.chem_temp]")
+
+	var/turf/open/T = get_turf(holder.my_atom)
+	if(!istype(T))
+		return
+	T.assume_gas(GAS_PLASMA, volume, holder.chem_temp)
 	holder.del_reagent(type)
 
 /datum/reagent/toxin/plasma/expose_turf(turf/open/exposed_turf, reac_volume)
@@ -124,13 +127,15 @@
 		return
 	var/temp = holder ? holder.chem_temp : T20C
 	if(temp >= LIQUID_PLASMA_BP)
-		exposed_turf.atmos_spawn_air("plasma=[reac_volume];TEMP=[temp]")
+		exposed_turf.assume_gas(GAS_PLASMA, reac_volume / REAGENT_GAS_EXCHANGE_FACTOR, holder.chem_temp)
 	return ..()
 
 /datum/reagent/toxin/plasma/expose_mob(mob/living/exposed_mob, methods=TOUCH, reac_volume)//Splashing people with plasma is stronger than fuel!
 	. = ..()
 	if(methods & (TOUCH|VAPOR))
 		exposed_mob.adjust_fire_stacks(reac_volume / 5)
+		if(prob(50 * reac_volume))
+			exposed_mob.expose_plasma()
 		return
 
 /datum/reagent/toxin/hot_ice
@@ -477,10 +482,19 @@
 	color = "#664300" // rgb: 102, 67, 0
 	metabolization_rate = 1.5 * REAGENTS_METABOLISM
 	taste_description = "piss water"
-	glass_icon_state = "beerglass"
-	glass_name = "glass of beer"
-	glass_desc = "A freezing pint of beer."
 	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED|REAGENT_NO_RANDOM_RECIPE
+
+/datum/glass_style/drinking_glass/fakebeer
+	required_drink_type = /datum/reagent/toxin/fakebeer
+
+/datum/glass_style/drinking_glass/fakebeer/New()
+	. = ..()
+	// Copy styles from the beer drinking glass datum
+	var/datum/glass_style/copy_from = /datum/glass_style/drinking_glass/beer
+	name = initial(copy_from.name)
+	desc = initial(copy_from.desc)
+	icon = initial(copy_from.icon)
+	icon_state = initial(copy_from.icon_state)
 
 /datum/reagent/toxin/fakebeer/on_mob_life(mob/living/carbon/affected_mob, delta_time, times_fired)
 	switch(current_cycle)

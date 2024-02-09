@@ -5,12 +5,19 @@
 	metabolization_rate = 12.5 * REAGENTS_METABOLISM //fast rate so it disappears fast.
 	taste_description = "iron"
 	taste_mult = 1.3
-	glass_icon_state = "glass_red"
-	glass_name = "glass of tomato juice"
-	glass_desc = "Are you sure this is tomato juice?"
-	shot_glass_icon_state = "shotglassred"
 	penetrates_skin = NONE
 	default_container = /obj/item/reagent_containers/blood
+
+/datum/glass_style/shot_glass/blood
+	required_drink_type = /datum/reagent/blood
+	icon_state = "shotglassred"
+
+/datum/glass_style/drinking_glass/blood
+	required_drink_type = /datum/reagent/blood
+	name = "glass of tomato juice"
+	desc = "Are you sure this is tomato juice?"
+	icon_state = "glass_red"
+
 
 	// FEED ME
 /datum/reagent/blood/on_hydroponics_apply(obj/item/seeds/myseed, datum/reagents/chems, obj/machinery/hydroponics/mytray)
@@ -108,9 +115,12 @@
 	color = "#CC4633"
 	description = "You don't even want to think about what's in here."
 	taste_description = "gross iron"
-	shot_glass_icon_state = "shotglassred"
 	material = /datum/material/meat
 	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
+
+/datum/glass_style/shot_glass/liquidgibs
+	required_drink_type = /datum/reagent/liquidgibs
+	icon_state = "shotglassred"
 
 /datum/reagent/bone_dust
 	name = "Bone Dust"
@@ -158,37 +168,41 @@
 	description = "An ubiquitous chemical substance that is composed of hydrogen and oxygen."
 	color = "#AAAAAA77" // rgb: 170, 170, 170, 77 (alpha)
 	taste_description = "water"
-	var/cooling_temperature = 2
-	glass_icon_state = "glass_clear"
-	glass_name = "glass of water"
-	glass_desc = "The father of all refreshments."
-	shot_glass_icon_state = "shotglassclear"
 	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED|REAGENT_CLEANS
 	default_container = /obj/item/reagent_containers/cup/glass/waterbottle
+
+/datum/glass_style/shot_glass/water
+	required_drink_type = /datum/reagent/water
+	icon_state = "shotglassclear"
+
+/datum/glass_style/drinking_glass/water
+	required_drink_type = /datum/reagent/water
+	name = "glass of water"
+	desc = "The father of all refreshments."
+	icon_state = "glass_clear"
 
 /*
  * Water reaction to turf
  */
 
-/datum/reagent/water/expose_turf(turf/open/exposed_turf, reac_volume)
+/datum/reagent/water/expose_turf(turf/open/exposed_turf, reac_volume, exposed_temperature)
 	. = ..()
 	if(!istype(exposed_turf))
 		return
 
-	var/cool_temp = cooling_temperature
 	if(reac_volume >= 5)
 		exposed_turf.MakeSlippery(TURF_WET_WATER, 10 SECONDS, min(reac_volume*1.5 SECONDS, 60 SECONDS))
 
 	for(var/mob/living/simple_animal/slime/exposed_slime in exposed_turf)
 		exposed_slime.apply_water()
 
-	var/obj/effect/hotspot/hotspot = (locate(/obj/effect/hotspot) in exposed_turf)
-	if(hotspot && !isspaceturf(exposed_turf))
-		if(exposed_turf.air)
-			var/datum/gas_mixture/air = exposed_turf.air
-			air.temperature = max(min(air.temperature-(cool_temp*1000), air.temperature/cool_temp),TCMB)
-			air.react(src)
-			qdel(hotspot)
+	qdel(exposed_turf.fire)
+	if(exposed_turf.simulated)
+		var/datum/gas_mixture/air = exposed_turf.return_air()
+		var/adjust_temp = abs(air.temperature - exposed_temperature) / air.group_multiplier
+		if(air.temperature > exposed_temperature)
+			adjust_temp *= -1
+		air.temperature = max(air.temperature + adjust_temp, TCMB)
 
 /*
  * Water reaction to an object
@@ -244,12 +258,15 @@
 	name = "Holy Water"
 	description = "Water blessed by some deity."
 	color = "#E0E8EF" // rgb: 224, 232, 239
-	glass_icon_state = "glass_clear"
-	glass_name = "glass of holy water"
-	glass_desc = "A glass of holy water."
 	self_consuming = TRUE //divine intervention won't be limited by the lack of a liver
 	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED|REAGENT_CLEANS
 	default_container = /obj/item/reagent_containers/cup/glass/bottle/holywater
+
+/datum/glass_style/drinking_glass/holywater
+	required_drink_type = /datum/reagent/water/holywater
+	name = "glass of holy water"
+	desc = "A glass of holy water."
+	icon_state = "glass_clear"
 
 	// Holy water. Mostly the same as water, it also heals the plant a little with the power of the spirits. Also ALSO increases instability.
 /datum/reagent/water/holywater/on_hydroponics_apply(obj/item/seeds/myseed, datum/reagents/chems, obj/machinery/hydroponics/mytray)
@@ -332,11 +349,17 @@
 	color = "#AAAAAA77" // rgb: 170, 170, 170, 77 (alpha)
 	taste_description = "burning water"
 	var/cooling_temperature = 2
-	glass_icon_state = "glass_clear"
-	glass_name = "glass of oxygenated water"
-	glass_desc = "The father of all refreshments. Surely it tastes great, right?"
-	shot_glass_icon_state = "shotglassclear"
 	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
+
+/datum/glass_style/shot_glass/hydrogen_peroxide
+	required_drink_type = /datum/reagent/hydrogen_peroxide
+	icon_state = "shotglassclear"
+
+/datum/glass_style/drinking_glass/hydrogen_peroxide
+	required_drink_type = /datum/reagent/hydrogen_peroxide
+	name = "glass of oxygenated water"
+	desc = "The father of all refreshments. Surely it tastes great, right?"
+	icon_state = "glass_clear"
 
 /*
  * Water reaction to turf
@@ -769,7 +792,7 @@
 	. = ..()
 	if(istype(exposed_turf))
 		var/temp = holder ? holder.chem_temp : T20C
-		exposed_turf.atmos_spawn_air("o2=[reac_volume/20];TEMP=[temp]")
+		exposed_turf.atmos_spawn_air(GAS_OXYGEN, reac_volume/20, temp)
 	return
 
 /datum/reagent/copper
@@ -801,7 +824,7 @@
 /datum/reagent/nitrogen/expose_turf(turf/open/exposed_turf, reac_volume)
 	if(istype(exposed_turf))
 		var/temp = holder ? holder.chem_temp : T20C
-		exposed_turf.atmos_spawn_air("n2=[reac_volume/20];TEMP=[temp]")
+		exposed_turf.atmos_spawn_air(GAS_NITROGEN, reac_volume / REAGENT_GAS_EXCHANGE_FACTOR, temp)
 	return ..()
 
 /datum/reagent/hydrogen
@@ -1098,14 +1121,17 @@
 	description = "Required for welders. Flammable."
 	color = "#660000" // rgb: 102, 0, 0
 	taste_description = "gross metal"
-	glass_icon_state = "dr_gibb_glass"
-	glass_name = "glass of welder fuel"
-	glass_desc = "Unless you're an industrial tool, this is probably not safe for consumption."
 	penetrates_skin = NONE
 	burning_temperature = 1725 //more refined than oil
 	burning_volume = 0.2
 	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
 	addiction_types = list(/datum/addiction/alcohol = 4)
+
+/datum/glass_style/drinking_glass/fuel
+	required_drink_type = /datum/reagent/fuel
+	name = "glass of welder fuel"
+	desc = "Unless you're an industrial tool, this is probably not safe for consumption."
+	icon_state = "dr_gibb_glass"
 
 /datum/reagent/fuel/expose_mob(mob/living/exposed_mob, methods=TOUCH, reac_volume)//Splashing people with welding fuel to make them easy to ignite!
 	. = ..()
@@ -1338,7 +1364,7 @@
 /datum/reagent/carbondioxide/expose_turf(turf/open/exposed_turf, reac_volume)
 	if(istype(exposed_turf))
 		var/temp = holder ? holder.chem_temp : T20C
-		exposed_turf.atmos_spawn_air("co2=[reac_volume/20];TEMP=[temp]")
+		exposed_turf.atmos_spawn_air(GAS_CO2, reac_volume / REAGENT_GAS_EXCHANGE_FACTOR, temp)
 	return ..()
 
 /datum/reagent/nitrous_oxide
@@ -1354,7 +1380,7 @@
 	. = ..()
 	if(istype(exposed_turf))
 		var/temp = holder ? holder.chem_temp : T20C
-		exposed_turf.atmos_spawn_air("n2o=[reac_volume/20];TEMP=[temp]")
+		exposed_turf.assume_gas(GAS_N2O, reac_volume / REAGENT_GAS_EXCHANGE_FACTOR, temp)
 
 /datum/reagent/nitrous_oxide/expose_mob(mob/living/exposed_mob, methods=TOUCH, reac_volume)
 	. = ..()
@@ -2369,13 +2395,16 @@
 /datum/reagent/yuck
 	name = "Organic Slurry"
 	description = "A mixture of various colors of fluid. Induces vomiting."
-	glass_name = "glass of ...yuck!"
-	glass_desc = "It smells like a carcass, and doesn't look much better."
 	color = "#545000"
 	taste_description = "insides"
 	taste_mult = 4
 	metabolization_rate = 0.4 * REAGENTS_METABOLISM
 	var/yuck_cycle = 0 //! The `current_cycle` when puking starts.
+
+/datum/glass_style/drinking_glass/yuck
+	required_drink_type = /datum/reagent/yuck
+	name = "glass of ...yuck!"
+	desc = "It smells like a carcass, and doesn't look much better."
 
 /datum/reagent/yuck/on_mob_add(mob/living/affected_mob)
 	. = ..()
@@ -2594,8 +2623,6 @@
 	taste_mult = 1.3
 	taste_description = "tiny legs scuttling down the back of your throat"
 	metabolization_rate = 5 * REAGENTS_METABOLISM //1u per second
-	glass_name = "glass of ants"
-	glass_desc = "Bottoms up...?"
 	/// How much damage the ants are going to be doing (rises with each tick the ants are in someone's body)
 	var/ant_damage = 0
 	/// Tells the debuff how many ants we are being covered with.
@@ -2606,8 +2633,13 @@
 		"GET THEM OUT OF ME!!",
 		"HOLY HELL THEY BURN!!",
 		"MY GOD THEY'RE INSIDE ME!!",
-		"GET THEM OUT!!"
-		)
+		"GET THEM OUT!!",
+	)
+
+/datum/glass_style/drinking_glass/ants
+	required_drink_type = /datum/reagent/ants
+	name = "glass of ants"
+	desc = "Bottoms up...?"
 
 /datum/reagent/ants/on_mob_life(mob/living/carbon/victim, delta_time)
 	victim.adjustBruteLoss(max(0.1, round((ant_damage * 0.025),0.1))) //Scales with time. Roughly 32 brute with 100u.
@@ -2637,30 +2669,6 @@
 	if(methods & (PATCH|TOUCH|VAPOR))
 		amount_left = round(reac_volume,0.1)
 		exposed_mob.apply_status_effect(/datum/status_effect/ants, amount_left)
-
-/datum/reagent/ants/expose_obj(obj/exposed_obj, reac_volume)
-	. = ..()
-	var/turf/open/my_turf = exposed_obj.loc // No dumping ants on an object in a storage slot
-	if(!istype(my_turf)) //Are we actually in an open turf?
-		return
-	var/static/list/accepted_types = typecacheof(list(/obj/machinery/atmospherics, /obj/structure/cable, /obj/structure/disposalpipe))
-	if(!accepted_types[exposed_obj.type]) // Bypasses pipes, vents, and cables to let people create ant mounds on top easily.
-		return
-	expose_turf(my_turf, reac_volume)
-
-/datum/reagent/ants/expose_turf(turf/exposed_turf, reac_volume)
-	. = ..()
-	if(!istype(exposed_turf) || isspaceturf(exposed_turf)) // Is the turf valid
-		return
-	if((reac_volume <= 10)) // Makes sure people don't duplicate ants.
-		return
-
-	var/obj/effect/decal/cleanable/ants/pests = locate() in exposed_turf.contents
-	if(!pests)
-		pests = new(exposed_turf)
-	var/spilled_ants = (round(reac_volume,1) - 5) // To account for ant decals giving 3-5 ants on initialize.
-	pests.reagents.add_reagent(/datum/reagent/ants, spilled_ants)
-	pests.update_ant_damage()
 
 //This is intended to a be a scarce reagent to gate certain drugs and toxins with. Do not put in a synthesizer. Renewable sources of this reagent should be inefficient.
 /datum/reagent/lead

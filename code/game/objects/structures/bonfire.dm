@@ -61,6 +61,7 @@
 				return ..()
 	if(used_item.get_temperature())
 		start_burning()
+
 	if(grill)
 		if(istype(used_item, /obj/item/melee/roastingstick))
 			return FALSE
@@ -76,6 +77,7 @@
 				used_item.pixel_y = used_item.base_pixel_y + clamp(text2num(LAZYACCESS(modifiers, ICON_Y)) - 16, -(world.icon_size/2), world.icon_size/2)
 		else
 			return ..()
+	return ..()
 
 
 /obj/structure/bonfire/attack_hand(mob/user, list/modifiers)
@@ -98,10 +100,9 @@
 /obj/structure/bonfire/proc/check_oxygen()
 	if(isopenturf(loc))
 		var/turf/open/bonfire_turf = loc
-		if(bonfire_turf.air)
-			var/loc_gases = bonfire_turf.air.gases
-			if(loc_gases[/datum/gas/oxygen] && loc_gases[/datum/gas/oxygen][MOLES] >= 5)
-				return TRUE
+		var/datum/gas_mixture/local_gas = bonfire_turf.unsafe_return_air()
+		if(local_gas.hasGas(GAS_OXYGEN, 5))
+			return TRUE
 	return FALSE
 
 /obj/structure/bonfire/proc/start_burning()
@@ -187,9 +188,9 @@
 	fade = 1 SECONDS
 	grow = -0.01
 	velocity = list(0, 0)
-	position = generator("circle", 0, 16, NORMAL_RAND)
-	drift = generator("vector", list(0, -0.2), list(0, 0.2))
+	position = generator(GEN_CIRCLE, 0, 16, NORMAL_RAND)
+	drift = generator(GEN_VECTOR, list(0, -0.2), list(0, 0.2))
 	gravity = list(0, 0.95)
-	scale = generator("vector", list(0.3, 0.3), list(1,1), NORMAL_RAND)
+	scale = generator(GEN_VECTOR, list(0.3, 0.3), list(1,1), NORMAL_RAND)
 	rotation = 30
-	spin = generator("num", -20, 20)
+	spin = generator(GEN_NUM, -20, 20)

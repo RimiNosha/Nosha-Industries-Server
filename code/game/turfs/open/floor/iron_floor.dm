@@ -27,13 +27,15 @@
 
 
 /turf/open/floor/iron/airless
-	initial_gas_mix = AIRLESS_ATMOS
+	initial_gas = AIRLESS_ATMOS
 
 /turf/open/floor/iron/telecomms
-	initial_gas_mix = TCOMMS_ATMOS
+	initial_gas = TCOMMS_ATMOS
+	temperature = 80
 
 /turf/open/floor/iron/icemoon
-	initial_gas_mix = PLANETARY_ATMOS
+	initial_gas = PLANETARY_ATMOS
+	temperature = 80
 
 /turf/open/floor/iron/edge
 	icon_state = "floor_edge"
@@ -176,19 +178,19 @@
 	floor_tile = /obj/item/stack/tile/iron/dark/herringbone
 
 /turf/open/floor/iron/dark/airless
-	initial_gas_mix = AIRLESS_ATMOS
+	initial_gas = AIRLESS_ATMOS
 
 /turf/open/floor/iron/dark/telecomms
-	initial_gas_mix = TCOMMS_ATMOS
-
+	initial_gas = TCOMMS_ATMOS
+	temperature = 80
 /turf/open/floor/iron/dark/side/airless
-	initial_gas_mix = AIRLESS_ATMOS
+	initial_gas = AIRLESS_ATMOS
 
 /turf/open/floor/iron/dark/corner/airless
-	initial_gas_mix = AIRLESS_ATMOS
+	initial_gas = AIRLESS_ATMOS
 
 /turf/open/floor/iron/checker/airless
-	initial_gas_mix = AIRLESS_ATMOS
+	initial_gas = AIRLESS_ATMOS
 
 /turf/open/floor/iron/white
 	icon_state = "white"
@@ -271,24 +273,27 @@
 	floor_tile = /obj/item/stack/tile/iron/white/herringbone
 
 /turf/open/floor/iron/white/airless
-	initial_gas_mix = AIRLESS_ATMOS
+	initial_gas = AIRLESS_ATMOS
 
 /turf/open/floor/iron/white/telecomms
-	initial_gas_mix = TCOMMS_ATMOS
-
+	initial_gas = TCOMMS_ATMOS
+	temperature = 80
 /turf/open/floor/iron/white/side/airless
-	initial_gas_mix = AIRLESS_ATMOS
+	initial_gas = AIRLESS_ATMOS
 
 /turf/open/floor/iron/white/corner/airless
-	initial_gas_mix = AIRLESS_ATMOS
+	initial_gas = AIRLESS_ATMOS
 
 /turf/open/floor/iron/cafeteria/airless
-	initial_gas_mix = AIRLESS_ATMOS
+	initial_gas = AIRLESS_ATMOS
 
 /turf/open/floor/iron/recharge_floor
 	icon_state = "recharge_floor"
 	base_icon_state = "recharge_floor"
 	floor_tile = /obj/item/stack/tile/iron/recharge_floor
+
+/turf/open/floor/iron/recharge_floor/Airless
+	initial_gas = AIRLESS_ATMOS
 
 /turf/open/floor/iron/recharge_floor/asteroid
 	icon_state = "recharge_floor_asteroid"
@@ -299,25 +304,40 @@
 	base_icon_state = "smooth"
 	floor_tile = /obj/item/stack/tile/iron/smooth
 
+/turf/open/floor/iron/smooth/airless
+	initial_gas = AIRLESS_ATMOS
+
 /turf/open/floor/iron/smooth_edge
 	icon_state = "smooth_edge"
 	base_icon_state = "smooth_edge"
 	floor_tile = /obj/item/stack/tile/iron/smooth_edge
+
+/turf/open/floor/iron/smooth_edge/airless
+	initial_gas = AIRLESS_ATMOS
 
 /turf/open/floor/iron/smooth_half
 	icon_state = "smooth_half"
 	base_icon_state = "smooth_half"
 	floor_tile = /obj/item/stack/tile/iron/smooth_half
 
+/turf/open/floor/iron/smooth_half/airless
+	initial_gas = AIRLESS_ATMOS
+
 /turf/open/floor/iron/smooth_corner
 	icon_state = "smooth_corner"
 	base_icon_state = "smooth_corner"
 	floor_tile = /obj/item/stack/tile/iron/smooth_corner
 
+/turf/open/floor/iron/smooth_corner/airless
+	initial_gas = AIRLESS_ATMOS
+
 /turf/open/floor/iron/smooth_large
 	icon_state = "smooth_large"
 	base_icon_state = "smooth_large"
 	floor_tile = /obj/item/stack/tile/iron/smooth_large
+
+/turf/open/floor/iron/smooth_large/airless
+	initial_gas = AIRLESS_ATMOS
 
 /turf/open/floor/iron/terracotta
 	icon_state = "terracotta"
@@ -370,7 +390,7 @@
 	floor_tile = /obj/item/stack/tile/iron/showroomfloor
 
 /turf/open/floor/iron/showroomfloor/airless
-	initial_gas_mix = AIRLESS_ATMOS
+	initial_gas = AIRLESS_ATMOS
 
 /turf/open/floor/iron/solarpanel
 	icon_state = "solarpanel"
@@ -378,8 +398,7 @@
 	floor_tile = /obj/item/stack/tile/iron/solarpanel
 
 /turf/open/floor/iron/solarpanel/airless
-	initial_gas_mix = AIRLESS_ATMOS
-
+	initial_gas = AIRLESS_ATMOS
 
 /turf/open/floor/iron/freezer
 	icon_state = "freezerfloor"
@@ -387,14 +406,11 @@
 	floor_tile = /obj/item/stack/tile/iron/freezer
 
 /turf/open/floor/iron/freezer/airless
-	initial_gas_mix = AIRLESS_ATMOS
+	initial_gas = AIRLESS_ATMOS
 
 /turf/open/floor/iron/kitchen_coldroom
 	name = "cold room floor"
-
-/turf/open/floor/iron/kitchen_coldroom/Initialize(mapload)
-	initial_gas_mix = KITCHEN_COLDROOM_ATMOS
-	return ..()
+	initial_gas = KITCHEN_COLDROOM_ATMOS
 
 /turf/open/floor/iron/kitchen_coldroom/freezerfloor
 	icon_state = "freezerfloor"
@@ -425,21 +441,36 @@
 	base_icon_state = "stairs"
 	tiled_dirt = FALSE
 
+/turf/open/floor/iron/stairs/airless
+	initial_gas = AIRLESS_ATMOS
+
 /turf/open/floor/iron/stairs/left
 	icon_state = "stairs-l"
 	base_icon_state = "stairs-l"
+
+/turf/open/floor/iron/stairs/left/airless
+	initial_gas = AIRLESS_ATMOS
 
 /turf/open/floor/iron/stairs/medium
 	icon_state = "stairs-m"
 	base_icon_state = "stairs-m"
 
+/turf/open/floor/iron/stairs/medium/airless
+	initial_gas = AIRLESS_ATMOS
+
 /turf/open/floor/iron/stairs/right
 	icon_state = "stairs-r"
 	base_icon_state = "stairs-r"
 
+/turf/open/floor/iron/stairs/right/airless
+	initial_gas = AIRLESS_ATMOS
+
 /turf/open/floor/iron/stairs/old
 	icon_state = "stairs-old"
 	base_icon_state = "stairs-old"
+
+/turf/open/floor/iron/stairs/old/airless
+	initial_gas = AIRLESS_ATMOS
 
 /turf/open/floor/iron/bluespace
 	icon_state = "bluespace"

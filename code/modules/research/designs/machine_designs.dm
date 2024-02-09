@@ -704,6 +704,26 @@
 	)
 	departmental_flags = DEPARTMENT_BITFLAG_SERVICE
 
+/datum/design/board/stove
+	name = "Stove"
+	desc = "The circuit board for a Stove, which is a dual hob on a stand which can hold a handful of bowls."
+	id = "stove"
+	build_path = /obj/item/circuitboard/machine/stove
+	category = list(
+		RND_CATEGORY_MACHINE + RND_SUBCATEGORY_MACHINE_KITCHEN
+	)
+	departmental_flags = DEPARTMENT_BITFLAG_SERVICE
+
+/datum/design/board/table_hob
+	name = "Table Hob"
+	desc = "The circuit board for a Table Hob, which is a single hob that's placable on a table."
+	id = "table_hob"
+	build_path = /obj/item/circuitboard/machine/table_hob
+	category = list(
+		RND_CATEGORY_MACHINE + RND_SUBCATEGORY_MACHINE_KITCHEN
+	)
+	departmental_flags = DEPARTMENT_BITFLAG_SERVICE
+
 /datum/design/board/donksofttoyvendor
 	name = "Donksoft Toy Vendor Board"
 	desc = "The circuit board for a Donksoft Toy Vendor."
@@ -845,16 +865,6 @@
 	)
 	departmental_flags = DEPARTMENT_BITFLAG_SERVICE
 
-/datum/design/board/bountypad
-	name = "Civilian Bounty Pad Board"
-	desc = "The circuit board for a Civilian Bounty Pad."
-	id = "bounty_pad"
-	build_path = /obj/item/circuitboard/machine/bountypad
-	category = list(
-		RND_CATEGORY_MACHINE + RND_SUBCATEGORY_MACHINE_CARGO
-	)
-	departmental_flags = DEPARTMENT_BITFLAG_CARGO
-
 /datum/design/board/skill_station
 	name = "Skill Station Board"
 	desc = "The circuit board for Skill station."
@@ -881,7 +891,7 @@
 	name = "HFR Core Board"
 	desc = "The circuit board for an HFR Core."
 	id = "HFR_core"
-	build_path = /obj/item/circuitboard/machine/HFR_core
+	//build_path = /obj/item/circuitboard/machine/HFR_core
 	category = list(
 		RND_CATEGORY_MACHINE + RND_SUBCATEGORY_MACHINE_ATMOS
 	)
@@ -891,7 +901,7 @@
 	name = "HFR Fuel Input Board"
 	desc = "The circuit board for an HFR fuel input."
 	id = "HFR_fuel_input"
-	build_path = /obj/item/circuitboard/machine/HFR_fuel_input
+	//build_path = /obj/item/circuitboard/machine/HFR_fuel_input
 	category = list(
 		RND_CATEGORY_MACHINE + RND_SUBCATEGORY_MACHINE_ATMOS
 	)
@@ -901,7 +911,7 @@
 	name = "HFR Waste Output Board"
 	desc = "The circuit board for an HFR waste output."
 	id = "HFR_waste_output"
-	build_path = /obj/item/circuitboard/machine/HFR_waste_output
+	//build_path = /obj/item/circuitboard/machine/HFR_waste_output
 	category = list(
 		RND_CATEGORY_MACHINE + RND_SUBCATEGORY_MACHINE_ATMOS
 	)
@@ -911,7 +921,7 @@
 	name = "HFR Moderator Input Board"
 	desc = "The circuit board for an HFR moderator input."
 	id = "HFR_moderator_input"
-	build_path = /obj/item/circuitboard/machine/HFR_moderator_input
+	// build_path = /obj/item/circuitboard/machine/HFR_moderator_input
 	category = list(
 		RND_CATEGORY_MACHINE + RND_SUBCATEGORY_MACHINE_ATMOS
 	)
@@ -921,7 +931,7 @@
 	name = "HFR Corner Board"
 	desc = "The circuit board for an HFR corner."
 	id = "HFR_corner"
-	build_path = /obj/item/circuitboard/machine/HFR_corner
+	// build_path = /obj/item/circuitboard/machine/HFR_corner
 	category = list(
 		RND_CATEGORY_MACHINE + RND_SUBCATEGORY_MACHINE_ATMOS
 	)
@@ -931,7 +941,7 @@
 	name = "HFR Interface Board"
 	desc = "The circuit board for an HFR interface."
 	id = "HFR_interface"
-	build_path = /obj/item/circuitboard/machine/HFR_interface
+	// build_path = /obj/item/circuitboard/machine/HFR_interface
 	category = list(
 		RND_CATEGORY_MACHINE + RND_SUBCATEGORY_MACHINE_ATMOS
 	)
@@ -941,7 +951,7 @@
 	name = "Crystallizer Board"
 	desc = "The circuit board for a crystallizer."
 	id = "crystallizer"
-	build_path = /obj/item/circuitboard/machine/crystallizer
+	// build_path = /obj/item/circuitboard/machine/crystallizer
 	category = list(
 		RND_CATEGORY_MACHINE + RND_SUBCATEGORY_MACHINE_ATMOS
 	)

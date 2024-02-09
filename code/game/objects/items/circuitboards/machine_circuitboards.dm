@@ -54,7 +54,7 @@
 		/obj/item/stock_parts/matter_bin = 3,
 		/obj/item/stock_parts/manipulator = 1,
 		/obj/item/stack/sheet/glass = 1)
-	manufacturer = MANUFACTURER_NOSHA_INDUSTRIES
+	manufacturer = MANUFACTURER_RYOSHI_INDUSTRIES
 
 /obj/item/circuitboard/machine/grounding_rod
 	name = "Grounding Rod"
@@ -64,7 +64,7 @@
 	needs_anchored = FALSE
 
 /obj/item/circuitboard/machine/telecomms
-	manufacturer = MANUFACTURER_NOSHA_INDUSTRIES
+	manufacturer = MANUFACTURER_RYOSHI_INDUSTRIES
 
 /obj/item/circuitboard/machine/telecomms/broadcaster
 	name = "Subspace Broadcaster"
@@ -213,7 +213,7 @@
 /obj/item/circuitboard/machine/turbine_compressor
 	name = "Turbine - Inlet Compressor"
 	greyscale_colors = CIRCUIT_COLOR_ENGINEERING
-	build_path = /obj/machinery/power/turbine/inlet_compressor/constructed
+	//build_path = /obj/machinery/power/turbine/inlet_compressor/constructed
 	req_components = list(
 		/obj/item/stack/cable_coil = 5,
 		/obj/item/stack/sheet/iron = 5)
@@ -221,7 +221,7 @@
 /obj/item/circuitboard/machine/turbine_rotor
 	name = "Turbine - Core Rotor"
 	greyscale_colors = CIRCUIT_COLOR_ENGINEERING
-	build_path = /obj/machinery/power/turbine/core_rotor/constructed
+	//build_path = /obj/machinery/power/turbine/core_rotor/constructed
 	req_components = list(
 		/obj/item/stack/cable_coil = 5,
 		/obj/item/stack/sheet/iron = 5)
@@ -229,7 +229,7 @@
 /obj/item/circuitboard/machine/turbine_stator
 	name = "Turbine - Turbine Outlet"
 	greyscale_colors = CIRCUIT_COLOR_ENGINEERING
-	build_path = /obj/machinery/power/turbine/turbine_outlet/constructed
+	//build_path = /obj/machinery/power/turbine/turbine_outlet/constructed
 	req_components = list(
 		/obj/item/stack/cable_coil = 5,
 		/obj/item/stack/sheet/iron = 5)
@@ -300,65 +300,66 @@
 	. = ..()
 	. += span_notice("It is set to layer [pipe_layer].")
 
-/obj/item/circuitboard/machine/HFR_fuel_input
-	name = "HFR Fuel Input"
-	greyscale_colors = CIRCUIT_COLOR_ENGINEERING
-	build_path = /obj/machinery/atmospherics/components/unary/hypertorus/fuel_input
-	req_components = list(
-		/obj/item/stack/sheet/plasteel = 5)
+// ARTEA TODO: Fix HFR and crystallizer
+// /obj/item/circuitboard/machine/HFR_fuel_input
+// 	name = "HFR Fuel Input"
+// 	greyscale_colors = CIRCUIT_COLOR_ENGINEERING
+// 	build_path = /obj/machinery/atmospherics/components/unary/hypertorus/fuel_input
+// 	req_components = list(
+// 		/obj/item/stack/sheet/plasteel = 5)
 
-/obj/item/circuitboard/machine/HFR_waste_output
-	name = "HFR Waste Output"
-	greyscale_colors = CIRCUIT_COLOR_ENGINEERING
-	build_path = /obj/machinery/atmospherics/components/unary/hypertorus/waste_output
-	req_components = list(
-		/obj/item/stack/sheet/plasteel = 5)
+// /obj/item/circuitboard/machine/HFR_waste_output
+// 	name = "HFR Waste Output"
+// 	greyscale_colors = CIRCUIT_COLOR_ENGINEERING
+// 	build_path = /obj/machinery/atmospherics/components/unary/hypertorus/waste_output
+// 	req_components = list(
+// 		/obj/item/stack/sheet/plasteel = 5)
 
-/obj/item/circuitboard/machine/HFR_moderator_input
-	name = "HFR Moderator Input"
-	greyscale_colors = CIRCUIT_COLOR_ENGINEERING
-	build_path = /obj/machinery/atmospherics/components/unary/hypertorus/moderator_input
-	req_components = list(
-		/obj/item/stack/sheet/plasteel = 5)
+// /obj/item/circuitboard/machine/HFR_moderator_input
+// 	name = "HFR Moderator Input"
+// 	greyscale_colors = CIRCUIT_COLOR_ENGINEERING
+// 	build_path = /obj/machinery/atmospherics/components/unary/hypertorus/moderator_input
+// 	req_components = list(
+// 		/obj/item/stack/sheet/plasteel = 5)
 
-/obj/item/circuitboard/machine/HFR_core
-	name = "HFR core"
-	greyscale_colors = CIRCUIT_COLOR_ENGINEERING
-	build_path = /obj/machinery/atmospherics/components/unary/hypertorus/core
-	req_components = list(
-		/obj/item/stack/cable_coil = 10,
-		/obj/item/stack/sheet/glass = 10,
-		/obj/item/stack/sheet/plasteel = 10)
+// /obj/item/circuitboard/machine/HFR_core
+// 	name = "HFR core"
+// 	greyscale_colors = CIRCUIT_COLOR_ENGINEERING
+// 	build_path = /obj/machinery/atmospherics/components/unary/hypertorus/core
+// 	req_components = list(
+// 		/obj/item/stack/cable_coil = 10,
+// 		/obj/item/stack/sheet/glass = 10,
+// 		/obj/item/stack/sheet/plasteel = 10)
 
-/obj/item/circuitboard/machine/HFR_corner
-	name = "HFR Corner"
-	greyscale_colors = CIRCUIT_COLOR_ENGINEERING
-	build_path = /obj/machinery/hypertorus/corner
-	req_components = list(
-		/obj/item/stack/sheet/plasteel = 5)
+// /obj/item/circuitboard/machine/HFR_corner
+// 	name = "HFR Corner"
+// 	greyscale_colors = CIRCUIT_COLOR_ENGINEERING
+// 	build_path = /obj/machinery/hypertorus/corner
+// 	req_components = list(
+// 		/obj/item/stack/sheet/plasteel = 5)
 
-/obj/item/circuitboard/machine/HFR_interface
-	name = "HFR Interface"
-	greyscale_colors = CIRCUIT_COLOR_ENGINEERING
-	build_path = /obj/machinery/hypertorus/interface
-	req_components = list(
-		/obj/item/stack/cable_coil = 10,
-		/obj/item/stack/sheet/glass = 10,
-		/obj/item/stack/sheet/plasteel = 5)
+// /obj/item/circuitboard/machine/HFR_interface
+// 	name = "HFR Interface"
+// 	greyscale_colors = CIRCUIT_COLOR_ENGINEERING
+// 	build_path = /obj/machinery/hypertorus/interface
+// 	req_components = list(
+// 		/obj/item/stack/cable_coil = 10,
+// 		/obj/item/stack/sheet/glass = 10,
+// 		/obj/item/stack/sheet/plasteel = 5)
 
-/obj/item/circuitboard/machine/crystallizer
-	name = "Crystallizer"
-	greyscale_colors = CIRCUIT_COLOR_ENGINEERING
-	build_path = /obj/machinery/atmospherics/components/binary/crystallizer
-	req_components = list(
-		/obj/item/stack/cable_coil = 10,
-		/obj/item/stack/sheet/glass = 10,
-		/obj/item/stack/sheet/plasteel = 5)
+// /obj/item/circuitboard/machine/crystallizer
+// 	name = "Crystallizer"
+// 	greyscale_colors = CIRCUIT_COLOR_ENGINEERING
+// 	build_path = /obj/machinery/atmospherics/components/binary/crystallizer
+// 	req_components = list(
+// 		/obj/item/stack/cable_coil = 10,
+// 		/obj/item/stack/sheet/glass = 10,
+// 		/obj/item/stack/sheet/plasteel = 5)
 
 /obj/item/circuitboard/machine/bluespace_sender
 	name = "Bluespace Sender"
 	greyscale_colors = CIRCUIT_COLOR_ENGINEERING
-	build_path = /obj/machinery/atmospherics/components/unary/bluespace_sender
+	//build_path = /obj/machinery/atmospherics/components/unary/bluespace_sender
 	req_components = list(
 		/obj/item/stack/cable_coil = 10,
 		/obj/item/stack/sheet/glass = 10,
@@ -374,7 +375,7 @@
 		/obj/item/stock_parts/matter_bin = 1,
 		/obj/item/stock_parts/manipulator = 1,
 		/obj/item/reagent_containers/cup/beaker = 2)
-	manufacturer = MANUFACTURER_NOSHA_INDUSTRIES
+	manufacturer = MANUFACTURER_RYOSHI_INDUSTRIES
 
 /obj/item/circuitboard/machine/circuit_imprinter/offstation
 	name = "Ancient Circuit Imprinter"
@@ -426,7 +427,7 @@
 		/obj/item/stock_parts/matter_bin = 2,
 		/obj/item/stock_parts/manipulator = 2,
 		/obj/item/reagent_containers/cup/beaker = 2)
-	manufacturer = MANUFACTURER_NOSHA_INDUSTRIES
+	manufacturer = MANUFACTURER_RYOSHI_INDUSTRIES
 
 /obj/item/circuitboard/machine/protolathe/offstation
 	name = "Ancient Protolathe"
@@ -496,7 +497,7 @@
 /obj/item/circuitboard/machine/electrolyzer
 	name = "Electrolyzer"
 	greyscale_colors = CIRCUIT_COLOR_GENERIC
-	build_path = /obj/machinery/electrolyzer
+	//build_path = /obj/machinery/electrolyzer
 	req_components = list(
 		/obj/item/stock_parts/manipulator = 2,
 		/obj/item/stock_parts/capacitor = 2,
@@ -611,16 +612,6 @@
 	req_components = list(
 		/obj/item/stack/sheet/glass = 1,
 		/obj/item/vending_refill/donksoft = 1)
-
-/obj/item/circuitboard/machine/bountypad
-	name = "Civilian Bounty Pad"
-	greyscale_colors = CIRCUIT_COLOR_GENERIC
-	build_path = /obj/machinery/piratepad/civilian
-	req_components = list(
-		/obj/item/stock_parts/card_reader = 1,
-		/obj/item/stock_parts/scanning_module = 1,
-		/obj/item/stock_parts/micro_laser = 1
-	)
 
 /obj/item/circuitboard/machine/fax
 	name = "Fax Machine"
@@ -1031,6 +1022,20 @@
 	name = "Oven"
 	greyscale_colors = CIRCUIT_COLOR_SERVICE
 	build_path = /obj/machinery/oven
+	req_components = list(/obj/item/stock_parts/micro_laser = 1)
+	needs_anchored = TRUE
+
+/obj/item/circuitboard/machine/stove
+	name = "Standing Hob"
+	greyscale_colors = CIRCUIT_COLOR_SERVICE
+	build_path = /obj/machinery/stove
+	req_components = list(/obj/item/stock_parts/micro_laser = 2)
+	needs_anchored = TRUE
+
+/obj/item/circuitboard/machine/table_hob
+	name = "Table Hob"
+	greyscale_colors = CIRCUIT_COLOR_SERVICE
+	build_path = /obj/machinery/table_hob
 	req_components = list(/obj/item/stock_parts/micro_laser = 1)
 	needs_anchored = FALSE
 

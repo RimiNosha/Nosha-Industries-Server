@@ -72,7 +72,7 @@
 	temperature = 180
 
 /turf/open/floor/wood/airless
-	initial_gas_mix = AIRLESS_ATMOS
+	initial_gas = AIRLESS_ATMOS
 
 /turf/open/floor/wood/tile
 	icon_state = "wood_tile"
@@ -158,7 +158,7 @@
 	icon_state = "snow"
 	flags_1 = NONE
 	floor_tile = null
-	initial_gas_mix = FROZEN_ATMOS
+	temperature = 180
 	bullet_bounce_sound = null
 	tiled_dirt = FALSE
 
@@ -351,34 +351,34 @@
 
 //*****Airless versions of all of the above.*****
 /turf/open/floor/carpet/airless
-	initial_gas_mix = AIRLESS_ATMOS
+	initial_gas = AIRLESS_ATMOS
 
 /turf/open/floor/carpet/black/airless
-	initial_gas_mix = AIRLESS_ATMOS
+	initial_gas = AIRLESS_ATMOS
 
 /turf/open/floor/carpet/blue/airless
-	initial_gas_mix = AIRLESS_ATMOS
+	initial_gas = AIRLESS_ATMOS
 
 /turf/open/floor/carpet/cyan/airless
-	initial_gas_mix = AIRLESS_ATMOS
+	initial_gas = AIRLESS_ATMOS
 
 /turf/open/floor/carpet/green/airless
-	initial_gas_mix = AIRLESS_ATMOS
+	initial_gas = AIRLESS_ATMOS
 
 /turf/open/floor/carpet/orange/airless
-	initial_gas_mix = AIRLESS_ATMOS
+	initial_gas = AIRLESS_ATMOS
 
 /turf/open/floor/carpet/purple/airless
-	initial_gas_mix = AIRLESS_ATMOS
+	initial_gas = AIRLESS_ATMOS
 
 /turf/open/floor/carpet/red/airless
-	initial_gas_mix = AIRLESS_ATMOS
+	initial_gas = AIRLESS_ATMOS
 
 /turf/open/floor/carpet/royalblack/airless
-	initial_gas_mix = AIRLESS_ATMOS
+	initial_gas = AIRLESS_ATMOS
 
 /turf/open/floor/carpet/royalblue/airless
-	initial_gas_mix = AIRLESS_ATMOS
+	initial_gas = AIRLESS_ATMOS
 
 /turf/open/floor/carpet/narsie_act(force, ignore_mobs, probability = 20)
 	. = (prob(probability) || force)
@@ -441,17 +441,20 @@
 
 /turf/open/floor/carpet/neon/simple
 	name = "simple neon carpet"
-	icon = 'icons/turf/floors/carpet_neon_simple.dmi'
+	icon = 'icons/turf/floors/carpet_neon_base.dmi'
 	icon_state = "base-255"
 	base_icon_state = "base"
+	neon_icon = 'icons/turf/floors/carpet_neon_light.dmi'
 	neon_icon_state = "light"
 	floor_tile = /obj/item/stack/tile/carpet/neon/simple
 	smoothing_groups = list(SMOOTH_GROUP_TURF_OPEN, SMOOTH_GROUP_CARPET_SIMPLE_NEON)
 	canSmoothWith = list(SMOOTH_GROUP_CARPET_SIMPLE_NEON)
 
 /turf/open/floor/carpet/neon/simple/nodots
+	icon = 'icons/turf/floors/carpet_neon_base_nodots.dmi'
 	icon_state = "base-nodots-255"
 	base_icon_state = "base-nodots"
+	neon_icon = 'icons/turf/floors/carpet_neon_light_nodots.dmi'
 	neon_icon_state = "light-nodots"
 	floor_tile = /obj/item/stack/tile/carpet/neon/simple/nodots
 	smoothing_groups = list(SMOOTH_GROUP_TURF_OPEN, SMOOTH_GROUP_CARPET_SIMPLE_NEON_NODOTS)
@@ -466,8 +469,10 @@
 	canSmoothWith = list(SMOOTH_GROUP_CARPET_SIMPLE_NEON_WHITE)
 
 /turf/open/floor/carpet/neon/simple/white/nodots
+	icon = 'icons/turf/floors/carpet_neon_base_nodots.dmi'
 	icon_state = "base-nodots-255"
 	base_icon_state = "base-nodots"
+	neon_icon = 'icons/turf/floors/carpet_neon_light_nodots.dmi'
 	neon_icon_state = "light-nodots"
 	floor_tile = /obj/item/stack/tile/carpet/neon/simple/white/nodots
 	smoothing_groups = list(SMOOTH_GROUP_TURF_OPEN, SMOOTH_GROUP_CARPET_SIMPLE_NEON_WHITE_NODOTS)
@@ -483,8 +488,10 @@
 	canSmoothWith = list(SMOOTH_GROUP_CARPET_SIMPLE_NEON_BLACK)
 
 /turf/open/floor/carpet/neon/simple/black/nodots
+	icon = 'icons/turf/floors/carpet_neon_base_nodots.dmi'
 	icon_state = "base-nodots-255"
 	base_icon_state = "base-nodots"
+	neon_icon = 'icons/turf/floors/carpet_neon_glow_nodots.dmi'
 	neon_icon_state = "glow-nodots"
 	neon_color = COLOR_BLACK
 	floor_tile = /obj/item/stack/tile/carpet/neon/simple/black/nodots
@@ -500,8 +507,10 @@
 	canSmoothWith = list(SMOOTH_GROUP_CARPET_SIMPLE_NEON_RED)
 
 /turf/open/floor/carpet/neon/simple/red/nodots
+	icon = 'icons/turf/floors/carpet_neon_base_nodots.dmi'
 	icon_state = "base-nodots-255"
 	base_icon_state = "base-nodots"
+	neon_icon = 'icons/turf/floors/carpet_neon_light_nodots.dmi'
 	neon_icon_state = "light-nodots"
 	floor_tile = /obj/item/stack/tile/carpet/neon/simple/red/nodots
 	smoothing_groups = list(SMOOTH_GROUP_TURF_OPEN, SMOOTH_GROUP_CARPET_SIMPLE_NEON_RED_NODOTS)
@@ -516,8 +525,10 @@
 	canSmoothWith = list(SMOOTH_GROUP_CARPET_SIMPLE_NEON_ORANGE)
 
 /turf/open/floor/carpet/neon/simple/orange/nodots
+	icon = 'icons/turf/floors/carpet_neon_base_nodots.dmi'
 	icon_state = "base-nodots-255"
 	base_icon_state = "base-nodots"
+	neon_icon = 'icons/turf/floors/carpet_neon_light_nodots.dmi'
 	neon_icon_state = "light-nodots"
 	floor_tile = /obj/item/stack/tile/carpet/neon/simple/orange/nodots
 	smoothing_groups = list(SMOOTH_GROUP_TURF_OPEN, SMOOTH_GROUP_CARPET_SIMPLE_NEON_ORANGE_NODOTS)
@@ -532,8 +543,10 @@
 	canSmoothWith = list(SMOOTH_GROUP_CARPET_SIMPLE_NEON_YELLOW)
 
 /turf/open/floor/carpet/neon/simple/yellow/nodots
+	icon = 'icons/turf/floors/carpet_neon_base_nodots.dmi'
 	icon_state = "base-nodots-255"
 	base_icon_state = "base-nodots"
+	neon_icon = 'icons/turf/floors/carpet_neon_light_nodots.dmi'
 	neon_icon_state = "light-nodots"
 	floor_tile = /obj/item/stack/tile/carpet/neon/simple/yellow/nodots
 	smoothing_groups = list(SMOOTH_GROUP_TURF_OPEN, SMOOTH_GROUP_CARPET_SIMPLE_NEON_YELLOW_NODOTS)
@@ -548,8 +561,10 @@
 	canSmoothWith = list(SMOOTH_GROUP_CARPET_SIMPLE_NEON_LIME)
 
 /turf/open/floor/carpet/neon/simple/lime/nodots
+	icon = 'icons/turf/floors/carpet_neon_base_nodots.dmi'
 	icon_state = "base-nodots-255"
 	base_icon_state = "base-nodots"
+	neon_icon = 'icons/turf/floors/carpet_neon_light_nodots.dmi'
 	neon_icon_state = "light-nodots"
 	floor_tile = /obj/item/stack/tile/carpet/neon/simple/lime/nodots
 	smoothing_groups = list(SMOOTH_GROUP_TURF_OPEN, SMOOTH_GROUP_CARPET_SIMPLE_NEON_LIME_NODOTS)
@@ -564,8 +579,10 @@
 	canSmoothWith = list(SMOOTH_GROUP_CARPET_SIMPLE_NEON_GREEN)
 
 /turf/open/floor/carpet/neon/simple/green/nodots
+	icon = 'icons/turf/floors/carpet_neon_base_nodots.dmi'
 	icon_state = "base-nodots-255"
 	base_icon_state = "base-nodots"
+	neon_icon = 'icons/turf/floors/carpet_neon_light_nodots.dmi'
 	neon_icon_state = "light-nodots"
 	floor_tile = /obj/item/stack/tile/carpet/neon/simple/green/nodots
 	smoothing_groups = list(SMOOTH_GROUP_TURF_OPEN, SMOOTH_GROUP_CARPET_SIMPLE_NEON_GREEN_NODOTS)
@@ -580,8 +597,10 @@
 	canSmoothWith = list(SMOOTH_GROUP_CARPET_SIMPLE_NEON_TEAL)
 
 /turf/open/floor/carpet/neon/simple/teal/nodots
+	icon = 'icons/turf/floors/carpet_neon_base_nodots.dmi'
 	icon_state = "base-nodots-255"
 	base_icon_state = "base-nodots"
+	neon_icon = 'icons/turf/floors/carpet_neon_light_nodots.dmi'
 	neon_icon_state = "light-nodots"
 	floor_tile = /obj/item/stack/tile/carpet/neon/simple/teal/nodots
 	smoothing_groups = list(SMOOTH_GROUP_TURF_OPEN, SMOOTH_GROUP_CARPET_SIMPLE_NEON_TEAL_NODOTS)
@@ -596,8 +615,10 @@
 	canSmoothWith = list(SMOOTH_GROUP_CARPET_SIMPLE_NEON_CYAN)
 
 /turf/open/floor/carpet/neon/simple/cyan/nodots
+	icon = 'icons/turf/floors/carpet_neon_base_nodots.dmi'
 	icon_state = "base-nodots-255"
 	base_icon_state = "base-nodots"
+	neon_icon = 'icons/turf/floors/carpet_neon_light_nodots.dmi'
 	neon_icon_state = "light-nodots"
 	floor_tile = /obj/item/stack/tile/carpet/neon/simple/cyan/nodots
 	smoothing_groups = list(SMOOTH_GROUP_TURF_OPEN, SMOOTH_GROUP_CARPET_SIMPLE_NEON_CYAN_NODOTS)
@@ -612,8 +633,10 @@
 	canSmoothWith = list(SMOOTH_GROUP_CARPET_SIMPLE_NEON_BLUE)
 
 /turf/open/floor/carpet/neon/simple/blue/nodots
+	icon = 'icons/turf/floors/carpet_neon_base_nodots.dmi'
 	icon_state = "base-nodots-255"
 	base_icon_state = "base-nodots"
+	neon_icon = 'icons/turf/floors/carpet_neon_light_nodots.dmi'
 	neon_icon_state = "light-nodots"
 	floor_tile = /obj/item/stack/tile/carpet/neon/simple/blue/nodots
 	smoothing_groups = list(SMOOTH_GROUP_TURF_OPEN, SMOOTH_GROUP_CARPET_SIMPLE_NEON_BLUE_NODOTS)
@@ -628,8 +651,10 @@
 	canSmoothWith = list(SMOOTH_GROUP_CARPET_SIMPLE_NEON_PURPLE)
 
 /turf/open/floor/carpet/neon/simple/purple/nodots
+	icon = 'icons/turf/floors/carpet_neon_base_nodots.dmi'
 	icon_state = "base-nodots-255"
 	base_icon_state = "base-nodots"
+	neon_icon = 'icons/turf/floors/carpet_neon_light_nodots.dmi'
 	neon_icon_state = "light-nodots"
 	floor_tile = /obj/item/stack/tile/carpet/neon/simple/purple/nodots
 	smoothing_groups = list(SMOOTH_GROUP_TURF_OPEN, SMOOTH_GROUP_CARPET_SIMPLE_NEON_PURPLE_NODOTS)
@@ -644,8 +669,10 @@
 	canSmoothWith = list(SMOOTH_GROUP_CARPET_SIMPLE_NEON_VIOLET)
 
 /turf/open/floor/carpet/neon/simple/violet/nodots
+	icon = 'icons/turf/floors/carpet_neon_base_nodots.dmi'
 	icon_state = "base-nodots-255"
 	base_icon_state = "base-nodots"
+	neon_icon = 'icons/turf/floors/carpet_neon_light_nodots.dmi'
 	neon_icon_state = "light-nodots"
 	floor_tile = /obj/item/stack/tile/carpet/neon/simple/violet/nodots
 	smoothing_groups = list(SMOOTH_GROUP_TURF_OPEN, SMOOTH_GROUP_CARPET_SIMPLE_NEON_VIOLET_NODOTS)
@@ -660,99 +687,101 @@
 	canSmoothWith = list(SMOOTH_GROUP_CARPET_SIMPLE_NEON_PINK)
 
 /turf/open/floor/carpet/neon/simple/pink/nodots
+	icon = 'icons/turf/floors/carpet_neon_base_nodots.dmi'
 	icon_state = "base-nodots-255"
 	base_icon_state = "base-nodots"
+	neon_icon = 'icons/turf/floors/carpet_neon_light_nodots.dmi'
 	neon_icon_state = "light-nodots"
 	floor_tile = /obj/item/stack/tile/carpet/neon/simple/pink/nodots
 	smoothing_groups = list(SMOOTH_GROUP_TURF_OPEN, SMOOTH_GROUP_CARPET_SIMPLE_NEON_PINK_NODOTS)
 	canSmoothWith = list(SMOOTH_GROUP_CARPET_SIMPLE_NEON_PINK_NODOTS)
 
 /turf/open/floor/carpet/neon/airless
-	initial_gas_mix = AIRLESS_ATMOS
+	initial_gas = AIRLESS_ATMOS
 
 /turf/open/floor/carpet/neon/simple/airless
-	initial_gas_mix = AIRLESS_ATMOS
+	initial_gas = AIRLESS_ATMOS
 
 /turf/open/floor/carpet/neon/simple/white/airless
-	initial_gas_mix = AIRLESS_ATMOS
+	initial_gas = AIRLESS_ATMOS
 
 /turf/open/floor/carpet/neon/simple/black/airless
-	initial_gas_mix = AIRLESS_ATMOS
+	initial_gas = AIRLESS_ATMOS
 
 /turf/open/floor/carpet/neon/simple/red/airless
-	initial_gas_mix = AIRLESS_ATMOS
+	initial_gas = AIRLESS_ATMOS
 
 /turf/open/floor/carpet/neon/simple/orange/airless
-	initial_gas_mix = AIRLESS_ATMOS
+	initial_gas = AIRLESS_ATMOS
 
 /turf/open/floor/carpet/neon/simple/yellow/airless
-	initial_gas_mix = AIRLESS_ATMOS
+	initial_gas = AIRLESS_ATMOS
 
 /turf/open/floor/carpet/neon/simple/lime/airless
-	initial_gas_mix = AIRLESS_ATMOS
+	initial_gas = AIRLESS_ATMOS
 
 /turf/open/floor/carpet/neon/simple/green/airless
-	initial_gas_mix = AIRLESS_ATMOS
+	initial_gas = AIRLESS_ATMOS
 
 /turf/open/floor/carpet/neon/simple/teal/airless
-	initial_gas_mix = AIRLESS_ATMOS
+	initial_gas = AIRLESS_ATMOS
 
 /turf/open/floor/carpet/neon/simple/cyan/airless
-	initial_gas_mix = AIRLESS_ATMOS
+	initial_gas = AIRLESS_ATMOS
 
 /turf/open/floor/carpet/neon/simple/blue/airless
-	initial_gas_mix = AIRLESS_ATMOS
+	initial_gas = AIRLESS_ATMOS
 
 /turf/open/floor/carpet/neon/simple/purple/airless
-	initial_gas_mix = AIRLESS_ATMOS
+	initial_gas = AIRLESS_ATMOS
 
 /turf/open/floor/carpet/neon/simple/violet/airless
-	initial_gas_mix = AIRLESS_ATMOS
+	initial_gas = AIRLESS_ATMOS
 
 /turf/open/floor/carpet/neon/simple/pink/airless
-	initial_gas_mix = AIRLESS_ATMOS
+	initial_gas = AIRLESS_ATMOS
 
 /turf/open/floor/carpet/neon/simple/nodots/airless
-	initial_gas_mix = AIRLESS_ATMOS
+	initial_gas = AIRLESS_ATMOS
 
 /turf/open/floor/carpet/neon/simple/white/nodots/airless
-	initial_gas_mix = AIRLESS_ATMOS
+	initial_gas = AIRLESS_ATMOS
 
 /turf/open/floor/carpet/neon/simple/black/nodots/airless
-	initial_gas_mix = AIRLESS_ATMOS
+	initial_gas = AIRLESS_ATMOS
 
 /turf/open/floor/carpet/neon/simple/red/nodots/airless
-	initial_gas_mix = AIRLESS_ATMOS
+	initial_gas = AIRLESS_ATMOS
 
 /turf/open/floor/carpet/neon/simple/orange/nodots/airless
-	initial_gas_mix = AIRLESS_ATMOS
+	initial_gas = AIRLESS_ATMOS
 
 /turf/open/floor/carpet/neon/simple/yellow/nodots/airless
-	initial_gas_mix = AIRLESS_ATMOS
+	initial_gas = AIRLESS_ATMOS
 
 /turf/open/floor/carpet/neon/simple/lime/nodots/airless
-	initial_gas_mix = AIRLESS_ATMOS
+	initial_gas = AIRLESS_ATMOS
 
 /turf/open/floor/carpet/neon/simple/green/nodots/airless
-	initial_gas_mix = AIRLESS_ATMOS
+	initial_gas = AIRLESS_ATMOS
 
 /turf/open/floor/carpet/neon/simple/teal/nodots/airless
-	initial_gas_mix = AIRLESS_ATMOS
+	initial_gas = AIRLESS_ATMOS
 
 /turf/open/floor/carpet/neon/simple/cyan/nodots/airless
-	initial_gas_mix = AIRLESS_ATMOS
+	initial_gas = AIRLESS_ATMOS
 
 /turf/open/floor/carpet/neon/simple/blue/nodots/airless
-	initial_gas_mix = AIRLESS_ATMOS
+	initial_gas = AIRLESS_ATMOS
 
 /turf/open/floor/carpet/neon/simple/purple/nodots/airless
-	initial_gas_mix = AIRLESS_ATMOS
+	initial_gas = AIRLESS_ATMOS
 
 /turf/open/floor/carpet/neon/simple/violet/nodots/airless
-	initial_gas_mix = AIRLESS_ATMOS
+	initial_gas = AIRLESS_ATMOS
 
 /turf/open/floor/carpet/neon/simple/pink/nodots/airless
-	initial_gas_mix = AIRLESS_ATMOS
+	initial_gas = AIRLESS_ATMOS
 
 /turf/open/floor/fakepit
 	desc = "A clever illusion designed to look like a bottomless pit."

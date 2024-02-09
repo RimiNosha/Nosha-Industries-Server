@@ -3,6 +3,8 @@
 	name = "preferences"
 	early = TRUE
 	cross_round_cachable = TRUE
+	// Fuck you, you keep making the prefs page bug the fuck out on first open, and I'd rather eat the 10s init time.
+	load_immediately = TRUE
 
 /datum/asset/spritesheet/preferences/create_spritesheets()
 	var/list/to_insert = list()
@@ -32,6 +34,8 @@
 				CRASH("[create_icon_of] is an invalid preference value (from [preference_key]:[preference_value]).")
 
 			to_insert[preference.get_spritesheet_key(preference_value)] = list(icon, icon_state)
+
+		CHECK_TICK
 
 	for (var/spritesheet_key in to_insert)
 		var/list/inserting = to_insert[spritesheet_key]

@@ -135,20 +135,19 @@
 	switch(dir)
 		if(NORTH)
 			offset_old = pixel_y
-			pixel_y = APC_PIXEL_OFFSET
+			pixel_y = APC_PIXEL_OFFSET_NORTH
 		if(SOUTH)
 			offset_old = pixel_y
-			pixel_y = -APC_PIXEL_OFFSET
+			pixel_y = APC_PIXEL_OFFSET_SOUTH
 		if(EAST)
 			offset_old = pixel_x
-			pixel_x = APC_PIXEL_OFFSET
+			pixel_x = APC_PIXEL_OFFSET_EAST
 		if(WEST)
 			offset_old = pixel_x
-			pixel_x = -APC_PIXEL_OFFSET
+			pixel_x = APC_PIXEL_OFFSET_WEST
 
 /obj/machinery/power/apc/Initialize(mapload)
 	. = ..()
-	AddElement(/datum/element/atmos_sensitive, mapload)
 	alarm_manager = new(src)
 
 	if(!mapload)
@@ -182,11 +181,13 @@
 
 	make_terminal()
 
+	become_atmos_sensitive()
+
 	addtimer(CALLBACK(src, PROC_REF(update)), 5)
 
 	///This is how we test to ensure that mappers use the directional subtypes of APCs, rather than use the parent and pixel-shift it themselves.
-	if(abs(offset_old) != APC_PIXEL_OFFSET)
-		log_mapping("APC: ([src]) at [AREACOORD(src)] with dir ([dir] | [uppertext(dir2text(dir))]) has pixel_[dir & (WEST|EAST) ? "x" : "y"] value [offset_old] - should be [dir & (SOUTH|EAST) ? "-" : ""][APC_PIXEL_OFFSET]. Use the directional/ helpers!")
+	if(pixel_x != initial(pixel_x) || pixel_y != initial(pixel_y))
+		log_mapping("APC: ([src]) at [AREACOORD(src)] with dir ([dir] | [uppertext(dir2text(dir))]) has pixel_[dir & (WEST|EAST) ? "x" : "y"] value [offset_old]. Use the directional/ helpers, and do not pixel shift!")
 
 /obj/machinery/power/apc/Destroy()
 	GLOB.apcs_list -= src
@@ -610,11 +611,9 @@
 		breaked_light.break_light_tube()
 		stoplag()
 
-/obj/machinery/power/apc/should_atmos_process(datum/gas_mixture/air, exposed_temperature)
-	return (exposed_temperature > 2000)
-
 /obj/machinery/power/apc/atmos_expose(datum/gas_mixture/air, exposed_temperature)
-	take_damage(min(exposed_temperature/100, 10), BURN)
+	if(exposed_temperature > 2000)
+		take_damage(min(exposed_temperature/100, 10), BURN)
 
 /obj/machinery/power/apc/proc/report()
 	return "[area.name] : [equipment]/[lighting]/[environ] ([lastused_total]) : [cell? cell.percent() : "N/C"] ([charging])"

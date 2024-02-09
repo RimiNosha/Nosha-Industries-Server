@@ -185,8 +185,7 @@
 /area/station/engineering/atmos)
 "bc" = (
 /obj/machinery/atmospherics/components/binary/pump{
-	dir = 8;
-	on = 1
+	dir = 8
 	},
 /turf/open/floor/iron,
 /area/station/engineering/atmos)
@@ -1157,7 +1156,6 @@
 "vH" = (
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden,
 /obj/structure/cable,
-/obj/machinery/trade_pad,
 /turf/open/floor/iron{
 	dir = 1
 	},

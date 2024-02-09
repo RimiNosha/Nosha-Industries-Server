@@ -15,7 +15,8 @@
 	inverse_chem = null
 	/// How much nutrition this reagent supplies
 	var/nutriment_factor = 1 * REAGENTS_METABOLISM
-	var/quality = 0 //affects mood, typically higher for mixed drinks with more complex recipes'
+	/// affects mood, typically higher for mixed drinks with more complex recipes'
+	var/quality = 0
 
 /datum/reagent/consumable/on_mob_life(mob/living/carbon/M, delta_time, times_fired)
 	current_cycle++
@@ -354,7 +355,7 @@
 		var/turf/open/exposed_open_turf = exposed_turf
 		exposed_open_turf.MakeSlippery(wet_setting=TURF_WET_ICE, min_wet_time=100, wet_time_to_add=reac_volume SECONDS) // Is less effective in high pressure/high heat capacity environments. More effective in low pressure.
 		var/temperature = exposed_open_turf.air.temperature
-		var/heat_capacity = exposed_open_turf.air.heat_capacity()
+		var/heat_capacity = exposed_open_turf.air.getHeatCapacity()
 		exposed_open_turf.air.temperature = max(exposed_open_turf.air.temperature - ((temperature - TCMB) * (heat_capacity * reac_volume * specific_heat) / (heat_capacity + reac_volume * specific_heat)) / heat_capacity, TCMB) // Exchanges environment temperature with reagent. Reagent is at 2.7K with a heat capacity of 40J per unit.
 	if(reac_volume < 5)
 		return
@@ -520,9 +521,9 @@
 	if(!istype(exposed_turf))
 		return
 	exposed_turf.MakeSlippery(TURF_WET_LUBE, min_wet_time = 10 SECONDS, wet_time_to_add = reac_volume*2 SECONDS)
-	var/obj/effect/hotspot/hotspot = (locate(/obj/effect/hotspot) in exposed_turf)
+	var/obj/effect/hotspot/hotspot = exposed_turf.fire
 	if(hotspot)
-		var/datum/gas_mixture/lowertemp = exposed_turf.remove_air(exposed_turf.air.total_moles())
+		var/datum/gas_mixture/lowertemp = exposed_turf.remove_air(exposed_turf.return_air().total_moles)
 		lowertemp.temperature = max( min(lowertemp.temperature-2000,lowertemp.temperature / 2) ,0)
 		lowertemp.react(src)
 		exposed_turf.assume_air(lowertemp)
@@ -810,15 +811,6 @@
 		. = TRUE
 	..()
 
-/datum/reagent/consumable/clownstears
-	name = "Clown's Tears"
-	description = "The sorrow and melancholy of a thousand bereaved clowns, forever denied their Honkmechs."
-	nutriment_factor = 5 * REAGENTS_METABOLISM
-	color = "#eef442" // rgb: 238, 244, 66
-	taste_description = "mournful honking"
-	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
-
-
 /datum/reagent/consumable/liquidelectricity
 	name = "Liquid Electricity"
 	description = "The blood of Ethereals, and the stuff that keeps them going. Great for them, horrid for anyone else."
@@ -930,11 +922,15 @@
 	quality = DRINK_VERYGOOD
 	nutriment_factor = 4 * REAGENTS_METABOLISM
 	taste_description = "sweet chocolate"
-	glass_icon_state = "chocolatepudding"
-	glass_name = "chocolate pudding"
-	glass_desc = "Tasty."
 	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
 	glass_price = DRINK_PRICE_EASY
+
+/datum/glass_style/drinking_glass/chocolatepudding
+	required_drink_type = /datum/reagent/consumable/chocolatepudding
+	name = "chocolate pudding"
+	desc = "Tasty."
+	icon = 'icons/obj/drinks/shakes.dmi'
+	icon_state = "chocolatepudding"
 
 /datum/reagent/consumable/vanillapudding
 	name = "Vanilla Pudding"
@@ -943,10 +939,14 @@
 	quality = DRINK_VERYGOOD
 	nutriment_factor = 4 * REAGENTS_METABOLISM
 	taste_description = "sweet vanilla"
-	glass_icon_state = "vanillapudding"
-	glass_name = "vanilla pudding"
-	glass_desc = "Tasty."
 	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
+
+/datum/glass_style/drinking_glass/vanillapudding
+	required_drink_type = /datum/reagent/consumable/vanillapudding
+	name = "vanilla pudding"
+	desc = "Tasty."
+	icon = 'icons/obj/drinks/shakes.dmi'
+	icon_state = "vanillapudding"
 
 /datum/reagent/consumable/laughsyrup
 	name = "Laughin' Syrup"

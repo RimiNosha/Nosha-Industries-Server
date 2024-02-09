@@ -17,6 +17,9 @@
 
 	///First atom flags var
 	var/flags_1 = NONE
+	///Second atom flags var
+	var/flags_2 = NONE
+
 	///Intearaction flags
 	var/interaction_flags_atom = NONE
 
@@ -400,6 +403,8 @@
 /atom/proc/CanPass(atom/movable/mover, border_dir)
 	SHOULD_CALL_PARENT(TRUE)
 	SHOULD_BE_PURE(TRUE)
+	if(!mover)
+		return FALSE
 	if(mover.movement_type & PHASING)
 		return TRUE
 	. = CanAllowThrough(mover, border_dir)
@@ -545,6 +550,11 @@
 	else
 		return null
 
+///Return the current air environment in this atom. If this atom is a turf, it will not automatically update the zone.
+/atom/proc/unsafe_return_air()
+	return return_air()
+
+
 ///Return the air if we can analyze it
 /atom/proc/return_analyzable_air()
 	return null
@@ -589,16 +599,17 @@
  * - methods: How the atom is being exposed to the reagents. Bitflags.
  * - volume_modifier: Volume multiplier.
  * - show_message: Whether to display anything to mobs when they are exposed.
+ * - exposed_temperature: The temperature of the reagent during exposure
  */
-/atom/proc/expose_reagents(list/reagents, datum/reagents/source, methods=TOUCH, volume_modifier=1, show_message=TRUE)
+/atom/proc/expose_reagents(list/reagents, datum/reagents/source, methods=TOUCH, volume_modifier=1, show_message=TRUE, exposed_temperature)
 	. = SEND_SIGNAL(src, COMSIG_ATOM_EXPOSE_REAGENTS, reagents, source, methods, volume_modifier, show_message)
 	if(. & COMPONENT_NO_EXPOSE_REAGENTS)
 		return
 
-	SEND_SIGNAL(source, COMSIG_REAGENTS_EXPOSE_ATOM, src, reagents, methods, volume_modifier, show_message)
+	SEND_SIGNAL(source, COMSIG_REAGENTS_EXPOSE_ATOM, src, reagents, methods, volume_modifier, show_message, exposed_temperature)
 	for(var/datum/reagent/current_reagent as anything in reagents)
-		. |= current_reagent.expose_atom(src, reagents[current_reagent])
-	SEND_SIGNAL(src, COMSIG_ATOM_AFTER_EXPOSE_REAGENTS, reagents, source, methods, volume_modifier, show_message)
+		. |= current_reagent.expose_atom(src, reagents[current_reagent], exposed_temperature)
+	SEND_SIGNAL(src, COMSIG_ATOM_AFTER_EXPOSE_REAGENTS, reagents, source, methods, volume_modifier, show_message, exposed_temperature)
 
 /// Are you allowed to drop this atom
 /atom/proc/AllowDrop()
@@ -712,29 +723,29 @@
 		. += "<u>It is made out of [english_list(materials_list)]</u>."
 
 	if(reagents)
-		if(reagents.flags & TRANSPARENT)
-			. += "It contains:"
-			if(length(reagents.reagent_list))
-				if(user.can_see_reagents()) //Show each individual reagent
-					for(var/datum/reagent/current_reagent as anything in reagents.reagent_list)
-						. += "&bull; [round(current_reagent.volume, 0.01)] units of [current_reagent.name]"
-					if(reagents.is_reacting)
-						. += span_warning("It is currently reacting!")
-					. += span_notice("The solution's temperature is [reagents.chem_temp]K.")
-				else //Otherwise, just show the total volume
-					var/total_volume = 0
-					for(var/datum/reagent/current_reagent as anything in reagents.reagent_list)
-						total_volume += current_reagent.volume
-					. += "[total_volume] units of various reagents"
-			else
-				. += "Nothing."
-		else if(reagents.flags & AMOUNT_VISIBLE)
-			if(reagents.total_volume)
-				. += span_notice("It has [reagents.total_volume] unit\s left.")
-			else
-				. += span_danger("It's empty.")
+		var/user_sees_reagents = user.can_see_reagents()
+		var/reagent_sigreturn = SEND_SIGNAL(src, COMSIG_PARENT_REAGENT_EXAMINE, user, ., user_sees_reagents)
+		if(!(reagent_sigreturn & STOP_GENERIC_REAGENT_EXAMINE))
+			if(reagents.flags & TRANSPARENT)
+				if(reagents.total_volume > 0)
+					. += "It contains <b>[round(reagents.total_volume, 0.01)]</b> units of various reagents[user_sees_reagents ? ":" : "."]"
+					if(user_sees_reagents) //Show each individual reagent
+						for(var/datum/reagent/current_reagent as anything in reagents.reagent_list)
+							. += "&bull; [round(current_reagent.volume, 0.01)] units of [current_reagent.name]"
+						if(reagents.is_reacting)
+							. += span_warning("It is currently reacting!")
+						. += span_notice("The solution has a temperature of [reagents.chem_temp]K.")
+
+				else
+					. += "It contains:<br>Nothing."
+			else if(reagents.flags & AMOUNT_VISIBLE)
+				if(reagents.total_volume)
+					. += span_notice("It has [reagents.total_volume] unit\s left.")
+				else
+					. += span_danger("It's empty.")
 
 	SEND_SIGNAL(src, COMSIG_PARENT_EXAMINE, user, .)
+
 /**
  * Called when a mob examines (shift click or verb) this atom twice (or more) within EXAMINE_MORE_WINDOW (default 1 second)
  *
@@ -911,7 +922,7 @@
  */
 /atom/proc/hitby(atom/movable/hitting_atom, skipcatch, hitpush, blocked, datum/thrownthing/throwingdatum)
 	SEND_SIGNAL(src, COMSIG_ATOM_HITBY, hitting_atom, skipcatch, hitpush, blocked, throwingdatum)
-	if(density && !has_gravity(hitting_atom)) //thrown stuff bounces off dense stuff in no grav, unless the thrown stuff ends up inside what it hit(embedding, bola, etc...).
+	if(density) //thrown stuff bounces off dense stuff in no grav, unless the thrown stuff ends up inside what it hit(embedding, bola, etc...).
 		addtimer(CALLBACK(src, PROC_REF(hitby_react), hitting_atom), 2)
 
 /**
@@ -2080,3 +2091,6 @@
  */
 /atom/proc/start_cleaning(datum/source, atom/target, mob/living/user, clean_target = TRUE)
 	SEND_SIGNAL(source, COMSIG_START_CLEANING, target, user, clean_target)
+
+/atom/proc/add_debris_element()
+	AddElement(/datum/element/debris, null, -15, 8, 0.7)

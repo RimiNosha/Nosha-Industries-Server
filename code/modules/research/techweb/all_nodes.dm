@@ -446,6 +446,8 @@
 		"monkey_recycler",
 		"oven",
 		"processor",
+		"stove",
+		"table_hob",
 		"reagentgrinder",
 		"smartfridge",
 	)
@@ -521,8 +523,8 @@
 	description = "Big Data, in space!"
 	prereq_ids = list("base")
 	design_ids = list(
-		"bounty_pad",
-		"bounty_pad_control",
+		"trade_console",
+		"cargo_trade_console",
 	)
 	research_costs = list(TECHWEB_POINT_TYPE_GENERIC = 2500)
 
@@ -608,7 +610,6 @@
 	research_costs = list(TECHWEB_POINT_TYPE_GENERIC = 15000)
 	discount_experiments = list(
 		/datum/experiment/scanning/random/material/medium/one = 4000,
-		/datum/experiment/ordnance/gaseous/bz = 10000,
 	)
 
 /datum/techweb_node/anomaly
@@ -672,7 +673,6 @@
 	description = "Application of Bluespace for static teleportation technology."
 	prereq_ids = list("practical_bluespace")
 	design_ids = list(
-		"bluespace_pod",
 		"launchpad",
 		"launchpad_console",
 		"tele_hub",
@@ -924,8 +924,6 @@
 	description = "Computers and how they work."
 	prereq_ids = list("datatheory")
 	design_ids = list(
-		"cargo",
-		"cargorequest",
 		"comconsole",
 		"crewconsole",
 		"idcard",
@@ -933,6 +931,7 @@
 		"mining",
 		"rdcamera",
 		"seccamera",
+		"chef_order_console",
 	)
 	research_costs = list(TECHWEB_POINT_TYPE_GENERIC = 2000)
 
@@ -1152,7 +1151,6 @@
 	description = "Better than Efficiency V."
 	prereq_ids = list("engineering", "basic_plasma")
 	design_ids = list(
-		"cargoexpress",
 		"cooldownmod",
 		"damagemod",
 		"drill",
@@ -2044,7 +2042,7 @@
 /datum/techweb_node/tackle_advanced
 	id = "tackle_advanced"
 	display_name = "Advanced Grapple Technology"
-	description = "Nanotrasen would like to remind its researching staff that it is never acceptable to \"glomp\" your coworkers, and further \"scientific trials\" on the subject \
+	description = "Artea would like to remind its researching staff that it is never acceptable to \"glomp\" your coworkers, and further \"scientific trials\" on the subject \
 	will no longer be accepted in its academic journals."
 	design_ids = list(
 		"tackle_dolphin",

@@ -2,6 +2,22 @@
 #define DUALWIELD_PENALTY_EXTRA_MULTIPLIER 1.4
 #define FIRING_PIN_REMOVAL_DELAY 50
 
+/particles/firing_smoke
+	icon = 'icons/effects/96x96.dmi'
+	icon_state = "smoke5"
+	width = 500
+	height = 500
+	count = 5
+	spawning = 15
+	lifespan = 0.5 SECONDS
+	fade = 2.4 SECONDS
+	grow = 0.12
+	drift = generator(GEN_CIRCLE, 8, 8)
+	scale = 0.1
+	spin = generator(GEN_NUM, -20, 20)
+	velocity = list(50, 0)
+	friction = generator(GEN_NUM, 0.3, 0.6)
+
 /obj/item/gun
 	name = "gun"
 	desc = "It's a gun. It's pretty terrible, though."
@@ -20,6 +36,8 @@
 	item_flags = NEEDS_PERMIT
 	attack_verb_continuous = list("strikes", "hits", "bashes")
 	attack_verb_simple = list("strike", "hit", "bash")
+
+	var/barrel_smoke_on_shoot = FALSE
 
 	var/gun_flags = NONE
 	var/fire_sound = 'sound/weapons/gun/pistol/shot.ogg'
@@ -127,11 +145,11 @@
 		. += "It has a <b>bayonet</b> lug on it."
 
 //called after the gun has successfully fired its chambered ammo.
-/obj/item/gun/proc/process_chamber(empty_chamber = TRUE, from_firing = TRUE, chamber_next_round = TRUE)
-	handle_chamber(empty_chamber, from_firing, chamber_next_round)
+/obj/item/gun/proc/process_chamber(mob/living/user, empty_chamber = TRUE, from_firing = TRUE, chamber_next_round = TRUE)
+	handle_chamber(user, empty_chamber, from_firing, chamber_next_round)
 	SEND_SIGNAL(src, COMSIG_GUN_CHAMBER_PROCESSED)
 
-/obj/item/gun/proc/handle_chamber(empty_chamber = TRUE, from_firing = TRUE, chamber_next_round = TRUE)
+/obj/item/gun/proc/handle_chamber(mob/living/user, empty_chamber = TRUE, from_firing = TRUE, chamber_next_round = TRUE)
 	return
 
 //check if there's enough ammo/energy/whatever to shoot one time
@@ -182,6 +200,15 @@
 						vision_distance = COMBAT_MESSAGE_RANGE,
 						ignored_mobs = user
 				)
+
+	if(barrel_smoke_on_shoot)
+		var/x_component = sin(get_angle(user, pbtarget)) * 40
+		var/y_component = cos(get_angle(user, pbtarget)) * 40
+		var/obj/effect/abstract/particle_holder/gun_smoke = new(get_turf(src), /particles/firing_smoke)
+		gun_smoke.particles.velocity = list(x_component, y_component)
+		addtimer(VARSET_CALLBACK(gun_smoke.particles, count, 0), 5)
+		addtimer(VARSET_CALLBACK(gun_smoke.particles, drift, 0), 3)
+		QDEL_IN(gun_smoke, 0.6 SECONDS)
 
 /obj/item/gun/emp_act(severity)
 	. = ..()
@@ -334,7 +361,7 @@
 		shoot_with_empty_chamber(user)
 		firing_burst = FALSE
 		return FALSE
-	process_chamber()
+	process_chamber(user = user)
 	update_appearance()
 	return TRUE
 
@@ -389,7 +416,7 @@
 		else
 			shoot_with_empty_chamber(user)
 			return
-		process_chamber()
+		process_chamber(user = user)
 		update_appearance()
 		semicd = TRUE
 		addtimer(CALLBACK(src, PROC_REF(reset_semicd)), modified_delay)

@@ -21,16 +21,12 @@ GLOBAL_LIST_EMPTY(station_turfs)
 	// This shouldn't be modified directly, use the helper procs.
 	var/list/baseturfs = /turf/baseturf_bottom
 
-	var/temperature = T20C
 	///Used for fire, if a melting temperature was reached, it will be destroyed
 	var/to_be_destroyed = 0
 	///The max temperature of the fire which it was subjected to
 	var/max_fire_temperature_sustained = 0
 
-	var/blocks_air = FALSE
-	// If this turf should initialize atmos adjacent turfs or not
-	// Optimization, not for setting outside of initialize
-	var/init_air = TRUE
+	var/blocks_air = AIR_ALLOWED
 
 	var/list/image/blueprint_data //for the station blueprints, images of objects eg: pipes
 
@@ -100,10 +96,14 @@ GLOBAL_LIST_EMPTY(station_turfs)
  */
 /turf/Initialize(mapload)
 	SHOULD_CALL_PARENT(FALSE)
-	HandleInitialGasString()
+
 	if(flags_1 & INITIALIZED_1)
 		stack_trace("Warning: [src]([type]) initialized multiple times!")
 	flags_1 |= INITIALIZED_1
+
+	// if(!blocks_air || !simulated)
+		// air = new
+		// air.copyFrom(src.return_air())
 
 	// by default, vis_contents is inherited from the turf that was here before
 	vis_contents.Cut()
@@ -140,8 +140,10 @@ GLOBAL_LIST_EMPTY(station_turfs)
 	if(our_area.area_has_base_lighting && always_lit) //Only provide your own lighting if the area doesn't for you
 		add_overlay(GLOB.fullbright_overlay)
 
+	/*
 	if(requires_activation)
 		CALCULATE_ADJACENT_TURFS(src, KILL_EXCITED)
+	*/
 
 	if (light_power && light_range)
 		update_light()
@@ -170,10 +172,6 @@ GLOBAL_LIST_EMPTY(station_turfs)
 
 	return INITIALIZE_HINT_NORMAL
 
-/// Initializes our adjacent turfs. If you want to avoid this, do not override it, instead set init_air to FALSE
-/turf/proc/Initalize_Atmos(time)
-	CALCULATE_ADJACENT_TURFS(src, NORMAL_TURF)
-
 /turf/Destroy(force)
 	. = QDEL_HINT_IWILLGC
 	if(!changing_turf)
@@ -192,10 +190,20 @@ GLOBAL_LIST_EMPTY(station_turfs)
 		for(var/A in B.contents)
 			qdel(A)
 		return
+
 	visibilityChanged()
 	QDEL_LIST(blueprint_data)
 	flags_1 &= ~INITIALIZED_1
 	requires_activation = FALSE
+
+	///ZAS THINGS
+	if(connections)
+		connections.erase_all()
+
+	if(simulated && zone)
+		zone.remove_turf(src)
+	///NO MORE ZAS THINGS
+
 	..()
 
 	vis_contents.Cut()
@@ -606,22 +614,26 @@ GLOBAL_LIST_EMPTY(station_turfs)
 /turf/AllowDrop()
 	return TRUE
 
-/turf/proc/add_vomit_floor(mob/living/M, toxvomit = NONE, purge_ratio = 0.1)
+/turf/proc/add_vomit_floor(mob/living/M, vomit_type = VOMIT_TOXIC, purge_ratio = 0.1)
 
-	var/obj/effect/decal/cleanable/vomit/V = new /obj/effect/decal/cleanable/vomit(src, M.get_static_viruses())
+	var/obj/effect/decal/cleanable/vomit/vomit
+	if (vomit_type == VOMIT_NEBULA)
+		vomit = new /obj/effect/decal/cleanable/vomit/nebula(src, M.get_static_viruses())
+	else
+		vomit = new /obj/effect/decal/cleanable/vomit(src, M.get_static_viruses())
 
 	//if the vomit combined, apply toxicity and reagents to the old vomit
-	if (QDELETED(V))
-		V = locate() in src
-	if(!V)
+	if (QDELETED(vomit))
+		vomit = locate() in src
+	if(!vomit)
 		return
 	// Apply the proper icon set based on vomit type
-	if(toxvomit == VOMIT_PURPLE)
-		V.icon_state = "vomitpurp_[pick(1,4)]"
-	else if (toxvomit == VOMIT_TOXIC)
-		V.icon_state = "vomittox_[pick(1,4)]"
+	if(vomit_type == VOMIT_PURPLE)
+		vomit.icon_state = "vomitpurp_[pick(1,4)]"
+	else if (vomit_type == VOMIT_TOXIC)
+		vomit.icon_state = "vomittox_[pick(1,4)]"
 	if (purge_ratio && iscarbon(M))
-		clear_reagents_to_vomit_pool(M, V, purge_ratio)
+		clear_reagents_to_vomit_pool(M, vomit, purge_ratio)
 
 /proc/clear_reagents_to_vomit_pool(mob/living/carbon/M, obj/effect/decal/cleanable/vomit/V, purge_ratio = 0.1)
 	var/obj/item/organ/internal/stomach/belly = M.getorganslot(ORGAN_SLOT_STOMACH)
@@ -645,15 +657,15 @@ GLOBAL_LIST_EMPTY(station_turfs)
 	return ScrapeAway(flags = CHANGETURF_INHERIT_AIR)
 
 /// Handles exposing a turf to reagents.
-/turf/expose_reagents(list/reagents, datum/reagents/source, methods=TOUCH, volume_modifier=1, show_message=TRUE)
+/turf/expose_reagents(list/reagents, datum/reagents/source, methods=TOUCH, volume_modifier=1, show_message=TRUE, exposed_temperature)
 	. = ..()
 	if(. & COMPONENT_NO_EXPOSE_REAGENTS)
 		return
 
-	SEND_SIGNAL(source, COMSIG_REAGENTS_EXPOSE_TURF, src, reagents, methods, volume_modifier, show_message)
+	SEND_SIGNAL(source, COMSIG_REAGENTS_EXPOSE_TURF, src, reagents, methods, volume_modifier, show_message, exposed_temperature)
 	for(var/reagent in reagents)
 		var/datum/reagent/R = reagent
-		. |= R.expose_turf(src, reagents[R])
+		. |= R.expose_turf(src, reagents[R], exposed_temperature)
 
 /**
  * Called when this turf is being washed. Washing a turf will also wash any mopable floor decals

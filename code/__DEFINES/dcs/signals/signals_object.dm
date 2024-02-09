@@ -31,6 +31,8 @@
 #define COMSIG_MACHINERY_START_PROCESSING_AIR "start_processing_air"
 ///from /datum/controller/subsystem/air/proc/stop_processing_machine: ()
 #define COMSIG_MACHINERY_STOP_PROCESSING_AIR "stop_processing_air"
+///from /obj/machinery/RefreshParts: ()
+#define COMSIG_MACHINERY_REFRESH_PARTS "machine_refresh_parts"
 
 ///from /obj/machinery/can_interact(mob/user): Called on user when attempting to interact with a machine (obj/machinery/machine)
 #define COMSIG_TRY_USE_MACHINE "try_use_machine"
@@ -188,6 +190,7 @@
 #define COMSIG_MINE_TRIGGERED "minegoboom"
 ///from [/obj/structure/closet/supplypod/proc/preOpen]:
 #define COMSIG_SUPPLYPOD_LANDED "supplypodgoboom"
+#define COMSIG_TANK_SNOWFLAKE_PELLET_TRIGGER "ihatethiscodesomuch"
 
 ///from /obj/item/storage/book/bible/afterattack(): (mob/user, proximity)
 #define COMSIG_BIBLE_SMACKED "bible_smacked"

@@ -230,8 +230,8 @@ GLOBAL_LIST_INIT(message_modes_stat_limits, list(
 
 	//No screams in space, unless you're next to someone.
 	var/turf/T = get_turf(src)
-	var/datum/gas_mixture/environment = T.return_air()
-	var/pressure = (environment)? environment.return_pressure() : 0
+	var/datum/gas_mixture/environment = T.unsafe_return_air()
+	var/pressure = (environment)? environment.returnPressure() : 0
 	if(pressure < SOUND_MINIMUM_PRESSURE && !HAS_TRAIT(src, TRAIT_SIGN_LANG))
 		message_range = 1
 
@@ -353,8 +353,8 @@ GLOBAL_LIST_INIT(message_modes_stat_limits, list(
 	I.appearance_flags = APPEARANCE_UI_IGNORE_ALPHA
 	INVOKE_ASYNC(GLOBAL_PROC, GLOBAL_PROC_REF(flick_overlay_global), I, speech_bubble_recipients, 30)
 
-	//play their say sound if human
-	if(ishuman(source))
+	//play their say sound if human and isn't signing.
+	if(ishuman(source) && !HAS_TRAIT(src, TRAIT_SIGN_LANG))
 		var/mob/living/carbon/human/human = source
 		var/is_yelling = copytext_char(message, -2) == "!!"
 		var/is_asking = copytext_char(message, -1) == "?"

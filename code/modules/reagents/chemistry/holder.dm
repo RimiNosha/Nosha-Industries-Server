@@ -57,10 +57,16 @@
 		for(var/reaction in D.required_reagents)
 			reaction_ids += reaction
 			var/datum/reagent/reagent = find_reagent_object_from_type(reaction)
+			if(!istype(reagent))
+				stack_trace("Invalid reagent found in [D] required_reagents: [reaction]")
+				continue
 			reagents += list(list("name" = reagent.name, "id" = reagent.type))
 
 		for(var/product in D.results)
 			var/datum/reagent/reagent = find_reagent_object_from_type(product)
+			if(!istype(reagent))
+				stack_trace("Invalid reagent found in [D] results: [product]")
+				continue
 			product_names += reagent.name
 			product_ids += product
 
@@ -214,7 +220,7 @@
 
 			iter_reagent.on_merge(data, amount)
 			if(reagtemp != cached_temp)
-				var/new_heat_capacity = heat_capacity()
+				var/new_heat_capacity = getHeatCapacity()
 				if(new_heat_capacity)
 					set_temperature(((old_heat_capacity * cached_temp) + (iter_reagent.specific_heat * amount * reagtemp)) / new_heat_capacity)
 				else
@@ -240,7 +246,7 @@
 
 	update_total()
 	if(reagtemp != cached_temp)
-		var/new_heat_capacity = heat_capacity()
+		var/new_heat_capacity = getHeatCapacity()
 		if(new_heat_capacity)
 			set_temperature(((old_heat_capacity * cached_temp) + (new_reagent.specific_heat * amount * reagtemp)) / new_heat_capacity)
 		else
@@ -861,21 +867,13 @@
 					break
 				total_matching_catalysts++
 			if(cached_my_atom)
-				if(!reaction.required_container)
-					matching_container = TRUE
-				else
-					if(cached_my_atom.type == reaction.required_container)
-						matching_container = TRUE
-				if (isliving(cached_my_atom) && !reaction.mob_react) //Makes it so certain chemical reactions don't occur in mobs
+				matching_container = reaction.required_container ? (cached_my_atom.type == reaction.required_container) : TRUE
+
+				if(isliving(cached_my_atom) && !reaction.mob_react) //Makes it so certain chemical reactions don't occur in mobs
 					matching_container = FALSE
-				if(!reaction.required_other)
-					matching_other = TRUE
 
-				else if(istype(cached_my_atom, /obj/item/slime_extract))
-					var/obj/item/slime_extract/extract = cached_my_atom
+				matching_other = reaction.required_other ? reaction.pre_reaction_other_checks(src) : TRUE
 
-					if(extract.Uses > 0) // added a limit to slime cores -- Muskets requested this
-						matching_other = TRUE
 			else
 				if(!reaction.required_container)
 					matching_container = TRUE
@@ -1194,7 +1192,7 @@
 	for(var/datum/reagent/reagent as anything in cached_reagents)
 		reagents[reagent] = reagent.volume * volume_modifier
 
-	return A.expose_reagents(reagents, src, methods, volume_modifier, show_message)
+	return A.expose_reagents(reagents, src, methods, volume_modifier, show_message, chem_temp)
 
 // Same as [/datum/reagents/proc/expose] but only for multiple reagents (through a list)
 /datum/reagents/proc/expose_multiple(list/r_to_expose, atom/A, methods = TOUCH, volume_modifier = 1, show_message = 1)
@@ -1222,7 +1220,7 @@
 		return null
 
 	// Yes, we need the parentheses.
-	return A.expose_reagents(list((R) = R.volume * volume_modifier), src, methods, volume_modifier, show_message)
+	return A.expose_reagents(list((R) = R.volume * volume_modifier), src, methods, volume_modifier, show_message, chem_temp)
 
 /// Is this holder full or not
 /datum/reagents/proc/holder_full()
@@ -1331,7 +1329,7 @@
 
 
 /// Returns the total heat capacity for all of the reagents currently in this holder.
-/datum/reagents/proc/heat_capacity()
+/datum/reagents/proc/getHeatCapacity()
 	. = 0
 	var/list/cached_reagents = reagent_list //cache reagents
 	for(var/datum/reagent/reagent in cached_reagents)
@@ -1345,7 +1343,7 @@
  * - max_temp: The maximum temperature that can be reached.
  */
 /datum/reagents/proc/adjust_thermal_energy(delta_energy, min_temp = 2.7, max_temp = 1000)
-	var/heat_capacity = heat_capacity()
+	var/heat_capacity = getHeatCapacity()
 	if(!heat_capacity)
 		return // no div/0 please
 	set_temperature(clamp(chem_temp + (delta_energy / heat_capacity), min_temp, max_temp))
@@ -1377,7 +1375,7 @@
 
 	. = chem_temp
 	chem_temp = clamp(_temperature, 0, CHEMICAL_MAXIMUM_TEMPERATURE)
-	SEND_SIGNAL(src, COMSIG_REAGENTS_TEMP_CHANGE, _temperature, .)
+	SEND_SIGNAL(src, COMSIG_REAGENTS_TEMP_CHANGE, _temperature, ., src)
 
 /**
  * Outputs a log-friendly list of reagents based on an external reagent list.

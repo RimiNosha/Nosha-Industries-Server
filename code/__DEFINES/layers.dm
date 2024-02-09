@@ -9,6 +9,10 @@
 #define PLANE_SPACE -95
 #define PLANE_SPACE_PARALLAX -90
 
+#define HEAT_PLANE -12
+#define HEAT_RENDER_TARGET "*HEAT_RENDER_TARGET"
+#define HEAT_COMPOSITE_RENDER_TARGET "*HEAT_RENDER_TARGET_C"
+
 #define GRAVITY_PULSE_PLANE -12
 #define GRAVITY_PULSE_RENDER_TARGET "*GRAVPULSE_RENDER_TARGET"
 
@@ -105,6 +109,7 @@
 #define ABOVE_ALL_MOB_LAYER 4.7
 
 //#define FLY_LAYER 5 //For easy recordkeeping; this is a byond define
+#define GAS_LAYER 5
 #define GASFIRE_LAYER 5.05
 #define RIPPLE_LAYER 5.1
 
@@ -130,6 +135,14 @@
 ///Things that should render ignoring lighting
 #define ABOVE_LIGHTING_PLANE 120
 
+// LIGHTING_PLANE layers
+// The layer of turf underlays starts at 0.01 and goes up by 0.01
+// Based off the z level. No I do not remember why, should check that
+
+/// Typically overlays, that "hide" portions of the turf underlay layer
+/// I'm allotting 100 z levels before this breaks. That'll never happen
+/// --Lemon
+#define LIGHTING_MASK_LAYER 10
 #define LIGHTING_PRIMARY_LAYER 15	//The layer for the main lights of the station
 #define LIGHTING_PRIMARY_DIMMER_LAYER 15.1	//The layer that dims the main lights of the station
 #define LIGHTING_SECONDARY_LAYER 16	//The colourful, usually small lights that go on top

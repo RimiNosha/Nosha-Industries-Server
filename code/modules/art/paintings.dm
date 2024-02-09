@@ -187,7 +187,7 @@
 				return FALSE
 			//I'd have this done inside the signal, but that'd have to be asynced,
 			//while we want the UI to be updated after the color is chosen, not before.
-			var/chosen_color = input(user, "Pick new color", painting_implement, params["old_color"]) as color|null
+			var/chosen_color = tgui_color_picker(user, "Pick new color", painting_implement, params["old_color"])
 			if(!chosen_color || IS_DEAD_OR_INCAP(user) || !user.is_holding(painting_implement))
 				return FALSE
 			SEND_SIGNAL(painting_implement, COMSIG_PAINTING_TOOL_PALETTE_COLOR_CHANGED, chosen_color, params["color_index"])
@@ -234,7 +234,7 @@
 		return
 	if(sniped_amount != painting_metadata.credit_value)
 		return
-	if(!account.adjust_money(-offer_amount))
+	if(!account.adjust_money(-offer_amount, "Painting: Patron of [painting_metadata.title]"))
 		to_chat(user, span_warning("Transaction failure. Please try again."))
 		return
 	painting_metadata.patron_ckey = user.ckey
