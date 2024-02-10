@@ -19,7 +19,7 @@
 			species_text += ", [prefix_a_or_an(dna?.species.name)] <EM>[dna?.species.name]</EM>"
 
 			if(SScodex.get_codex_entry(get_codex_value(user)))
-				species_text += span_notice(" \[<a href='?src=\ref[SScodex];show_examined_info=\ref[src];show_to=\ref[user]'>?</a>\]")
+				species_text += span_notice(" \[<a href='?src=\ref[SScodex];show_examined_info=\ref[src]'>?</a>\]")
 
 	. = list("<span class='info'>This is <EM>[!obscure_name ? name : "Unknown"]</EM>[species_text]!")
 

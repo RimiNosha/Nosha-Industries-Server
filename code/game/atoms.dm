@@ -711,7 +711,7 @@
 
 	. += get_name_chaser(user)
 	if(SScodex.get_codex_entry(get_codex_value(user)))
-		. += "<span class='notice'>The codex has <b><a href='?src=\ref[SScodex];show_examined_info=\ref[src];show_to=\ref[user]'>relevant information</a></b> available.</span><br>"
+		. += "<span class='notice'>The codex has <b><a href='?src=\ref[SScodex];show_examined_info=\ref[src]'>relevant information</a></b> available.</span><br>"
 	if(desc)
 		. += desc
 

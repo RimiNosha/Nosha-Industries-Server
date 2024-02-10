@@ -90,7 +90,7 @@
 	. = list()
 	if(presenting_to)
 		var/datum/codex_entry/linked_entry = SScodex.get_entry_by_string("nexus")
-		. += "<a href='?src=\ref[SScodex];show_examined_info=\ref[linked_entry];show_to=\ref[presenting_to]'>Home</a>"
+		. += "<a href='?src=\ref[SScodex];show_examined_info=\ref[linked_entry]'>Home</a>"
 		if(presenting_to.client)
 			. += "<a href='?src=\ref[presenting_to.client];codex_search=1'>Search Codex</a>"
 			. += "<a href='?src=\ref[presenting_to.client];codex_index=1'>List All Entries</a>"

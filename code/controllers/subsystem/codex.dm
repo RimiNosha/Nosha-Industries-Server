@@ -1,3 +1,7 @@
+/client
+	/// The ref of the codex page being viewed by the player. If null or invalid, defaults to the welcome page.
+	var/current_codex_page
+
 SUBSYSTEM_DEF(codex)
 	name = "Codex"
 	flags = SS_NO_FIRE
@@ -60,7 +64,7 @@ SUBSYSTEM_DEF(codex)
 		var/datum/codex_entry/linked_entry = get_entry_by_string(key)
 		var/replacement = linkRegex.group[4]
 		if(linked_entry)
-			replacement = "<a href='?src=\ref[SScodex];show_examined_info=\ref[linked_entry];show_to=\ref[viewer]'>[replacement]</a>"
+			replacement = "<a href='?src=\ref[SScodex];show_examined_info=\ref[linked_entry]'>[replacement]</a>"
 		string = replacetextEx(string, linkRegex.match, replacement)
 	return string
 
@@ -80,11 +84,11 @@ SUBSYSTEM_DEF(codex)
 	return entries_by_string[codex_sanitize(string)]
 
 /datum/controller/subsystem/codex/proc/present_codex_entry(mob/presenting_to, datum/codex_entry/entry)
-	if(entry && istype(presenting_to) && presenting_to.client)
-		var/datum/browser/popup = new(presenting_to, "codex", "Codex", nheight=425) //"codex\ref[entry]"
-		var/entry_data = entry.get_codex_body(presenting_to)
-		popup.set_content(parse_links(jointext(entry_data, null), presenting_to))
-		popup.open()
+	if(!entry || !istype(presenting_to) || !presenting_to.client)
+		return
+
+	presenting_to.client.current_codex_page = entry.name
+	ui_interact(presenting_to)
 
 /datum/controller/subsystem/codex/proc/get_guide(category)
 	var/datum/codex_category/cat = codex_categories[category]
@@ -111,21 +115,54 @@ SUBSYSTEM_DEF(codex)
 		search_cache[searching] = sortTim(results, /proc/cmp_name_asc)
 	return search_cache[searching]
 
+/datum/controller/subsystem/codex/ui_interact(mob/user, datum/tgui/ui)
+	ui = SStgui.try_update_ui(user, src, ui)
+	if(!ui)
+		ui = new(user, src, "Codex")
+		ui.open()
+
+/datum/controller/subsystem/codex/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	. = ..()
+	if(.)
+		return
+	. = TRUE
+
+	if(action == "open")
+		if(!length(params) || !params["page"])
+			return
+		ui.user.client?.current_codex_page = codex_sanitize(params["page"])
+		update_static_data(ui.user, ui)
+
+/datum/controller/subsystem/codex/ui_static_data(mob/user)
+	. = ..()
+	var/datum/codex_entry/entry_to_view = get_entry_by_string(user.client.current_codex_page)
+	if(!entry_to_view)
+		entry_to_view = get_codex_entry(/datum/codex_entry/codex)
+
+	.["data"] = list(
+		"title" = entry_to_view.name,
+		"main_text" = entry_to_view.mechanics_text,
+		"lore_text" = entry_to_view.lore_text,
+		"controls_text" = entry_to_view.controls_text,
+		"antag_text" = entry_to_view.antag_text,
+	)
+
+/datum/controller/subsystem/codex/ui_state(mob/user)
+	return GLOB.always_state
+
 /datum/controller/subsystem/codex/Topic(href, href_list)
 	. = ..()
-	if(!. && href_list["show_examined_info"] && href_list["show_to"])
-		var/mob/showing_mob =   locate(href_list["show_to"])
-		if(!istype(showing_mob))
-			return
-		var/atom/showing_atom = locate(href_list["show_examined_info"])
-		var/entry
-		if(istype(showing_atom, /datum/codex_entry))
-			entry = showing_atom
-		else if(istype(showing_atom))
-			entry = get_codex_entry(showing_atom.get_codex_value())
-		else
-			entry = get_codex_entry(href_list["show_examined_info"])
+	if(. || !href_list["show_examined_info"])
+		return
+	var/atom/showing_atom = locate(href_list["show_examined_info"])
+	var/entry
+	if(istype(showing_atom, /datum/codex_entry))
+		entry = showing_atom
+	else if(istype(showing_atom))
+		entry = get_codex_entry(showing_atom.get_codex_value())
+	else
+		entry = get_codex_entry(href_list["show_examined_info"])
 
-		if(entry)
-			present_codex_entry(showing_mob, entry)
-			return TRUE
+	if(entry)
+		present_codex_entry(usr, entry)
+		return TRUE

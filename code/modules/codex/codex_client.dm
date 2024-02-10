@@ -47,7 +47,7 @@
 			codex_data += "<table width = 100%>"
 			for(var/i = 1 to min(all_entries.len, max_codex_entries_shown))
 				var/datum/codex_entry/entry = all_entries[i]
-				codex_data += "<tr><td>[entry.name]</td><td><a href='?src=\ref[SScodex];show_examined_info=\ref[entry];show_to=\ref[mob]'>View</a></td></tr>"
+				codex_data += "<tr><td>[entry.name]</td><td><a href='?src=\ref[SScodex];show_examined_info=\ref[entry]'>View</a></td></tr>"
 			codex_data += "</table>"
 			var/datum/browser/popup = new(mob, "codex-search", "Codex Search") //"codex-search"
 			popup.set_content(codex_data.Join())
@@ -89,7 +89,7 @@
 			codex_data += "<tr><td colspan = 2><hr></td></tr>"
 			codex_data += "<tr><td colspan = 2>[last_first_letter]</td></tr>"
 			codex_data += "<tr><td colspan = 2><hr></td></tr>"
-		codex_data += "<tr><td>[thing]</td><td><a href='?src=\ref[SScodex];show_examined_info=\ref[SScodex.index_file[thing]];show_to=\ref[mob]'>View</a></td></tr>"
+		codex_data += "<tr><td>[thing]</td><td><a href='?src=\ref[SScodex];show_examined_info=\ref[SScodex.index_file[thing]]'>View</a></td></tr>"
 	codex_data += "</table>"
 	popup.set_content(codex_data.Join())
 	popup.open()
@@ -101,6 +101,7 @@
 	set src = usr
 
 	if(!SScodex.initialized)
+		to_chat(usr, span_warning("The codex isn't set up yet! Wait until the server has finished initializing!"))
 		return
 
 	if(codex_cooldown >= world.time)
