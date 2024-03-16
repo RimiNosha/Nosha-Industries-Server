@@ -1,6 +1,7 @@
 import { useBackend } from '../backend';
-import { Box, Section } from '../components';
+import { Section } from '../components';
 import { Window } from '../layouts';
+import '../styles/interfaces/Codex.scss';
 
 /**
  * This is an entirely safe string to element replacer, provided you don't do anything hacky or stupid.
@@ -42,11 +43,6 @@ const linkRegex = new RegExp(
   'gi'
 );
 
-const linkSplitRegex = new RegExp(
-  "(<(?:span|l)(?:\\s+codexlink='(?:[^>]*)'|)>(?:[^<]+)<\\/(?:span|l)>)",
-  'gi'
-);
-
 type Data = {
   mode: string;
   back_id: string;
@@ -71,7 +67,7 @@ type EntryData = BaseData & {
 export const Codex = (props, context) => {
   const { data } = useBackend<Data>(context);
   return (
-    <Window width={370} height={360} title="Codex">
+    <Window width={500} height={500} title="Codex">
       <Window.Content scrollable>
         <CodexEntryContent />
         {(data.mode === 'search' && <CodexSearchContent />) ||
@@ -109,6 +105,9 @@ const CodexEntryContent = (props, context) => {
   );
 };
 
+const insertFiller = (arr, filler) =>
+  arr.flatMap((n) => [n, filler]).slice(0, -1);
+
 const CodexEntrySection = (props, context) => {
   const { name, text, act } = props;
   if (!text) {
@@ -117,18 +116,33 @@ const CodexEntrySection = (props, context) => {
 
   return (
     <Section title={name}>
-      <Box style={{ 'white-space': 'pre-wrap' }}>
-        {replaceStringWithElements(text, linkRegex, (foundText) => (
-          <a
-            onClick={() =>
-              act('open', {
-                'page': foundText[3] || foundText[4],
+      <div
+        style={{ 'white-space': 'pre-wrap' }}
+        // This is data given directly by the server, which can only be set by admins with VV, and I'm *not* making a whole ass html baby-fier.
+        // eslint-disable-next-line react/no-danger
+        dangerouslySetInnerHTML={{
+          __html: Object.entries(text)
+            .map((entry) =>
+              (entry[1] as string).split('\n').map((splitText) => {
+                let entries = replaceStringWithElements(
+                  splitText,
+                  linkRegex,
+                  (foundText) =>
+                    `<a
+                  onClick={() =>
+                    act('open', {
+                      'page': ${foundText[3]} || ${foundText[4]},
+                    })
+                  }>
+                  ${foundText[4]}
+                </a>`
+                );
+                return insertFiller(entries, <br />);
               })
-            }>
-            {foundText[4]}
-          </a>
-        ))}
-      </Box>
+            )
+            .join('<br />'),
+        }}
+      />
     </Section>
   );
 };

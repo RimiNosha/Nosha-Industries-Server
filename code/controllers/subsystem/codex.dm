@@ -140,6 +140,7 @@ SUBSYSTEM_DEF(codex)
 		entry_to_view = get_codex_entry(/datum/codex_entry/codex)
 
 	.["data"] = list(
+		"css" = SSassets.transport.get_asset_url("common.css"),
 		"title" = entry_to_view.name,
 		"main_text" = entry_to_view.mechanics_text,
 		"lore_text" = entry_to_view.lore_text,

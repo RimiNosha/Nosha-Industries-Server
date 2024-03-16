@@ -51,7 +51,7 @@
 			link_table += "</tr>"
 		link_table += "</table>"
 
-		lore_text += jointext(link_table, "\n")
+		lore_text = list(lore_text) + link_table
 		var/datum/codex_entry/entry = new(
 			_display_name = "[name] (category)",
 			_lore_text = lore_text

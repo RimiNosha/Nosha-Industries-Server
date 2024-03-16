@@ -9,8 +9,8 @@
 		var/_name = capitalize(codex_sanitize(species.plural_form))
 		new /datum/codex_entry(
 			_display_name = _name,
-			_lore_text = species.get_species_lore().Join("<br><br>"),
-			_mechanics_text = species.get_species_description()
+			_lore_text = species.get_species_lore(),
+			_mechanics_text = list(species.get_species_description())
 		)
 		items += _name
 	return ..()
