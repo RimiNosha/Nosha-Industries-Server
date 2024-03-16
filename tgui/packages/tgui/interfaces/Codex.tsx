@@ -1,5 +1,5 @@
 import { useBackend } from '../backend';
-import { Section } from '../components';
+import { Button, Section } from '../components';
 import { Window } from '../layouts';
 import '../styles/interfaces/Codex.scss';
 
@@ -84,7 +84,22 @@ const CodexEntryContent = (props, context) => {
   const entryData = data as EntryData;
 
   return (
-    <Section title={entryData.title}>
+    <Section
+      title={entryData.title}
+      buttons={
+        <>
+          <Button
+            icon="list"
+            onClick={() => act('open', { 'page': 'Categories (category)' })}>
+            Index
+          </Button>
+          <Button
+            icon="house"
+            onClick={() => act('open', { 'page': 'The Codex' })}>
+            Home
+          </Button>
+        </>
+      }>
       <CodexEntrySection name="OOC Info" text={entryData.main_text} act={act} />
       <CodexEntrySection
         name="Lore Info"
@@ -121,26 +136,23 @@ const CodexEntrySection = (props, context) => {
         // This is data given directly by the server, which can only be set by admins with VV, and I'm *not* making a whole ass html baby-fier.
         // eslint-disable-next-line react/no-danger
         dangerouslySetInnerHTML={{
+          // Oh my god this is so awful
           __html: Object.entries(text)
             .map((entry) =>
-              (entry[1] as string).split('\n').map((splitText) => {
-                let entries = replaceStringWithElements(
-                  splitText,
-                  linkRegex,
-                  (foundText) =>
-                    `<a
-                  onClick={() =>
-                    act('open', {
-                      'page': ${foundText[3]} || ${foundText[4]},
-                    })
-                  }>
-                  ${foundText[4]}
-                </a>`
-                );
-                return insertFiller(entries, <br />);
-              })
+              replaceStringWithElements(
+                entry[1] as string,
+                linkRegex,
+                (foundText) => (
+                  <a
+                    onClick={() =>
+                      act('open', { 'page': foundText[3] || foundText[4] })
+                    }>
+                    {foundText[4]}
+                  </a>
+                )
+              ).join('')
             )
-            .join('<br />'),
+            .join(''),
         }}
       />
     </Section>

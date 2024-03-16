@@ -33,7 +33,7 @@
 		var/list/link_cells = list()
 		for(var/letter in GLOB.alphabet_upper)
 			if(length(links[letter]))
-				link_cells += "<td><b><center>[letter]</center></b>\n<hr>\n<br>\n[jointext(links[letter], "\n<br>\n")]</td>\n"
+				link_cells += "<td><b><center>[letter]</center></b><hr><br>[jointext(links[letter], "<br>")]</td>"
 
 		var/list/link_table = list("<table>")
 		var/link_counter = 0
