@@ -34,8 +34,7 @@
 				CRASH("[create_icon_of] is an invalid preference value (from [preference_key]:[preference_value]).")
 
 			to_insert[preference.get_spritesheet_key(preference_value)] = list(icon, icon_state)
-
-		CHECK_TICK
+			CHECK_TICK
 
 	for (var/spritesheet_key in to_insert)
 		var/list/inserting = to_insert[spritesheet_key]
