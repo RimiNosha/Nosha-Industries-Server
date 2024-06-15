@@ -68,4 +68,4 @@
   * @return data /list Data to be sent to the UI
  **/
 /datum/proc/nanoui_data(mob/user, ui_key = "main")
-	return list() // Not implemented.
+	return list()
