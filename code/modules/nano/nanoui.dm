@@ -97,7 +97,7 @@ nanoui is used to open and update nano browser uis
 		ref = nref
 
 	add_common_assets()
-	var/datum/asset/assets = get_asset_datum(/datum/asset/simple/nanoui)
+	var/datum/asset/assets = get_asset_datum(/datum/asset/nanoui)
 	assets.send(user, ntemplate_filename)
 
 //Do not qdel nanouis. Use close() instead.
@@ -483,7 +483,7 @@ nanoui is used to open and update nano browser uis
 	// 		set_map_z_level(map_z)
 	// 		map_update = 1
 
-	if ((src_object && src_object.Topic(href, href_list, state))/* || map_update*/)
+	if ((src_object && src_object.ui_act(href, href_list, null, state))/* || map_update*/)
 		SSnano.update_uis(src_object) // update all UIs attached to src_object
 
  /**
