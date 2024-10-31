@@ -130,9 +130,14 @@
 /mob/living/simple_animal/bot/medbot/Initialize(mapload, new_skin)
 	. = ..()
 
-	// Doing this hurts my soul, but simplebot access reworks are for another day.
-	var/datum/id_trim/job/para_trim = SSid_access.trim_singletons_by_path[/datum/id_trim/job/paramedic]
-	access_card.add_access(para_trim.access + para_trim.wildcard_access)
+	access_card.add_access(list(
+		ACCESS_CARGO_LOWSEC,
+		ACCESS_MEDICAL_HIGHSEC,
+		ACCESS_MEDICAL_LOWSEC,
+		ACCESS_ENGINEERING_LOWSEC,
+		ACCESS_SERVICE_LOWSEC,
+		ACCESS_PATHFINDERS_LOWSEC,
+	))
 	prev_access = access_card.access.Copy()
 
 	skin = new_skin

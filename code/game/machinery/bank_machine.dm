@@ -3,7 +3,7 @@
 	desc = "A machine used to deposit and withdraw station funds."
 	icon_screen = "vault"
 	icon_keyboard = "security_key"
-	req_access = list(ACCESS_VAULT)
+	req_access = list(ACCESS_COMMAND_HIGHSEC)
 	///Whether the machine is currently being siphoned
 	var/siphoning = FALSE
 	///While siphoning, how much money do we have? Will drop this once siphon is complete.

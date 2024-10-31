@@ -3,6 +3,8 @@
 *	The first access for the department will always be its general access function
 *	Please try to make the strings for any new accesses as close to the name of the define as possible
 *	If you are going to add an access to the list, make sure to also add it to its respective region further below
+*	Follow the design doc on our access philosophy if you're adding any new accesses/manufacturers
+* 	https://hackmd.io/@RimiNosha/H1F6Ed9yT
 *	If you're varediting on the map, it uses the string. If you're editing the object directly, use the define name
 */
 
@@ -274,4 +276,36 @@
 	ACCESS_SYNDICATE_LOWSEC, \
 	ACCESS_SYNDICATE_HIGHSEC, \
 	ACCESS_SYNDICATE_VEHICLES, \
+)
+
+#define PDA_PAINTING_REGIONS list( \
+	/obj/item/modular_computer/pda = list(ACCESS_REGION_SERVICE_NAME), \
+	/obj/item/modular_computer/pda/clown = list(ACCESS_REGION_SERVICE_NAME), \
+	/obj/item/modular_computer/pda/mime = list(ACCESS_REGION_SERVICE_NAME), \
+	/obj/item/modular_computer/pda/medical = list(ACCESS_REGION_MEDICAL_NAME), \
+	/obj/item/modular_computer/pda/viro = list(ACCESS_REGION_MEDICAL_NAME), \
+	/obj/item/modular_computer/pda/engineering = list(ACCESS_REGION_ENGINEERING_NAME), \
+	/obj/item/modular_computer/pda/security = list(ACCESS_REGION_SECURITY_NAME), \
+	/obj/item/modular_computer/pda/detective = list(ACCESS_REGION_SECURITY_NAME), \
+	/obj/item/modular_computer/pda/warden = list(ACCESS_REGION_SECURITY_NAME), \
+	/obj/item/modular_computer/pda/janitor = list(ACCESS_REGION_SERVICE_NAME), \
+	/obj/item/modular_computer/pda/pathfinder = list(ACCESS_REGION_PATHFINDERS_NAME), \
+	/obj/item/modular_computer/pda/heads/quartermaster = list(ACCESS_REGION_COMMAND_NAME), \
+	/obj/item/modular_computer/pda/heads/hop = list(ACCESS_REGION_COMMAND_NAME), \
+	/obj/item/modular_computer/pda/heads/hos = list(ACCESS_REGION_COMMAND_NAME), \
+	/obj/item/modular_computer/pda/heads/cmo = list(ACCESS_REGION_COMMAND_NAME), \
+	/obj/item/modular_computer/pda/heads/ce = list(ACCESS_REGION_COMMAND_NAME), \
+	/obj/item/modular_computer/pda/heads/pl = list(ACCESS_REGION_COMMAND_NAME), \
+	/obj/item/modular_computer/pda/heads/captain = list(ACCESS_REGION_COMMAND_NAME), \
+	/obj/item/modular_computer/pda/cargo = list(ACCESS_REGION_CARGO_NAME), \
+	/obj/item/modular_computer/pda/shaftminer = list(ACCESS_REGION_CARGO_NAME), \
+	/obj/item/modular_computer/pda/chaplain = list(ACCESS_REGION_SERVICE_NAME), \
+	/obj/item/modular_computer/pda/lawyer = list(ACCESS_REGION_SERVICE_NAME, ACCESS_REGION_SECURITY_NAME), \
+	/obj/item/modular_computer/pda/botanist = list(ACCESS_REGION_SERVICE_NAME), \
+	/obj/item/modular_computer/pda/roboticist = list(ACCESS_REGION_ENGINEERING_NAME), \
+	/obj/item/modular_computer/pda/curator = list(ACCESS_REGION_SERVICE_NAME), \
+	/obj/item/modular_computer/pda/cook = list(ACCESS_REGION_SERVICE_NAME), \
+	/obj/item/modular_computer/pda/bar = list(ACCESS_REGION_SERVICE_NAME), \
+	/obj/item/modular_computer/pda/atmos = list(ACCESS_REGION_ENGINEERING_NAME), \
+	/obj/item/modular_computer/pda/chemist = list(ACCESS_REGION_MEDICAL_NAME), \
 )

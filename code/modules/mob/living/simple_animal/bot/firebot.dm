@@ -41,9 +41,7 @@
 	ADD_TRAIT(src, TRAIT_SPACEWALK, INNATE_TRAIT)
 	update_appearance(UPDATE_ICON)
 
-	// Doing this hurts my soul, but simplebot access reworks are for another day.
-	var/datum/id_trim/job/engi_trim = SSid_access.trim_singletons_by_path[/datum/id_trim/job/station_engineer]
-	access_card.add_access(engi_trim.access + engi_trim.wildcard_access)
+	access_card.add_access(SSid_access.region_name_to_accesses[ACCESS_REGION_ENGINEERING_NAME])
 	prev_access = access_card.access.Copy()
 
 	create_extinguisher()

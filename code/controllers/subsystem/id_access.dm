@@ -6,18 +6,58 @@ SUBSYSTEM_DEF(id_access)
 	init_order = INIT_ORDER_IDACCESS
 	flags = SS_NO_FIRE
 
-	/// Dictionary of trim singletons. Keys are paths. Values are their associated singletons.
-	var/list/trim_singletons_by_path = list()
 	/// Dictionary of access names. Keys are access levels. Values are their associated names.
 	var/list/access_to_name = ALL_ACCESS_NAMES
-	/// List of accesses for the Heads of each sub-department alongside the regions they control and their job name.
-	var/list/sub_department_managers_tgui = list()
-	/// Helper list containing all trim paths that can be used as job templates. Intended to be used alongside logic for ACCESS_COMMAND_LOWSEC. Grab templates from sub_department_managers_tgui for Head of Staff restrictions.
-	var/list/station_job_templates = list()
-	/// Helper list containing all trim paths that can be used as Centcom templates.
-	var/list/centcom_job_templates = list()
-	/// Helper list containing all PDA paths that can be painted by station machines. Intended to be used alongside logic for ACCESS_COMMAND_LOWSEC. Grab templates from sub_department_managers_tgui for Head of Staff restrictions.
+	/// Helper list containing all PDA paths that can be painted by station machines.
 	var/list/station_pda_templates = list()
+	/// Helper list containing all regions that the station can normally see and modify.
+	var/list/station_regions = list()
+
+	/// List of accesses for the Heads of each sub-department alongside the regions they control and their job name.
+	var/list/sub_department_managers_tgui = list(
+		ACCESS_SPECIAL_CAPTAIN = list(
+			"regions" = list(ACCESS_REGION_COMMAND_NAME),
+			"head" = JOB_CAPTAIN,
+			"templates" = list(),
+			"pdas" = list(),
+		),
+		ACCESS_COMMAND_HIGHSEC = list(
+			"regions" = list(ACCESS_REGION_SERVICE_NAME, ACCESS_REGION_CARGO_NAME),
+			"head" = JOB_HEAD_OF_PERSONNEL,
+			"templates" = list(),
+			"pdas" = list(),
+		),
+		ACCESS_SECURITY_HEAD = list(
+			"regions" = list(ACCESS_REGION_SECURITY_NAME),
+			"head" = JOB_HEAD_OF_SECURITY,
+			"templates" = list(),
+			"pdas" = list(),
+		),
+		ACCESS_MEDICAL_HEAD = list(
+			"regions" = list(ACCESS_REGION_MEDICAL_NAME),
+			"head" = JOB_CHIEF_MEDICAL_OFFICER,
+			"templates" = list(),
+			"pdas" = list(),
+		),
+		ACCESS_ENGINEERING_HEAD = list(
+			"regions" = list(ACCESS_REGION_ENGINEERING_NAME),
+			"head" = JOB_CHIEF_ENGINEER,
+			"templates" = list(),
+			"pdas" = list(),
+		),
+		ACCESS_CARGO_HEAD = list(
+			"regions" = list(ACCESS_REGION_CARGO_NAME),
+			"head" = JOB_QUARTERMASTER,
+			"templates" = list(),
+			"pdas" = list(),
+		),
+		ACCESS_PATHFINDERS_HEAD = list(
+			"regions" = list(ACCESS_REGION_PATHFINDERS_NAME),
+			"head" = JOB_PATHFINDER_LEAD,
+			"templates" = list(),
+			"pdas" = list(),
+		),
+	)
 
 	/// Region to access. Shrimple. Any access not on this list cannot be accessed without VV!
 	var/list/region_name_to_accesses = list(
@@ -102,7 +142,29 @@ SUBSYSTEM_DEF(id_access)
 		// If it's not, then uh- I hope it's an access!
 		silver_accesses |= region_name_to_accesses[region] || region
 
+	station_regions = manufacturer_to_region_names[ID_MANUFACTURER_ARTEA]
+	station_regions = station_regions.Copy()
+	station_regions.Remove(ACCESS_REGION_CENTCOM_NAME)
+
 	spare_id_safe_code = "[rand(0,9)][rand(0,9)][rand(0,9)][rand(0,9)][rand(0,9)]"
+
+	var/list/all_pda_paths = typesof(/obj/item/modular_computer/pda)
+	var/list/pda_regions = PDA_PAINTING_REGIONS
+	for(var/pda_path in all_pda_paths)
+		if(!(pda_path in pda_regions))
+			continue
+
+		var/list/region_whitelist = pda_regions[pda_path]
+		for(var/access_txt in sub_department_managers_tgui)
+			var/list/manager_info = sub_department_managers_tgui[access_txt]
+			var/list/manager_regions = manager_info["regions"]
+			for(var/whitelisted_region in region_whitelist)
+				if(!(whitelisted_region in manager_regions))
+					continue
+				var/list/manager_pdas = manager_info["pdas"]
+				var/obj/item/modular_computer/pda/fake_pda = pda_path
+				manager_pdas[pda_path] = initial(fake_pda.name)
+				station_pda_templates[pda_path] = initial(fake_pda.name)
 
 	return SS_INIT_SUCCESS
 
@@ -149,7 +211,6 @@ SUBSYSTEM_DEF(id_access)
 	id_card.trim_icon_override = null
 	id_card.trim_letter_state_override = null
 	id_card.trim_assignment_override = null
-	id_card.sechud_icon_state_override = null
 	id_card.department_color_override = null
 	id_card.department_state_override = null
 	id_card.subdepartment_color_override = null

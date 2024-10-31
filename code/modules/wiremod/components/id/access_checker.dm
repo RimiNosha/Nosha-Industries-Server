@@ -102,7 +102,7 @@
 			check_any.set_value(0)
 			. = TRUE
 		if("grant_all")
-			required_accesses.set_value(SSid_access.get_region_access_list(list(ACCESS_REGION_GROUP_STATION)))
+			required_accesses.set_value(SSid_access.get_region_access_list(SSid_access.station_regions))
 			. = TRUE
 		if("one_access")
 			check_any.set_value(!check_any.value)
@@ -123,7 +123,7 @@
 			var/region = params["region"]
 			if(isnull(region))
 				return
-			required_accesses.set_value(required_accesses_value | SSid_access.get_region_access_list(list(region)))
+			required_accesses.set_value(required_accesses_value | SSid_access.get_region_access_list(region))
 			. = TRUE
 		if("deny_region")
 			var/list/required_accesses_list = required_accesses.value
@@ -131,7 +131,7 @@
 			var/region = params["region"]
 			if(isnull(region))
 				return
-			required_accesses.set_value(required_accesses_value - SSid_access.get_region_access_list(list(region)))
+			required_accesses.set_value(required_accesses_value - SSid_access.get_region_access_list(region))
 			. = TRUE
 	if(.)
 		regenerate_access()

@@ -20,8 +20,19 @@
 	/// Type path of item to go in the idcard slot
 	var/id = null
 
-	/// Type path of ID card trim associated with this outfit.
-	var/id_trim = null
+	/// The ID's department.
+	var/id_department = null
+
+	/// The ID's subdepartment.
+	var/id_subdepartment = null
+
+	/// the ID's extra accesses.
+	var/id_extra_access = null
+
+	var/id_trim
+
+	// If set, overrides the job title on the ID.
+	var/id_title
 
 	/// Type path of item to go in uniform slot
 	var/uniform = null
@@ -194,11 +205,12 @@
 		EQUIP_OUTFIT_ITEM(back, ITEM_SLOT_BACK)
 	if(id)
 		EQUIP_OUTFIT_ITEM(id, ITEM_SLOT_ID)
-	if(!visualsOnly && id_trim && H.wear_id)
+	if(!visualsOnly && H.wear_id)
 		var/obj/item/card/id/id_card = H.wear_id
 		id_card.registered_age = H.age
-		if(id_trim)
-			if(!SSid_access.apply_departments(id_card, id_department, id_subdepartment))
+		id_card.assignment = id_title
+		if (id_department || id_subdepartment)
+			if(!id_card.set_regions(id_department, id_subdepartment))
 				WARNING("Unable to apply department [id_department] and subdepartment [id_subdepartment] to [id_card] in outfit [name].")
 			H.sec_hud_set_ID()
 
@@ -379,7 +391,8 @@
 	.["ears"] = ears
 	.["glasses"] = glasses
 	.["id"] = id
-	.["id_trim"] = id_trim
+	.["id_department"] = id_department
+	.["id_subdepartment"] = id_subdepartment
 	.["l_pocket"] = l_pocket
 	.["r_pocket"] = r_pocket
 	.["suit_store"] = suit_store
@@ -406,7 +419,8 @@
 	ears = target.ears
 	glasses = target.glasses
 	id = target.id
-	id_trim = target.id_trim
+	id_department = target.id_department
+	id_subdepartment = target.id_subdepartment
 	l_pocket = target.l_pocket
 	r_pocket = target.r_pocket
 	suit_store = target.suit_store
@@ -444,7 +458,8 @@
 	ears = text2path(outfit_data["ears"])
 	glasses = text2path(outfit_data["glasses"])
 	id = text2path(outfit_data["id"])
-	id_trim = text2path(outfit_data["id_trim"])
+	id_department = text2path(outfit_data["id_department"])
+	id_subdepartment = text2path(outfit_data["id_subdepartment"])
 	l_pocket = text2path(outfit_data["l_pocket"])
 	r_pocket = text2path(outfit_data["r_pocket"])
 	suit_store = text2path(outfit_data["suit_store"])

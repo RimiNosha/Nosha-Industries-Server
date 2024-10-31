@@ -51,7 +51,7 @@
 		authenticated_card = "[auth_card.name]"
 		authenticated_user = auth_card.registered_name ? auth_card.registered_name : "Unknown"
 		job_templates = is_centcom ? SSid_access.centcom_job_templates.Copy() : SSid_access.station_job_templates.Copy()
-		valid_access = is_centcom ? SSid_access.get_region_access_list(list(ACCESS_REGION_CENTCOM_NAME)) : SSid_access.get_region_access_list(list(ACCESS_REGION_GROUP_STATION))
+		valid_access = is_centcom ? SSid_access.get_region_access_list(ACCESS_REGION_CENTCOM_NAME) : SSid_access.get_region_access_list(SSid_access.station_regions)
 		update_static_data(user)
 		return TRUE
 
@@ -124,10 +124,10 @@
 						<u>Access:</u><br>
 						"}
 
-			var/list/known_access_rights = SSid_access.get_region_access_list(list(ACCESS_REGION_GROUP_STATION))
+			var/list/known_access_rights = SSid_access.get_region_access_list(SSid_access.station_regions)
 			for(var/A in inserted_auth_card.access)
 				if(A in known_access_rights)
-					contents += " [SSid_access.get_access_name(A)]"
+					contents += " [SSid_access.access_to_name[A]]"
 
 			if(!computer.print_text(contents, "access report - [inserted_auth_card.registered_name ? inserted_auth_card.registered_name : "Unregistered"]"))
 				to_chat(usr, span_notice("Printer is out of paper."))
@@ -155,7 +155,7 @@
 
 			// Set the new assignment then remove the trim.
 			inserted_auth_card.assignment = is_centcom ? "Fired" : "Demoted"
-			SSid_access.remove_trim_from_card(inserted_auth_card)
+			inserted_auth_card.set_regions()
 
 			playsound(computer, 'sound/machines/terminal_prompt_deny.ogg', 50, FALSE)
 			return TRUE
@@ -220,25 +220,25 @@
 			if(!computer || !authenticated_card || !inserted_auth_card)
 				return TRUE
 			playsound(computer, SFX_TERMINAL_TYPE, 50, FALSE)
-			var/access_type = params["access_target"]
+			var/access_target = params["access_target"]
 			var/try_wildcard = params["access_wildcard"]
-			if(!(access_type in valid_access))
-				stack_trace("[key_name(usr)] ([usr]) attempted to add invalid access \[[access_type]\] to [inserted_auth_card]")
+			if(!(access_target in valid_access))
+				stack_trace("[key_name(usr)] ([usr]) attempted to add invalid access \[[access_target]\] to [inserted_auth_card]")
+				return TRUE
+			SSid_access.access_to_name
+			if(access_target in inserted_auth_card.access)
+				inserted_auth_card.remove_access(list(access_target))
+				LOG_ID_ACCESS_CHANGE(user, inserted_auth_card, "removed [SSid_access.access_to_name[access_target]]")
 				return TRUE
 
-			if(access_type in inserted_auth_card.access)
-				inserted_auth_card.remove_access(list(access_type))
-				LOG_ID_ACCESS_CHANGE(user, inserted_auth_card, "removed [SSid_access.get_access_name(access_type)]")
-				return TRUE
-
-			if(!inserted_auth_card.add_access(list(access_type), try_wildcard))
+			if(!inserted_auth_card.add_access(list(access_target), try_wildcard))
 				to_chat(usr, span_notice("ID error: ID card rejected your attempted access modification."))
-				LOG_ID_ACCESS_CHANGE(user, inserted_auth_card, "failed to add [SSid_access.get_access_name(access_type)][try_wildcard ? " with wildcard [try_wildcard]" : ""]")
+				LOG_ID_ACCESS_CHANGE(user, inserted_auth_card, "failed to add [SSid_access.access_to_name[access_target]][try_wildcard ? " with wildcard [try_wildcard]" : ""]")
 				return TRUE
 
-			if(access_type in ACCESS_ALERT_ADMINS)
-				message_admins("[ADMIN_LOOKUPFLW(user)] just added [SSid_access.get_access_name(access_type)] to an ID card [ADMIN_VV(inserted_auth_card)] [(inserted_auth_card.registered_name) ? "belonging to [inserted_auth_card.registered_name]." : "with no registered name."]")
-			LOG_ID_ACCESS_CHANGE(user, inserted_auth_card, "added [SSid_access.get_access_name(access_type)]")
+			if(access_target in ACCESS_ALERT_ADMINS)
+				message_admins("[ADMIN_LOOKUPFLW(user)] just added [SSid_access.access_to_name[access_target]] to an ID card [ADMIN_VV(inserted_auth_card)] [(inserted_auth_card.registered_name) ? "belonging to [inserted_auth_card.registered_name]." : "with no registered name."]")
+			LOG_ID_ACCESS_CHANGE(user, inserted_auth_card, "added [SSid_access.access_to_name[access_target]]")
 			return TRUE
 		// Apply template to ID card.
 		if("PRG_template")
@@ -252,8 +252,7 @@
 				return TRUE
 
 			for(var/trim_path in job_templates)
-				var/datum/id_trim/trim = SSid_access.trim_singletons_by_path[trim_path]
-				if(trim.assignment != template_name)
+				if(trim.assignment != template_name) // ew wtf
 					continue
 
 				SSid_access.add_trim_access_to_card(inserted_auth_card, trim_path)

@@ -9,4 +9,4 @@
 
 /obj/item/organ/internal/heart/gland/access/activate()
 	to_chat(owner, span_notice("You feel like a VIP for some reason."))
-	owner.AddComponent(/datum/component/simple_access, SSid_access.get_region_access_list(list(REGION_ALL_GLOBAL)), src)
+	owner.AddComponent(/datum/component/simple_access, ALL_ACCESSES, src)

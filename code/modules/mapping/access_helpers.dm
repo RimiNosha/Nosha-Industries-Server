@@ -379,7 +379,7 @@
 
 /obj/effect/mapping_helpers/airlock/access/any/supply/vault/get_access()
 	var/list/access_list = ..()
-	access_list += ACCESS_VAULT
+	access_list += ACCESS_COMMAND_HIGHSEC
 	return access_list
 
 /obj/effect/mapping_helpers/airlock/access/any/supply/maintenance/get_access()
@@ -836,7 +836,7 @@
 
 /obj/effect/mapping_helpers/airlock/access/all/supply/vault/get_access()
 	var/list/access_list = ..()
-	access_list += ACCESS_VAULT
+	access_list += ACCESS_COMMAND_HIGHSEC
 	return access_list
 
 // -------------------- Syndicate access helpers

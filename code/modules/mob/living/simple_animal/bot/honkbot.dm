@@ -30,10 +30,8 @@
 /mob/living/simple_animal/bot/secbot/honkbot/Initialize(mapload)
 	. = ..()
 
-	// Doing this hurts my soul, but simplebot access reworks are for another day.
-	var/datum/id_trim/job/clown_trim = SSid_access.trim_singletons_by_path[/datum/id_trim/job/clown]
-	//We're doing set_access instead to overwrite the sec access they get.
-	access_card.set_access(clown_trim.access + clown_trim.wildcard_access)
+	// Set access to remove the bot's default sec access
+	access_card.set_access(SSid_access.region_name_to_accesses[ACCESS_REGION_SERVICE_NAME])
 	prev_access = access_card.access.Copy()
 
 /mob/living/simple_animal/bot/secbot/honkbot/on_entered(datum/source, atom/movable/AM)

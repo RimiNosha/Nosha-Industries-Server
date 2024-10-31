@@ -101,8 +101,10 @@ GLOBAL_DATUM_INIT(manifest, /datum/manifest, new)
 
 	var/assignment = person.mind.assigned_role.title
 	var/datum/outfit/outfit = person.mind.assigned_role.outfit
-	var/datum/id_trim/id_trim = initial(outfit.id_trim)
-	var/trim_icon = initial(id_trim.orbit_icon)
+	var/obj/item/card/id/advanced/dummy_id = new outfit.id()
+	dummy_id.set_regions(outfit.id_department, outfit.id_subdepartment)
+	var/trim_icon = dummy_id.orbit_icon
+	qdel(dummy_id)
 	var/mutable_appearance/character_appearance = new(person.appearance)
 	var/person_gender = "Other"
 	if(person.gender == "male")

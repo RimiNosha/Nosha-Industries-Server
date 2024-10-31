@@ -126,7 +126,7 @@
 
 	// Applying the trim updates the label and icon, so don't do this twice.
 	if(ispath(trim))
-		apply_regions(src, department, subdepartment)
+		set_regions(src, department, subdepartment)
 	else
 		update_label()
 		update_icon()
@@ -145,7 +145,8 @@
 	return ..()
 
 /// Removes accesses that were given by the provided old departments, then adds the correct accesses provided by departments
-/obj/item/card/id/proc/apply_regions(new_department, new_subdepartment)
+/// If extra accesses are given, it will overwrite the card's existing accesses with them.
+/obj/item/card/id/proc/set_regions(new_department, new_subdepartment, extra_accesses)
 	var/list/regions_to_modify
 
 	if(department)
@@ -154,7 +155,9 @@
 	if(subdepartment)
 		LAZYADD(regions_to_modify, subdepartment)
 
-	if(regions_to_modify)
+	if(extra_accesses)
+		access = list()
+	else if(regions_to_modify)
 		access -= SSid_access.get_region_access_list(regions_to_modify)
 
 	regions_to_modify = null
@@ -422,7 +425,7 @@
 				update_label()
 				update_icon()
 			if(NAMEOF(src, department) || NAMEOF(src, subdepartment))
-				apply_regions(department, subdepartment)
+				set_regions(department, subdepartment)
 
 /obj/item/card/id/attackby(obj/item/W, mob/user, params)
 	if(istype(W, /obj/item/rupee))
@@ -915,10 +918,6 @@
 
 	return ..()
 
-/// Returns the trim sechud icon state.
-/obj/item/card/id/advanced/get_trim_sechud_icon_state()
-	return sechud_icon_state_override || ..()
-
 /obj/item/card/id/advanced/silver
 	name = "silver identification card"
 	desc = "A silver card which shows honour and dedication."
@@ -1366,27 +1365,27 @@
 			var/try_wildcard = params["access_wildcard"]
 			if(access_type in access)
 				remove_access(list(access_type))
-				LOG_ID_ACCESS_CHANGE(usr, src, "removed [SSid_access.get_access_name(access_type)]")
+				LOG_ID_ACCESS_CHANGE(usr, src, "removed [SSid_access.access_to_name[access_type]]")
 				return TRUE
 
 			if(!(access_type in target_card.access))
 				to_chat(usr, span_notice("ID error: ID card rejected your attempted access modification."))
-				LOG_ID_ACCESS_CHANGE(usr, src, "failed to add [SSid_access.get_access_name(access_type)][try_wildcard ? " with region [try_wildcard]" : ""]")
+				LOG_ID_ACCESS_CHANGE(usr, src, "failed to add [SSid_access.access_to_name[access_type]][try_wildcard ? " with region [try_wildcard]" : ""]")
 				return TRUE
 
 			if(!can_edit_region(list(access_type), try_wildcard))
 				to_chat(usr, span_notice("ID error: ID card rejected your attempted access modification."))
-				LOG_ID_ACCESS_CHANGE(usr, src, "failed to add [SSid_access.get_access_name(access_type)][try_wildcard ? " with region [try_wildcard]" : ""]")
+				LOG_ID_ACCESS_CHANGE(usr, src, "failed to add [SSid_access.access_to_name[access_type]][try_wildcard ? " with region [try_wildcard]" : ""]")
 				return TRUE
 
 			if(!add_access(list(access_type), try_wildcard))
 				to_chat(usr, span_notice("ID error: ID card rejected your attempted access modification."))
-				LOG_ID_ACCESS_CHANGE(usr, src, "failed to add [SSid_access.get_access_name(access_type)][try_wildcard ? " with region [try_wildcard]" : ""]")
+				LOG_ID_ACCESS_CHANGE(usr, src, "failed to add [SSid_access.access_to_name[access_type]][try_wildcard ? " with region [try_wildcard]" : ""]")
 				return TRUE
 
 			if(access_type in ACCESS_ALERT_ADMINS)
-				message_admins("[ADMIN_LOOKUPFLW(usr)] just added [SSid_access.get_access_name(access_type)] to an ID card [ADMIN_VV(src)] [(registered_name) ? "belonging to [registered_name]." : "with no registered name."]")
-			LOG_ID_ACCESS_CHANGE(usr, src, "added [SSid_access.get_access_name(access_type)]")
+				message_admins("[ADMIN_LOOKUPFLW(usr)] just added [SSid_access.access_to_name[access_type]] to an ID card [ADMIN_VV(src)] [(registered_name) ? "belonging to [registered_name]." : "with no registered name."]")
+			LOG_ID_ACCESS_CHANGE(usr, src, "added [SSid_access.access_to_name[access_type]]")
 			return TRUE
 
 /obj/item/card/id/advanced/chameleon/attack_self(mob/user)
@@ -1411,27 +1410,6 @@
 
 				registered_name = input_name
 
-				var/change_trim = tgui_alert(user, "Adjust the appearance of your card's trim?", "Modify Trim", list("Yes", "No"))
-				if(change_trim == "Yes")
-					var/list/blacklist = typecacheof(list(
-						type,
-						/obj/item/card/id/advanced/simple_bot,
-					))
-					var/list/trim_list = list()
-					for(var/trim_path in typesof(/datum/id_trim))
-						if(blacklist[trim_path])
-							continue
-
-						var/datum/id_trim/trim = SSid_access.trim_singletons_by_path[trim_path]
-
-						if(trim && trim.department_state && trim.assignment)
-							var/fake_trim_name = "[trim.assignment] ([trim.department_state])"
-							trim_list[fake_trim_name] = trim_path
-
-					var/selected_trim_path = tgui_input_list(user, "Select trim to apply to your card.\nNote: This will not grant any trim accesses.", "Forge Trim", sort_list(trim_list, GLOBAL_PROC_REF(cmp_typepaths_asc)))
-					if(selected_trim_path)
-						SSid_access.apply_trim_to_chameleon_card(src, trim_list[selected_trim_path])
-
 				var/target_occupation = tgui_input_text(user, "What occupation would you like to put on this card?\nNote: This will not grant any access levels.", "Agent card job assignment", assignment ? assignment : "Assistant")
 				if(target_occupation)
 					assignment = target_occupation
@@ -1453,7 +1431,7 @@
 				update_icon()
 				forged = TRUE
 				to_chat(user, span_notice("You successfully forge the ID card."))
-				user.log_message("forged \the [initial(name)] with name \"[registered_name]\", occupation \"[assignment]\" and trim \"[trim?.assignment]\".", LOG_GAME)
+				user.log_message("forged \the [initial(name)] with name \"[registered_name]\" and occupation \"[assignment]\".", LOG_GAME)
 
 				if(!registered_account)
 					if(ishuman(user))

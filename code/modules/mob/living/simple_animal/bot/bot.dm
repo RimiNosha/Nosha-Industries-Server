@@ -34,7 +34,7 @@
 	COOLDOWN_DECLARE(next_salute_check)
 
 	///Access required to access this Bot's maintenance protocols
-	var/maints_access_required = list(ACCESS_ENGINEERING_HIGHSEC)
+	var/maints_access_required = list(ACCESS_ENGINEERING_LOWSEC, ACCESS_SERVICE_LOWSEC)
 	///The Robot arm attached to this robot - has a 50% chance to drop on death.
 	///People currently looking into a bot's UI panel.
 	var/list/users = list()
@@ -606,7 +606,7 @@ Pass a positive integer as an argument to override a bot's default speed.
 		var/end_area = get_area_name(waypoint)
 		if(!(bot_mode_flags & BOT_MODE_ON))
 			turn_on() //Saves the AI the hassle of having to activate a bot manually.
-		access_card.set_access(REGION_ACCESS_ALL_STATION) //Give the bot all-access while under the AI's command.
+		access_card.set_access(ALL_ACCESSES) //Give the bot all-access while under the AI's command.
 		if(client)
 			reset_access_timer_id = addtimer(CALLBACK (src, PROC_REF(bot_reset)), 60 SECONDS, TIMER_UNIQUE|TIMER_OVERRIDE|TIMER_STOPPABLE) //if the bot is player controlled, they get the extra access for a limited time
 			to_chat(src, span_notice("[span_big("Priority waypoint set by [icon2html(calling_ai, src)] <b>[caller]</b>. Proceed to <b>[end_area]</b>.")]<br>[path.len-1] meters to destination. You have been granted additional door access for 60 seconds."))

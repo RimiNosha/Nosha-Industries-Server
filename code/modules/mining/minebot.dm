@@ -59,7 +59,7 @@
 	imp.implant(src)
 
 	access_card = new /obj/item/card/id/advanced(src)
-	access_card.apply_regions(ACCESS_REGION_PATHFINDERS_NAME)
+	access_card.set_regions(ACCESS_REGION_PATHFINDERS_NAME)
 
 	SetCollectBehavior()
 

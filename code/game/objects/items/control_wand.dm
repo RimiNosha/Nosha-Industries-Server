@@ -12,12 +12,15 @@
 	desc = "Remotely controls airlocks."
 	w_class = WEIGHT_CLASS_TINY
 	var/mode = WAND_OPEN
-	var/region_access = REGION_GENERAL
+	/// The manufacturer controls which faction's doors can be opened.
+	var/access_manufacturer = ID_MANUFACTURER_ARTEA
+	/// What regions does this have access over? Every remote can open unrestricted doors. Can be a list or a single region.
+	var/region_access
 	var/list/access_list
 
 /obj/item/door_remote/Initialize(mapload)
 	. = ..()
-	access_list = SSid_access.get_region_access_list(list(region_access))
+	access_list = SSid_access.get_region_access_list(region_access)
 
 /obj/item/door_remote/attack_self(mob/user)
 	var/static/list/desc = list(WAND_OPEN = "Open Door", WAND_BOLT = "Toggle Bolts", WAND_EMERGENCY = "Toggle Emergency Access")
@@ -56,7 +59,7 @@
 		balloon_alert(user, "no connection!")
 		return
 
-	if (!door.check_access_list(access_list) || !door.requiresID())
+	if (!door.check_access(access_list) || !door.requiresID())
 		target.balloon_alert(user, "can't access!")
 		return
 
@@ -98,43 +101,42 @@
 /obj/item/door_remote/captain
 	name = "command door remote"
 	icon_state = "gangtool-yellow"
-	region_access = REGION_COMMAND
+	region_access = ACCESS_REGION_COMMAND_NAME
 
 /obj/item/door_remote/chief_engineer
 	name = "engineering door remote"
 	icon_state = "gangtool-orange"
-	region_access = REGION_ENGINEERING
+	region_access = ACCESS_REGION_ENGINEERING_NAME
 
 /obj/item/door_remote/research_director
 	name = "research door remote"
 	icon_state = "gangtool-purple"
-	region_access = REGION_PATHFINDERS
+	region_access = ACCESS_REGION_PATHFINDERS_NAME
 
 /obj/item/door_remote/pathfinders
 	name = "pathfinders door remote"
 	icon_state = "gangtool-purple"
-	region_access = REGION_PATHFINDERS
+	region_access = ACCESS_REGION_PATHFINDERS_NAME
 
 /obj/item/door_remote/head_of_security
 	name = "security door remote"
 	icon_state = "gangtool-red"
-	region_access = REGION_SECURITY
+	region_access = ACCESS_REGION_SECURITY_NAME
 
 /obj/item/door_remote/quartermaster
 	name = "supply door remote"
 	desc = "Remotely controls airlocks. This remote has additional Vault access."
 	icon_state = "gangtool-green"
-	region_access = REGION_SUPPLY
+	region_access = ACCESS_REGION_CARGO_NAME
 
 /obj/item/door_remote/chief_medical_officer
 	name = "medical door remote"
 	icon_state = "gangtool-blue"
-	region_access = REGION_MEDBAY
+	region_access = ACCESS_REGION_MEDICAL_NAME
 
 /obj/item/door_remote/civilian
 	name = "civilian door remote"
 	icon_state = "gangtool-white"
-	region_access = REGION_GENERAL
 
 #undef WAND_OPEN
 #undef WAND_BOLT

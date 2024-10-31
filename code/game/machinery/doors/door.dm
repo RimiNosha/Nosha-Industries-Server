@@ -165,7 +165,7 @@
 		context[SCREENTIP_CONTEXT_RMB] = "Knock"
 		return CONTEXTUAL_SCREENTIP_SET
 
-/obj/machinery/door/check_access_list(list/access_list)
+/obj/machinery/door/check_access(target, list/extra_accesses)
 	if(red_alert_access && SSsecurity_level.get_current_level_as_number() >= SEC_LEVEL_RED)
 		return TRUE
 	return ..()

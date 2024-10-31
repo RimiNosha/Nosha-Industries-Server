@@ -83,30 +83,3 @@
 	back = /obj/item/mod/control/pre_equipped/pathfinders/medic
 	mask = /obj/item/clothing/mask/breath
 	internals_slot = ITEM_SLOT_SUITSTORE
-
-/datum/id_trim/job/pathfinder
-	assignment = "Pathfinder"
-	department_state = "dept-pathfinders"
-	orbit_icon = "ship"
-	department_color = COLOR_PATHFINDERS_PURPLE
-	subdepartment_color = COLOR_PATHFINDERS_DARK_PURPLE
-	sechud_icon_state = SECHUD_PATHFINDER
-	minimal_access = list(
-		ACCESS_PATHFINDERS_LOWSEC,
-		ACCESS_PATHFINDERS_VEHICLES,
-		ACCESS_PATHFINDERS_HIGHSEC,
-		ACCESS_PATHFINDERS_VEHICLES,
-		ACCESS_ARTEA_COMMON,
-		ACCESS_ARTEA_COMMON,
-		ACCESS_PATHFINDERS_LOWSEC,
-		ACCESS_PATHFINDERS_LOWSEC,
-		)
-	extra_access = list(
-		ACCESS_CARGO_HIGHSEC,
-		)
-	template_access = list(
-		ACCESS_SPECIAL_CAPTAIN,
-		ACCESS_COMMAND_LOWSEC,
-		ACCESS_PATHFINDERS_HEAD,
-		)
-	job = /datum/job/pathfinder

@@ -105,7 +105,7 @@
 /obj/structure/closet/secure_closet/freezer/money
 	name = "freezer"
 	desc = "This contains cold hard cash."
-	req_access = list(ACCESS_VAULT)
+	req_access = list(ACCESS_COMMAND_HIGHSEC)
 
 /obj/structure/closet/secure_closet/freezer/money/PopulateContents()
 	..()

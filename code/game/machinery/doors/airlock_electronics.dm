@@ -35,9 +35,8 @@
 	var/list/data = list()
 
 	var/list/regions = list()
-	var/list/tgui_region_data = SSid_access.all_region_access_tgui
 	for(var/region in SSid_access.station_regions)
-		regions += tgui_region_data[region]
+		regions += list(list("name" = region, "accesses" = SSid_access.region_name_to_accesses[region]))
 
 	data["regions"] = regions
 	return data
@@ -63,7 +62,7 @@
 			one_access = 0
 			. = TRUE
 		if("grant_all")
-			accesses = SSid_access.get_region_access_list(list(ACCESS_REGION_GROUP_STATION))
+			accesses = SSid_access.get_region_access_list(SSid_access.station_regions)
 			. = TRUE
 		if("one_access")
 			one_access = !one_access
@@ -86,13 +85,13 @@
 			var/region = params["region"]
 			if(isnull(region))
 				return
-			accesses |= SSid_access.get_region_access_list(list(region))
+			accesses |= SSid_access.get_region_access_list(region)
 			. = TRUE
 		if("deny_region")
 			var/region = params["region"]
 			if(isnull(region))
 				return
-			accesses -= SSid_access.get_region_access_list(list(region))
+			accesses -= SSid_access.get_region_access_list(region)
 			. = TRUE
 		if("passedName")
 			var/new_name = trim("[params["passedName"]]", 30)

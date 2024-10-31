@@ -176,7 +176,7 @@ GLOBAL_LIST_INIT(department_order_cooldowns, list(
 	circuit = /obj/item/circuitboard/computer/engineering_orders
 	department_delivery_areas = list(/area/station/engineering/main)
 	override_access = ACCESS_ENGINEERING_HEAD
-	req_one_access = REGION_ACCESS_ENGINEERING
+	req_one_access = ACCESS_ENGINEERING_LOWSEC
 	dep_groups = list("Engineering", "Engine Construction", "Canisters & Materials")
 
 /obj/machinery/computer/department_orders/science
@@ -184,7 +184,7 @@ GLOBAL_LIST_INIT(department_order_cooldowns, list(
 	circuit = /obj/item/circuitboard/computer/science_orders
 	department_delivery_areas = list(/area/station/science/research)
 	override_access = ACCESS_ENGINEERING_HEAD
-	req_one_access = REGION_ACCESS_PATHFINDERS
+	req_one_access = ACCESS_ENGINEERING_LOWSEC
 	dep_groups = list("Science", "Livestock")
 
 /obj/machinery/computer/department_orders/security
@@ -195,7 +195,7 @@ GLOBAL_LIST_INIT(department_order_cooldowns, list(
 		/area/station/security/brig/upper,
 	)
 	override_access = ACCESS_SECURITY_HEAD
-	req_one_access = REGION_ACCESS_SECURITY
+	req_one_access = ACCESS_SECURITY_LOWSEC
 	dep_groups = list("Security", "Armory")
 
 /obj/machinery/computer/department_orders/medical
@@ -208,5 +208,5 @@ GLOBAL_LIST_INIT(department_order_cooldowns, list(
 		/area/station/medical/storage,
 	)
 	override_access = ACCESS_MEDICAL_HEAD
-	req_one_access = REGION_ACCESS_MEDBAY
+	req_one_access = ACCESS_MEDICAL_LOWSEC
 	dep_groups = list("Medical")

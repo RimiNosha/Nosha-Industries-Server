@@ -168,9 +168,7 @@
 	GLOB.drones_list += src
 	access_card = new /obj/item/card/id/advanced/simple_bot(src)
 
-	// Doing this hurts my soul, but simple_animal access reworks are for another day.
-	var/datum/id_trim/job/cap_trim = SSid_access.trim_singletons_by_path[/datum/id_trim/job/captain]
-	access_card.add_access(cap_trim.access + cap_trim.wildcard_access)
+	access_card.add_access(SSid_access.get_region_access_list(SSid_access.station_regions))
 
 	if(default_storage)
 		var/obj/item/I = new default_storage(src)

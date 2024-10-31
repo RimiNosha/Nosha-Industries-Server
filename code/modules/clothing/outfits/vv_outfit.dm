@@ -103,8 +103,10 @@
 		if(ID)
 			if(ID.registered_name == real_name)
 				outfit.update_id_name = TRUE
-			if(ID.trim)
-				outfit.id_trim = ID.trim.type
+			if(ID.department)
+				outfit.id_department = ID.department
+			if(ID.subdepartment)
+				outfit.id_subdepartment = ID.subdepartment
 	//Copy hands
 	if(held_items.len >= 2) //Not in the mood to let outfits transfer amputees
 		var/obj/item/left_hand = held_items[1]
@@ -163,7 +165,7 @@
 	if(id_slot)
 		var/obj/item/card/id/card = id_slot.GetID()
 		if(istype(card))
-			card.add_access(stored_access, mode = FORCE_ADD_ALL)
+			card.add_access(stored_access)
 		if(update_id_name)
 			card.registered_name = human.real_name
 			card.update_label()

@@ -312,13 +312,14 @@
 		if(!copied_card)
 			return
 
-		// If the outfit comes with a special trim override, we'll use that. Otherwise, use the card's default trim. Failing that, no trim at all.
-		var/new_trim = initial(job_outfit.id_trim) ? initial(job_outfit.id_trim) : initial(copied_card.trim)
+		// If the outfit comes with a special department override, we'll use that. Otherwise, use the card's default department. Failing that, no department at all.
+		var/new_department = initial(job_outfit.id_department) ? initial(job_outfit.id_department) : initial(copied_card.department)
+		var/new_subdepartment = initial(job_outfit.id_subdepartment) ? initial(job_outfit.id_subdepartment) : initial(copied_card.subdepartment)
 
-		if(new_trim)
-			SSid_access.apply_trim_to_chameleon_card(agent_card, new_trim, FALSE)
-		else
-			agent_card.assignment = job_datum.title
+		if(new_department || new_subdepartment)
+			SSid_access.apply_trim_to_chameleon_card(agent_card, new_department, new_subdepartment, FALSE)
+
+		agent_card.assignment = job_datum.title
 
 		agent_card.icon_state = initial(copied_card.icon_state)
 		if(ispath(copied_card, /obj/item/card/id/advanced))
@@ -333,16 +334,16 @@
 	UpdateButtons()
 
 	chameleon_blacklist |= typecacheof(target.type)
-	for(var/trim_path in typesof(chameleon_type))
-		if(ispath(trim_path) && ispath(trim_path, /datum/id_trim))
-			if(chameleon_blacklist[trim_path])
-				continue
+	// for(var/trim_path in typesof(chameleon_type))
+	// 	if(ispath(trim_path) && ispath(trim_path, /datum/id_trim))
+	// 		if(chameleon_blacklist[trim_path])
+	// 			continue
 
-			var/datum/id_trim/trim = SSid_access.trim_singletons_by_path[trim_path]
+	// 		var/datum/id_trim/trim = SSid_access.trim_singletons_by_path[trim_path]
 
-			if(trim && trim.department_state && trim.assignment)
-				var/chameleon_item_name = "[trim.assignment] ([trim.department_state])"
-				chameleon_list[chameleon_item_name] = trim_path
+	// 		if(trim && trim.department_state && trim.assignment)
+	// 			var/chameleon_item_name = "[trim.assignment] ([trim.department_state])"
+	// 			chameleon_list[chameleon_item_name] = trim_path
 
 /datum/action/item_action/chameleon/change/id_trim/update_item(picked_trim_path)
 	var/obj/item/card/id/advanced/chameleon/agent_card = target

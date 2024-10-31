@@ -78,7 +78,7 @@
 	var/datum/job/cook/other_chefs = SSjob.GetJobType(jobtype)
 	if(other_chefs) // If there's other Chefs, you're a Cook
 		if(other_chefs.cooks > 0)//Cooks
-			id_trim = /datum/id_trim/job/cook
+			id_title = JOB_COOK
 			suit = /obj/item/clothing/suit/apron/chef
 			head = /obj/item/clothing/head/soft/mime
 		if(!visualsOnly)

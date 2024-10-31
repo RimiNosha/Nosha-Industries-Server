@@ -474,7 +474,6 @@
 		var/obj/item/electronics/airlock/electronics_ref
 		if (!electronics)
 			electronics_ref = new /obj/item/electronics/airlock(loc)
-			gen_access()
 			if (req_one_access.len)
 				electronics_ref.one_access = 1
 				electronics_ref.accesses = req_one_access
@@ -714,7 +713,7 @@
 				open()
 			else
 				req_access = list()
-				req_access += pick(SSid_access.get_region_access_list(list(ACCESS_REGION_GROUP_STATION)))
+				req_access += pick(SSid_access.get_region_access_list(SSid_access.station_regions))
 
 /obj/structure/closet/contents_explosion(severity, target)
 	switch(severity)

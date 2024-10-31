@@ -122,7 +122,7 @@
 	if(!auth)
 		return FALSE
 	var/list/access = auth.GetAccess()
-	if(!check_access_list(access))
+	if(!check_access(access))
 		return FALSE
 
 	return TRUE
