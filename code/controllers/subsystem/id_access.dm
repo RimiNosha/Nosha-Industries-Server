@@ -12,6 +12,8 @@ SUBSYSTEM_DEF(id_access)
 	var/list/station_pda_templates = list()
 	/// Helper list containing all regions that the station can normally see and modify.
 	var/list/station_regions = list()
+	/// Specially formatted list for sending access levels to tgui interfaces.
+	var/list/all_region_access_tgui = list()
 
 	/// List of accesses for the Heads of each sub-department alongside the regions they control and their job name.
 	var/list/sub_department_managers_tgui = list(
@@ -71,6 +73,8 @@ SUBSYSTEM_DEF(id_access)
 		ACCESS_REGION_CARGO_NAME = ACCESS_REGION_CARGO,
 		ACCESS_REGION_CENTCOM_NAME = ACCESS_REGION_CENTCOM,
 		ACCESS_REGION_SYNDICATE_NAME = ACCESS_REGION_SYNDICATE,
+		ACCESS_REGION_AWAY_NAME = ACCESS_REGION_AWAY,
+		ACCESS_REGION_SPECIAL_NAME = ACCESS_REGION_SPECIAL,
 	)
 
 	var/list/region_name_to_color = list(
@@ -83,6 +87,8 @@ SUBSYSTEM_DEF(id_access)
 		ACCESS_REGION_CARGO_NAME = COLOR_CARGO_BROWN,
 		ACCESS_REGION_CENTCOM_NAME = COLOR_CENTCOM_BLUE,
 		ACCESS_REGION_SYNDICATE_NAME = COLOR_SYNDIE_RED,
+		ACCESS_REGION_AWAY_NAME = COLOR_LIGHT_GRAYISH_RED,
+		ACCESS_REGION_SPECIAL_NAME = COLOR_SOAPSTONE_GOLD,
 	)
 
 	/// A list of ID manufacturers to regions that they natively can access. These DO NOT prevent IDs from gaining accesses not inside these via non-ID-console means!
@@ -165,6 +171,27 @@ SUBSYSTEM_DEF(id_access)
 				var/obj/item/modular_computer/pda/fake_pda = pda_path
 				manager_pdas[pda_path] = initial(fake_pda.name)
 				station_pda_templates[pda_path] = initial(fake_pda.name)
+
+
+	for(var/region in manufacturer_to_region_names[ID_MANUFACTURER_ARTEA])
+		var/list/region_access = region_name_to_accesses[region]
+
+		var/parsed_accesses = list()
+
+		for(var/access in region_access)
+			var/access_desc = access_to_name[access]
+			if(!access_desc)
+				continue
+
+			parsed_accesses += list(list(
+				"desc" = replacetext(access_desc, "&nbsp", " "),
+				"ref" = access,
+			))
+
+		all_region_access_tgui[region] = list(list(
+			"name" = region,
+			"accesses" = parsed_accesses,
+		))
 
 	return SS_INIT_SUCCESS
 

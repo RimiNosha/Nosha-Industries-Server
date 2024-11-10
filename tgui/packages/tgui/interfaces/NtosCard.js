@@ -1,5 +1,5 @@
 import { useBackend } from '../backend';
-import { Box, Button, Dropdown, Input, NumberInput, Section, Stack } from '../components';
+import { Box, Button, Input, NumberInput, Section, Stack } from '../components';
 import { NtosWindow } from '../layouts';
 import { AccessList } from './common/AccessList';
 
@@ -26,7 +26,6 @@ export const NtosCardContent = (props, context) => {
     accessFlags,
     accessFlagNames,
     showBasic,
-    templates = {},
   } = data;
 
   return (
@@ -49,9 +48,7 @@ export const NtosCardContent = (props, context) => {
               }
               tooltipPosition="left"
             />
-          }>
-          <TemplateDropdown templates={templates} />
-        </Section>
+          }></Section>
       )}
       <Stack mt={1}>
         <Stack.Item grow>
@@ -183,35 +180,5 @@ const IdCardPage = (props, context) => {
         </>
       )}
     </Section>
-  );
-};
-
-const TemplateDropdown = (props, context) => {
-  const { act } = useBackend(context);
-  const { templates } = props;
-
-  const templateKeys = Object.keys(templates);
-
-  if (!templateKeys.length) {
-    return;
-  }
-
-  return (
-    <Stack>
-      <Stack.Item grow>
-        <Dropdown
-          width="100%"
-          displayText={'Select a template...'}
-          options={templateKeys.map((path) => {
-            return templates[path];
-          })}
-          onSelected={(sel) =>
-            act('PRG_template', {
-              name: sel,
-            })
-          }
-        />
-      </Stack.Item>
-    </Stack>
   );
 };

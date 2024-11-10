@@ -273,11 +273,10 @@
 	if(istype(agent_card))
 		var/obj/item/card/id/copied_card = picked_item
 
-		// If the outfit comes with a special trim override, we'll steal some stuff from that.
-		var/new_trim = initial(copied_card.trim)
-
-		if(new_trim)
-			SSid_access.apply_trim_to_chameleon_card(agent_card, new_trim, TRUE)
+		var/department = copied_card.department
+		var/subdepartment = copied_card.subdepartment
+		if(department || subdepartment)
+			SSid_access.apply_trim_to_chameleon_card(agent_card, copied_card.assignment, department, subdepartment, TRUE)
 
 		// If the ID card hasn't been forged, we'll check if there has been an assignment set already by any new trim.
 		// If there has not, we set the assignment to the copied card's default as well as copying over the the

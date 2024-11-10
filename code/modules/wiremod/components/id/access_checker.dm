@@ -16,10 +16,6 @@
 		"id-card" = "access",
 	)
 
-/obj/item/circuit_component/compare/access/Initialize(mapload)
-	. = ..()
-	gen_access()
-
 /obj/item/circuit_component/compare/access/get_ui_notices()
 	. = ..()
 	. += create_ui_notice("When \"Check Any\" is true, returns true if \"Access To Check\" contains ANY value in \"Required Access\".", "orange", "info")
@@ -58,7 +54,7 @@
 		req_access = required_accesses_list.Copy()
 
 /obj/item/circuit_component/compare/access/do_comparisons()
-	return check_access_list(subject_accesses.value)
+	return check_access(subject_accesses.value)
 
 /obj/item/circuit_component/compare/access/ui_perform_action(mob/user, action)
 	if(length(required_accesses.connected_ports))
@@ -81,7 +77,7 @@
 		regions += tgui_region_data[region]
 	if(parent?.admin_only)
 		regions += tgui_region_data[ACCESS_REGION_CENTCOM_NAME]
-		regions += tgui_region_data[REGION_ALL_GLOBAL]
+		regions += tgui_region_data[ACCESS_REGION_AWAY]
 	data["regions"] = regions
 	return data
 

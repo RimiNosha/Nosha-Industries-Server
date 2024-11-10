@@ -144,7 +144,7 @@
 	get_targets()
 	update_icon_state()
 
-	access_card.add_access(SSid_access.region_name_to_accesses(ACCESS_REGION_SERVICE_NAME))
+	access_card.add_access(SSid_access.region_name_to_accesses[ACCESS_REGION_SERVICE_NAME])
 	prev_access = access_card.access.Copy()
 
 	var/static/list/loc_connections = list(

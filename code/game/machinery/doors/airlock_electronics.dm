@@ -35,8 +35,9 @@
 	var/list/data = list()
 
 	var/list/regions = list()
+	var/list/tgui_region_data = SSid_access.all_region_access_tgui
 	for(var/region in SSid_access.station_regions)
-		regions += list(list("name" = region, "accesses" = SSid_access.region_name_to_accesses[region]))
+		regions += tgui_region_data[region]
 
 	data["regions"] = regions
 	return data

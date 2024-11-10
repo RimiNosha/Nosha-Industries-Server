@@ -22,8 +22,6 @@
 	var/list/region_access = list()
 	/// The list of accesses this program is verified to change based on the authenticated ID. Used for state checking against player input.
 	var/list/valid_access = list()
-	/// List of job templates that can be applied to ID cards from this program.
-	var/list/job_templates = list()
 	/// Which departments this program has access to. See region defines.
 	var/target_dept
 
@@ -43,14 +41,12 @@
 
 	region_access.Cut()
 	valid_access.Cut()
-	job_templates.Cut()
 
 	// If the program isn't locked to a specific department or is_centcom and we have ACCESS_COMMAND_LOWSEC in our auth card, we're not minor.
 	if((!target_dept || is_centcom) && (ACCESS_COMMAND_LOWSEC in auth_card.access))
 		minor = FALSE
 		authenticated_card = "[auth_card.name]"
 		authenticated_user = auth_card.registered_name ? auth_card.registered_name : "Unknown"
-		job_templates = is_centcom ? SSid_access.centcom_job_templates.Copy() : SSid_access.station_job_templates.Copy()
 		valid_access = is_centcom ? SSid_access.get_region_access_list(ACCESS_REGION_CENTCOM_NAME) : SSid_access.get_region_access_list(SSid_access.station_regions)
 		update_static_data(user)
 		return TRUE
@@ -62,8 +58,6 @@
 		var/access = access_as_text
 		if((access in auth_card.access) && ((target_dept in info["regions"]) || !target_dept))
 			region_access |= info["regions"]
-			job_templates |= info["templates"]
-
 	if(length(region_access))
 		minor = TRUE
 		valid_access |= SSid_access.get_region_access_list(region_access)
@@ -149,7 +143,7 @@
 			if(!computer || !authenticated_card)
 				return TRUE
 			if(minor)
-				if(!(inserted_auth_card.trim?.type in job_templates))
+				if(!(ACCESS_COMMAND_HIGHSEC in inserted_auth_card.access))
 					to_chat(usr, span_notice("Software error: You do not have the necessary permissions to demote this card."))
 					return TRUE
 
@@ -240,27 +234,6 @@
 				message_admins("[ADMIN_LOOKUPFLW(user)] just added [SSid_access.access_to_name[access_target]] to an ID card [ADMIN_VV(inserted_auth_card)] [(inserted_auth_card.registered_name) ? "belonging to [inserted_auth_card.registered_name]." : "with no registered name."]")
 			LOG_ID_ACCESS_CHANGE(user, inserted_auth_card, "added [SSid_access.access_to_name[access_target]]")
 			return TRUE
-		// Apply template to ID card.
-		if("PRG_template")
-			if(!computer || !authenticated_card || !inserted_auth_card)
-				return TRUE
-
-			playsound(computer, SFX_TERMINAL_TYPE, 50, FALSE)
-			var/template_name = params["name"]
-
-			if(!template_name)
-				return TRUE
-
-			for(var/trim_path in job_templates)
-				if(trim.assignment != template_name) // ew wtf
-					continue
-
-				SSid_access.add_trim_access_to_card(inserted_auth_card, trim_path)
-				return TRUE
-
-			stack_trace("[key_name(usr)] ([usr]) attempted to apply invalid template \[[template_name]\] to [inserted_auth_card]")
-
-			return TRUE
 
 /datum/computer_file/program/card_mod/ui_static_data(mob/user)
 	var/list/data = list()
@@ -285,7 +258,6 @@
 	data["wildcardFlags"] = SSid_access.wildcard_flags_by_wildcard
 	data["accessFlagNames"] = SSid_access.access_flag_string_by_flag
 	data["showBasic"] = TRUE
-	data["templates"] = job_templates
 
 	return data
 
@@ -305,14 +277,7 @@
 		data["wildcardSlots"] = inserted_id.wildcard_slots
 		data["id_age"] = inserted_id.registered_age
 
-		if(inserted_id.trim)
-			var/datum/id_trim/card_trim = inserted_id.trim
-			data["hasTrim"] = TRUE
-			data["trimAssignment"] = card_trim.assignment ? card_trim.assignment : ""
-			data["trimAccess"] = card_trim.access ? card_trim.access : list()
-		else
-			data["hasTrim"] = FALSE
-			data["trimAssignment"] = ""
-			data["trimAccess"] = list()
+		data["trimAssignment"] = inserted_id.assignment ? inserted_id.assignment : ""
+		data["trimAccess"] = inserted_id.access ? inserted_id.access : list()
 
 	return data

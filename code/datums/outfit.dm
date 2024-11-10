@@ -34,6 +34,8 @@
 	// If set, overrides the job title on the ID.
 	var/id_title
 
+	var/id_orbit_icon
+
 	/// Type path of item to go in uniform slot
 	var/uniform = null
 

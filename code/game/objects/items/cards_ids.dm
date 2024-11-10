@@ -113,7 +113,7 @@
 	var/sechud_icon_state = SECHUD_UNKNOWN
 	/// Icons to be displayed in the orbit ui. Source: FontAwesome v5. Use the FA_ICON defines.
 	var/orbit_icon
-	// If TRUE, take all subregion accesses, and
+	// If TRUE, take all subregion accesses, and also allow head accesses.
 	var/is_silver = FALSE
 
 /obj/item/card/id/Initialize(mapload)
@@ -125,7 +125,7 @@
 	registered_account.replaceable = TRUE
 
 	// Applying the trim updates the label and icon, so don't do this twice.
-	if(ispath(trim))
+	if(department || subdepartment)
 		set_regions(src, department, subdepartment)
 	else
 		update_label()
@@ -146,7 +146,8 @@
 
 /// Removes accesses that were given by the provided old departments, then adds the correct accesses provided by departments
 /// If extra accesses are given, it will overwrite the card's existing accesses with them.
-/obj/item/card/id/proc/set_regions(new_department, new_subdepartment, extra_accesses)
+/obj/item/card/id/proc/set_regions(new_department, new_subdepartment, extra_accesses, orbit_icon)
+	src.orbit_icon = orbit_icon
 	var/list/regions_to_modify
 
 	if(department)
@@ -183,6 +184,32 @@
 /obj/item/card/id/get_id_examine_strings(mob/user)
 	. = ..()
 	. += list("[icon2html(get_cached_flat_icon(), user, extra_classes = "bigicon")]")
+
+/obj/item/card/id/proc/get_orbit_icon()
+	if(orbit_icon)
+		return orbit_icon
+
+	switch(department)
+		if(DEPARTMENT_ASSISTANT)
+			return FA_ICON_TOOLBOX
+		if(DEPARTMENT_SERVICE)
+			return FA_ICON_GLASS_WHISKEY
+		if(DEPARTMENT_CAPTAIN)
+			return FA_ICON_CROWN
+		if(DEPARTMENT_CARGO)
+			return FA_ICON_BOX
+		if(DEPARTMENT_MEDICAL)
+			return FA_ICON_STAFF_SNAKE
+		if(DEPARTMENT_COMMAND)
+			return FA_ICON_0
+		if(DEPARTMENT_ENGINEERING)
+			return FA_ICON_GEARS
+		if(DEPARTMENT_PATHFINDERS)
+			return FA_ICON_SHIP
+		if(DEPARTMENT_SECURITY)
+			return FA_ICON_SHIELD_HALVED
+		else
+			return FA_ICON_QUESTION
 
 /obj/item/card/id/update_overlays()
 	. = ..()
