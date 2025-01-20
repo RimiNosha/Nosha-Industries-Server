@@ -1,6 +1,6 @@
 /datum/job/lead_pathfinder
 	title = JOB_PATHFINDER_LEAD
-	description = "Be the captain that isn't actually the captain, and be the one who gets yelled at when there's no materials."
+	description = "Fly the ship and help the quartermaster by beaming in materials."
 	auto_deadmin_role_flags = DEADMIN_POSITION_HEAD
 	department_head = list(JOB_CAPTAIN)
 	head_announce = list(RADIO_CHANNEL_PATHFINDERS)

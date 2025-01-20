@@ -36,17 +36,26 @@
 		var/species_type = GLOB.species_list[species_id]
 		var/datum/species/species = new species_type()
 
-		data[species_id] = list()
-		data[species_id]["name"] = species.name
-		data[species_id]["desc"] = species.get_species_description()
-		data[species_id]["lore"] = species.get_species_lore()
-		data[species_id]["icon"] = sanitize_css_class_name(species.name)
-		data[species_id]["use_skintones"] = species.use_skintones
-		data[species_id]["sexes"] = species.sexes
-		data[species_id]["enabled_features"] = species.get_features()
-		data[species_id]["perks"] = species.get_species_perks()
-		data[species_id]["diet"] =  species.get_species_diet()
+		var/datum/species/parent_species_type
+		if (species.parent_type != /datum/species)
+			var/datum/species/hold_me = species.parent_type
+			parent_species_type = GLOB.species_list[initial(hold_me.id)]
 
+		var/list/species_data = list(
+			"name" = species.name,
+			"desc" = species.get_species_description(),
+			"lore" = species.get_species_lore(),
+			"icon" = sanitize_css_class_name(species.name),
+			"use_skintones" = species.use_skintones,
+			"sexes" = species.sexes,
+			"enabled_features" = species.get_features(),
+			"perks" = species.get_species_perks(),
+			"diet" =  species.get_species_diet(),
+		)
+		if(parent_species_type)
+			species_data["parent_species"] = initial(parent_species_type.id)
+
+		data[species_id] = species_data
 		qdel(species)
 
 	return data

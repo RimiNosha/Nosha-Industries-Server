@@ -23,6 +23,7 @@ export enum Food {
   Sugar = 'SUGAR',
   Toxic = 'TOXIC',
   Vegetables = 'VEGETABLES',
+  Electricity = 'ELECTRICITY',
 }
 
 export enum JobPriority {
@@ -42,6 +43,7 @@ export type Species = {
   desc: string;
   lore: string[];
   icon: string;
+  parent_species?: string;
 
   use_skintones: BooleanLike;
   sexes: BooleanLike;

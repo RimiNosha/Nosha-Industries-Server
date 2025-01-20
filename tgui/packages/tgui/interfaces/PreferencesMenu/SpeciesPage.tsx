@@ -21,6 +21,7 @@ const FOOD_ICONS = {
   [Food.Sugar]: 'candy-cane',
   [Food.Toxic]: 'biohazard',
   [Food.Vegetables]: 'carrot',
+  [Food.Electricity]: 'bolt-lightning',
 };
 
 const FOOD_NAMES: Record<keyof typeof FOOD_ICONS, string> = {
@@ -40,6 +41,7 @@ const FOOD_NAMES: Record<keyof typeof FOOD_ICONS, string> = {
   [Food.Sugar]: 'Sugar',
   [Food.Toxic]: 'Toxic food',
   [Food.Vegetables]: 'Vegetables',
+  [Food.Electricity]: 'Electricity',
 };
 
 const IGNORE_UNLESS_LIKED: Set<Food> = new Set([
@@ -158,9 +160,9 @@ const SpeciesPerk = (props: { className: string; perk: Perk }) => {
         <Icon
           name={perk.ui_icon}
           size={1.5}
-          ml={0}
           mt={1}
           style={{
+            color: 'black',
             'text-align': 'center',
             height: '100%',
             width: '100%',
@@ -175,7 +177,7 @@ const SpeciesPerks = (props: { perks: Species['perks'] }) => {
   const { positive, negative, neutral } = props.perks;
 
   return (
-    <Stack fill justify="space-between">
+    <Stack fill justify="flex-end">
       <Stack.Item>
         <Stack>
           {positive.map((perk) => {
@@ -188,6 +190,8 @@ const SpeciesPerks = (props: { perks: Species['perks'] }) => {
         </Stack>
       </Stack.Item>
 
+      {!!positive?.length && !!neutral?.length && <Stack.Divider mr="0.5rem" />}
+
       <Stack grow>
         {neutral.map((perk) => {
           return (
@@ -197,6 +201,12 @@ const SpeciesPerks = (props: { perks: Species['perks'] }) => {
           );
         })}
       </Stack>
+
+      {!!neutral?.length && !!negative?.length && <Stack.Divider mr="0.5rem" />}
+
+      {!!positive.length && !neutral?.length && !!negative?.length && (
+        <Stack.Divider mr="0.5rem" />
+      )}
 
       <Stack>
         {negative.map((perk) => {
@@ -238,6 +248,21 @@ const SpeciesPageInner = (
     data.character_preferences.misc.species
   );
 
+  const [selectedBaseSpecies, setSelectedBaseSpecies] = useLocalState(
+    context,
+    'selectedBaseSpecies',
+    species
+      .filter(([speciesKey, speciesData]) => {
+        return (
+          speciesKey === data.character_preferences.misc.species ||
+          speciesData.parent_species === data.character_preferences.misc.species
+        );
+      })
+      .map(([key]) => {
+        return key;
+      })[0]
+  );
+
   const currentSpeciesEntry = species.filter(([speciesKey]) => {
     return speciesKey === previewedSpecies;
   })[0];
@@ -255,32 +280,75 @@ const SpeciesPageInner = (
       </Stack.Item>
 
       <Stack.Item grow>
-        <Stack fill>
+        <Stack fill vertical>
           <Stack.Item>
-            <Box height="calc(100vh - 170px)" overflowY="auto" pr={3}>
+            <Box width="100%" overflowX="auto" pr="3px">
               {species.map(([speciesKey, speciesData]) => {
+                if (speciesData.parent_species) {
+                  return null;
+                }
                 return (
                   <Button
                     key={speciesKey}
                     onClick={() => {
                       setPreviewedSpecies(speciesKey);
-                      act('refresh');
+                      setSelectedBaseSpecies(
+                        speciesData.parent_species || speciesKey
+                      );
                     }}
-                    selected={
-                      data.character_preferences.misc.species === speciesKey
-                    }
-                    tooltip={speciesData.name}
+                    selected={selectedBaseSpecies === speciesKey}
+                    content={speciesData.name}
                     style={{
-                      display: 'block',
-                      height: '64px',
-                      width: '64px',
-                    }}>
-                    <Box
-                      className={classes(['species64x64', speciesData.icon])}
-                      ml={-1}
-                    />
-                  </Button>
+                      display: 'inline-block',
+                    }}
+                  />
                 );
+              })}
+            </Box>
+          </Stack.Item>
+
+          <Stack.Item>
+            <Box width="100%" overflowX="auto" pr="3px">
+              {species.map(([speciesKey, speciesData]) => {
+                if (
+                  speciesData.parent_species === currentSpeciesEntry[0] ||
+                  speciesKey === currentSpeciesEntry[0] ||
+                  speciesKey === currentSpecies.parent_species ||
+                  (speciesData.parent_species &&
+                    speciesData.parent_species ===
+                      currentSpecies.parent_species)
+                ) {
+                  return (
+                    <Button
+                      key={speciesKey}
+                      onClick={() => {
+                        setPreviewedSpecies(speciesKey);
+                      }}
+                      selected={
+                        data.character_preferences.misc.species === speciesKey
+                      }
+                      tooltip={speciesData.name}
+                      style={
+                        currentSpeciesEntry[0] === speciesKey
+                          ? {
+                            'background-color': 'skyblue',
+                            display: 'inline-block',
+                            height: '66px',
+                            width: '66px',
+                          }
+                          : {
+                            display: 'inline-block',
+                            height: '66px',
+                            width: '66px',
+                          }
+                      }>
+                      <Box
+                        className={classes(['species64x64', speciesData.icon])}
+                        ml={-1}
+                      />
+                    </Button>
+                  );
+                }
               })}
             </Box>
           </Stack.Item>
@@ -289,7 +357,7 @@ const SpeciesPageInner = (
             <Box fill>
               <Box>
                 <Stack fill>
-                  <Stack.Item>
+                  <Stack.Item width="100%">
                     <Section
                       title={currentSpecies.name}
                       buttons={
@@ -315,7 +383,7 @@ const SpeciesPageInner = (
                 <Section title="Lore">
                   <BlockQuote>
                     {currentSpecies.lore.map((text, index) => (
-                      <Box key={index} maxWidth="100%">
+                      <Box key={index} width="100%">
                         {text}
                         {index !== currentSpecies.lore.length - 1 && (
                           <>

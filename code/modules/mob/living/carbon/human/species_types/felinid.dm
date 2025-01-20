@@ -18,6 +18,7 @@
 	ass_image = 'icons/ass/asscat.png'
 	family_heirlooms = list(/obj/item/toy/cattoy)
 	examine_limb_id = SPECIES_HUMAN
+	roundstart = TRUE
 
 // Prevents felinids from taking toxin damage from carpotoxin
 /datum/species/human/felinid/handle_chemicals(datum/reagent/chem, mob/living/carbon/human/H, delta_time, times_fired)
@@ -140,16 +141,6 @@
 
 /datum/species/human/felinid/get_species_lore()
 	return list(
-		"Bio-engineering at its felinest, Felinids are the peak example of humanity's mastery of genetic code. \
-			One of many \"Animalid\" variants, Felinids are the most popular and common, as well as one of the \
-			biggest points of contention in genetic-modification.",
-
-		"Body modders were eager to splice human and feline DNA in search of the holy trifecta: ears, eyes, and tail. \
-			These traits were in high demand, with the corresponding side effects of vocal and neurochemical changes being seen as a minor inconvenience.",
-
-		"Sadly for the Felinids, they were not minor inconveniences. Shunned as subhuman and monstrous by many, Felinids (and other Animalids) \
-			sought their greener pastures out in the colonies, cloistering in communities of their own kind. \
-			As a result, outer Human space has a high Animalid population.",
 	)
 
 // Felinids are subtypes of humans.

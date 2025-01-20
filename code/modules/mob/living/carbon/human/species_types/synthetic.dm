@@ -65,6 +65,7 @@
 	coldmod = 1.2
 	heatmod = 1.5
 	siemens_coeff = 1.4 // Not more because some shocks will outright crit you, which is very unfun
+	roundstart = TRUE
 
 /datum/species/synthetic/spec_life(mob/living/carbon/human/human)
 	if(human.stat == SOFT_CRIT || human.stat == HARD_CRIT)
@@ -143,3 +144,10 @@
 
 /datum/species/synthetic/get_species_lore()
 	return list("Work in progress.")
+
+/datum/species/synthetic/get_species_diet()
+	return list(
+		"liked_food" = list("ELECTRICITY"),
+		"disliked_food" = list(),
+		"toxic_food" = list(),
+	)

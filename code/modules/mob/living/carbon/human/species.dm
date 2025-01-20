@@ -239,6 +239,9 @@ GLOBAL_LIST_EMPTY(features_by_species)
 	/// A fuckton of snowflake code just for those precious ears because they are still for *some* reason internal organs.
 	var/datum/bodypart_overlay/mutant/ears_overlay_handler
 
+	/// Can this species be picked at round start?
+	var/roundstart = FALSE
+
 ///////////
 // PROCS //
 ///////////
@@ -288,9 +291,7 @@ GLOBAL_LIST_EMPTY(features_by_species)
  * Used by [/proc/generate_selectable_species].
  */
 /datum/species/proc/check_roundstart_eligible()
-	if(id in (CONFIG_GET(keyed_list/roundstart_races)))
-		return TRUE
-	return FALSE
+	return roundstart
 
 /**
  * Generates a random name for a carbon.
@@ -2041,7 +2042,7 @@ GLOBAL_LIST_EMPTY(features_by_species)
 	return
 
 /**
- * Gets a short description for the specices. Should be relatively succinct.
+ * Gets a short description for the specices. Should give a brief runover of their mechanics.
  * Used in the preference menu.
  *
  * Returns a string.

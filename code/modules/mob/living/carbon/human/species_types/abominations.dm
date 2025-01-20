@@ -10,6 +10,7 @@
 		BODY_ZONE_R_LEG = /obj/item/bodypart/leg/right/tallboy,
 		BODY_ZONE_CHEST = /obj/item/bodypart/chest,
 	)
+	roundstart = FALSE
 
 /datum/species/monkey/human_legged
 	id = SPECIES_MONKEY_HUMAN_LEGGED

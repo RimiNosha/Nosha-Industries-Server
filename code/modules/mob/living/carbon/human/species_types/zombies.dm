@@ -180,6 +180,7 @@
 		BODY_ZONE_L_LEG = /obj/item/bodypart/leg/left/zombie,
 		BODY_ZONE_R_LEG = /obj/item/bodypart/leg/right/zombie
 	)
+	roundstart = FALSE
 
 
 #undef REGENERATION_DELAY

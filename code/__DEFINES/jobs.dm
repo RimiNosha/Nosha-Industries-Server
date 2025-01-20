@@ -43,7 +43,7 @@
 #define JOB_HEAD_OF_SECURITY "Colonel"
 #define JOB_CHIEF_ENGINEER "Lead Technician"
 #define JOB_CHIEF_MEDICAL_OFFICER "Head Physician"
-#define JOB_PATHFINDER_LEAD "Lead Pathfinder"
+#define JOB_PATHFINDER_LEAD "Pathfinder"
 #define JOB_INTERNAL_AFFAIRS_AGENT "Internal Affairs Agent"
 //Silicon
 #define JOB_AI "AI"
