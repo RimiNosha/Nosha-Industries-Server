@@ -27,7 +27,7 @@
 	if(!beard_or_hair || !user.canUseTopic(src, BE_CLOSE, NO_DEXTERITY, FALSE))
 		return
 
-	var/list/choices = beard_or_hair == "Hair" ? GLOB.hair_gradients_list : GLOB.facial_hair_gradients_list
+	var/list/choices = SSaccessories.get_accessory_list(beard_or_hair == "Hair" ? /datum/sprite_accessory/hair : /datum/sprite_accessory/facial_hair)
 	var/new_grad_style = tgui_input_list(user, "Choose a color pattern", "Character Preference", choices)
 	if(isnull(new_grad_style))
 		return

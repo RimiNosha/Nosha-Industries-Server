@@ -24,53 +24,6 @@ GLOBAL_LIST_INIT(sprite_accessory_layers, list( \
 	from doing this unless you absolutely know what you are doing, and have defined a
 	conversion in savefile.dm
 */
-/proc/init_sprite_accessory_subtypes(prototype, list/accessory_list, list/male, list/female, roundstart = FALSE, add_blank)//Roundstart argument builds a specific list for roundstart parts where some parts may be locked
-	if(!istype(accessory_list))
-		accessory_list = list()
-	if(!istype(male))
-		male = list()
-	if(!istype(female))
-		female = list()
-
-	for(var/path in subtypesof(prototype))
-		if(roundstart)
-			var/datum/sprite_accessory/P = path
-			if(initial(P.locked))
-				continue
-		var/datum/sprite_accessory/D = new path()
-
-		if(!D.name) // Holy fuck holy shit why isn't this checked
-			continue
-
-		if(D.icon_state)
-			accessory_list[D.name] = D
-		else
-			accessory_list += D.name
-
-		switch(D.gender)
-			if(MALE)
-				male += D.name
-			if(FEMALE)
-				female += D.name
-			else
-				male += D.name
-				female += D.name
-
-	var/list/temp_list = sort_list(accessory_list)
-	accessory_list.Cut()
-
-	if(add_blank)
-		accessory_list += list("None" = new /datum/sprite_accessory/blank)
-	else
-		// Catch sprite accessory datums that have snowflake none entries.
-		var/none_entry = accessory_list["None"]
-		if(none_entry)
-			temp_list -= "None"
-			accessory_list += list("None" = none_entry)
-
-	accessory_list += temp_list
-
-	return accessory_list
 
 /datum/sprite_accessory
 	/// The icon file the accessory is located in.
@@ -79,8 +32,10 @@ GLOBAL_LIST_INIT(sprite_accessory_layers, list( \
 	var/icon_state
 	/// The preview name of the accessory.
 	var/name
-	/// Is appended onto icon_state. Used for caching purposes. Unfortunately used for nothing else, as sprite_overlay handes the rendering.
+	/// Is appended onto icon_state, and is what this accessory will be keyed under in SSaccessories.sprite_accessories.
 	var/key
+	/// Used as the key for SSaccessories.sprite_accessories. I'd use key, but oh my fucking god I'm not renaming 500+ DMI icons.
+	var/accessory_key
 	/// Determines if the accessory will be skipped or included in random hair generations.
 	var/gender = NEUTER
 	/// Something that can be worn by either gender, but looks different on each.

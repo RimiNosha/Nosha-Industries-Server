@@ -18,8 +18,8 @@
 	human.physique = human.gender
 	human.real_name = human.dna?.species.random_name(human.gender) || random_unique_name(human.gender)
 	human.name = human.real_name
-	human.hairstyle = random_hairstyle(human.gender)
-	human.facial_hairstyle = random_facial_hairstyle(human.gender)
+	human.hairstyle = SSaccessories.get_random_accessory_name(/datum/sprite_accessory/hair, human.gender)
+	human.facial_hairstyle = SSaccessories.get_random_accessory_name(/datum/sprite_accessory/facial_hair, human.gender)
 	human.hair_color = "#[random_color()]"
 	human.facial_hair_color = human.hair_color
 	var/random_eye_color = random_eye_color()

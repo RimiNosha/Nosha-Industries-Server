@@ -140,7 +140,7 @@
 						return
 					if(!user.canUseTopic(src, BE_CLOSE, FALSE, NO_TK))
 						return
-					var/new_style = tgui_input_list(user, "Select a facial hairstyle", "Grooming", GLOB.facial_hairstyles_list)
+					var/new_style = tgui_input_list(user, "Select a facial hairstyle", "Grooming", SSaccessories.get_accessory_list(/datum/sprite_accessory/facial_hair))
 					if(isnull(new_style))
 						return
 					if(!get_location_accessible(H, location))
@@ -188,7 +188,7 @@
 					return
 				if(!user.canUseTopic(src, BE_CLOSE, FALSE, NO_TK))
 					return
-				var/new_style = tgui_input_list(user, "Select a hairstyle", "Grooming", GLOB.hairstyles_list)
+				var/new_style = tgui_input_list(user, "Select a hairstyle", "Grooming", SSaccessories.get_accessory_list(/datum/sprite_accessory/hair))
 				if(isnull(new_style))
 					return
 				if(!get_location_accessible(H, location))

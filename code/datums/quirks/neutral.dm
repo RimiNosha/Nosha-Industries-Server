@@ -233,7 +233,7 @@
 	var/obj/item/clothing/head/wig/natural/baldie_wig = new(get_turf(quirk_holder))
 
 	if (old_hair == "Bald")
-		baldie_wig.hairstyle = pick(GLOB.hairstyles_list - "Bald")
+		baldie_wig.hairstyle = pick(SSaccessories.get_accessory_list("hairstyle") - "Bald")
 	else
 		baldie_wig.hairstyle = old_hair
 
