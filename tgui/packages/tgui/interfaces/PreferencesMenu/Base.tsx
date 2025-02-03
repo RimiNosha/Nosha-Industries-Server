@@ -14,21 +14,19 @@ const CLOTHING_SELECTION_MULTIPLIER = 5.2;
 export const ChoicedSelection = (
   props: {
     name: string;
-    catalog: FeatureChoicedServerData;
+    catalog: FeatureChoicedServerData & { supplemental_features?: string[] };
     selected: string;
-    supplementalFeature?: string;
-    supplementalValue?: unknown;
     onClose: () => void;
     onSelect: (value: string) => void;
   },
   context
 ) => {
-  const { act } = useBackend<PreferencesMenuData>(context);
+  const { act, data } = useBackend<PreferencesMenuData>(context);
 
-  const { catalog, supplementalFeature, supplementalValue } = props;
+  const { catalog } = props;
 
   if (!catalog.icons) {
-    return <Box color="red">Provided catalog had no icons!</Box>;
+    return <Box color="red">{catalog.name} has no icons!</Box>;
   }
 
   return (
@@ -45,34 +43,6 @@ export const ChoicedSelection = (
       <Stack vertical fill>
         <Stack.Item>
           <Stack fill>
-            {supplementalFeature !== undefined && (
-              <Stack.Item>
-                {features[supplementalFeature].description ? (
-                  <Tooltip
-                    position="right"
-                    content={
-                      <Box>{features[supplementalFeature].description}</Box>
-                    }>
-                    <FeatureValueInput
-                      act={act}
-                      feature={features[supplementalFeature]}
-                      featureId={supplementalFeature}
-                      shrink
-                      value={supplementalValue}
-                    />
-                  </Tooltip>
-                ) : (
-                  <FeatureValueInput
-                    act={act}
-                    feature={features[supplementalFeature]}
-                    featureId={supplementalFeature}
-                    shrink
-                    value={supplementalValue}
-                  />
-                )}
-              </Stack.Item>
-            )}
-
             <Stack.Item grow>
               <Box
                 style={{
@@ -90,6 +60,25 @@ export const ChoicedSelection = (
                 X
               </Button>
             </Stack.Item>
+            {catalog.supplemental_features && (
+              <Stack.Item>
+                <PreferenceList
+                  act={act}
+                  preferences={(() => {
+                    // Lazy hack fraud method
+                    const supplementalsRecord = new Object() as Record<
+                      string,
+                      unknown
+                    >;
+                    catalog.supplemental_features.forEach((value) => {
+                      supplementalsRecord[value] =
+                        data.character_preferences.supplemental_features[value];
+                    });
+                    return supplementalsRecord;
+                  })()}
+                />
+              </Stack.Item>
+            )}
           </Stack>
         </Stack.Item>
 
@@ -145,8 +134,7 @@ export const ChoicedSelection = (
 export const MainFeature = (
   props: {
     catalog: FeatureChoicedServerData & {
-      name: string;
-      supplemental_feature?: string;
+      supplemental_features?: string[];
     };
     currentValue: string;
     isOpen: boolean;
@@ -166,8 +154,6 @@ export const MainFeature = (
     handleClose,
     handleSelect,
   } = props;
-
-  const supplementalFeature = catalog.supplemental_feature;
 
   return (
     <Stack.Item
@@ -194,13 +180,6 @@ export const MainFeature = (
                 name={catalog.name}
                 catalog={catalog}
                 selected={currentValue}
-                supplementalFeature={supplementalFeature}
-                supplementalValue={
-                  supplementalFeature &&
-                  data.character_preferences.supplemental_features[
-                    supplementalFeature
-                  ]
-                }
                 onClose={handleClose}
                 onSelect={handleSelect}
               />
