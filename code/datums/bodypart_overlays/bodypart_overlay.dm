@@ -35,20 +35,6 @@
 /datum/bodypart_overlay/proc/set_appearance()
 	CRASH("Update appearance needs to be overridden")
 
-/**This exists so sprite accessories can still be per-layer without having to include that layer's
-*  number in their sprite name, which causes issues when those numbers change.
-*/
-/datum/bodypart_overlay/proc/mutant_bodyparts_layertext(layer)
-	switch(layer)
-		if(BODY_BEHIND_LAYER)
-			return "BEHIND"
-		if(BODY_ADJ_LAYER)
-			return "ADJ"
-		if(BODY_FRONT_LAYER)
-			return "FRONT"
-		if(BODY_FRONT_UNDER_CLOTHES)
-			return "FRONT_UNDER"
-
 ///Converts a bitflag to the right layer. I'd love to make this a static index list, but byond made an attempt on my life when i did
 /datum/bodypart_overlay/proc/bitflag_to_layer(layer)
 	switch(layer)
