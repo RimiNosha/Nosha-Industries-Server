@@ -5,14 +5,26 @@
 	savefile_identifier = PREFERENCE_CHARACTER
 	should_generate_icons = TRUE
 	can_randomize = FALSE // Let's not force folk with mutant horrors beyond their comprehension, and force them to clean up a crappy randomly generated partslist.
-	/// The ID to use for supplemental features. If null, it won't do anything.
-	var/color_feature_id
+	var/default_accessory_name = SPRITE_ACCESSORY_NONE
 	/// The global list containing the sprite accessories to use. Override New to set.
 	var/list/sprite_accessory
 	/// Direction to render the preview on. Can take NORTH, SOUTH, EAST, WEST.
 	var/sprite_direction = SOUTH
 	/// A list of types to exclude, including their subtypes.
 	var/list/accessories_to_ignore
+
+/datum/preference/choiced/mutant/New()
+	. = ..()
+
+	var/key = replacetext(savefile_key, "feature_", "")
+	// Lazy coder's joy
+	if (!islist(supplemental_features))
+		supplemental_features = list(
+			"[key]_color",
+			"[key]_emissive",
+		)
+
+	sprite_accessory = GLOB.sprite_accessories[relevant_mutant_bodypart]
 
 /datum/preference/choiced/mutant/create_default_value()
 	return "None"
@@ -38,11 +50,6 @@
 	species = new species
 	if(relevant_mutant_bodypart in species.mutant_bodyparts)
 		return TRUE
-
-/datum/preference/choiced/mutant/compile_constant_data()
-	. = ..()
-	if(color_feature_id)
-		.[SUPPLEMENTAL_FEATURE_KEY] = color_feature_id
 
 /datum/preference/color/mutant
 	category = PREFERENCE_CATEGORY_SUPPLEMENTAL_FEATURES

@@ -79,16 +79,13 @@
 	main_feature_name = "Socks"
 	category = PREFERENCE_CATEGORY_CLOTHING
 	should_generate_icons = TRUE
+	supplemental_features = list("socks_color")
 
 /datum/preference/choiced/socks/init_possible_values()
 	return generate_values_for_underwear(GLOB.socks_list, list("human_r_leg", "human_l_leg"), COLOR_ALMOST_BLACK)
 
 /datum/preference/choiced/socks/apply_to_human(mob/living/carbon/human/target, value, datum/preferences/preferences)
 	target.socks = value
-
-/datum/preference/choiced/socks/compile_constant_data()
-	. = ..()
-	.[SUPPLEMENTAL_FEATURE_KEY] = "socks_color"
 
 /datum/preference/color/socks_color
 	savefile_key = "socks_color"
@@ -113,6 +110,7 @@
 	main_feature_name = "Undershirt"
 	category = PREFERENCE_CATEGORY_CLOTHING
 	should_generate_icons = TRUE
+	supplemental_features = list("undershirt_color")
 
 /datum/preference/choiced/undershirt/init_possible_values()
 	var/icon/body = icon('icons/mob/species/human/bodyparts_greyscale.dmi', "human_r_leg")
@@ -171,6 +169,7 @@
 	main_feature_name = "Underwear"
 	category = PREFERENCE_CATEGORY_CLOTHING
 	should_generate_icons = TRUE
+	supplemental_features = list("underwear_color")
 
 /datum/preference/choiced/underwear/init_possible_values()
 	return generate_values_for_underwear(GLOB.underwear_list, list("human_chest_m", "human_r_leg", "human_l_leg"), COLOR_ALMOST_BLACK)
@@ -185,10 +184,3 @@
 	var/species_type = preferences.read_preference(/datum/preference/choiced/species)
 	var/datum/species/species = new species_type
 	return !(NO_UNDERWEAR in species.species_traits)
-
-/datum/preference/choiced/underwear/compile_constant_data()
-	var/list/data = ..()
-
-	data[SUPPLEMENTAL_FEATURE_KEY] = "underwear_color"
-
-	return data

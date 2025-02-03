@@ -217,3 +217,6 @@ GLOBAL_LIST_INIT(loadout_categories, init_loadout_categories())
 #define BLOOM_MED     1 //default.
 #define BLOOM_LOW     2
 #define BLOOM_DISABLE 3 //this option must be the highest number
+
+#define SUPPLEMENTAL_FEATURE_KEY "supplemental_features"
+#define SPRITE_ACCESSORY_NONE "None"

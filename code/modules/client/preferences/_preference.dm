@@ -26,7 +26,7 @@
 
 /// For main feature preferences, this key refers to a feature considered supplemental.
 /// For instance, hair color being supplemental to hair.
-#define SUPPLEMENTAL_FEATURE_KEY "supplemental_feature"
+#define SUPPLEMENTAL_FEATURES_KEY "supplemental_features"
 
 /// The required list size for crop parameters in generate_icon.
 #define REQUIRED_CROP_LIST_SIZE 4
@@ -111,6 +111,9 @@ GLOBAL_LIST_INIT(preference_entries_by_key, init_preference_entries_by_key())
 	/// If the selected species has this in its /datum/species/var/external_organs,
 	/// will show the feature as selectable.
 	var/relevant_external_organ = null
+
+	/// Shortcut var for adding supplemental features to your preference
+	var/list/supplemental_features
 
 /// Called on the saved input when retrieving.
 /// Also called by the value sent from the user through UI. Do not trust it.
@@ -491,6 +494,9 @@ GLOBAL_LIST_INIT(preference_entries_by_key, init_preference_entries_by_key())
 
 	if (!isnull(main_feature_name))
 		data["name"] = main_feature_name
+
+	if (supplemental_features)
+		data[SUPPLEMENTAL_FEATURE_KEY] = supplemental_features
 
 	return data
 

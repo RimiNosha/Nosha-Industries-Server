@@ -60,6 +60,7 @@
 	main_feature_name = "Facial hair"
 	should_generate_icons = TRUE
 	relevant_species_trait = FACEHAIR
+	supplemental_features = list("facial_hair_color", "facial_hair_gradient", "facial_hair_gradient_color")
 
 /datum/preference/choiced/facial_hairstyle/init_possible_values()
 	return generate_possible_values_for_sprite_accessories_on_head(GLOB.facial_hairstyles_list)
@@ -67,13 +68,6 @@
 /datum/preference/choiced/facial_hairstyle/apply_to_human(mob/living/carbon/human/target, value, datum/preferences/preferences)
 	target.facial_hairstyle = value
 	target.update_body_parts()
-
-/datum/preference/choiced/facial_hairstyle/compile_constant_data()
-	var/list/data = ..()
-
-	data[SUPPLEMENTAL_FEATURE_KEY] = "facial_hair_color"
-
-	return data
 
 /datum/preference/color/facial_hair_color
 	savefile_key = "facial_hair_color"
@@ -86,12 +80,17 @@
 	target.update_body_parts()
 
 /datum/preference/choiced/facial_hair_gradient
-	category = PREFERENCE_CATEGORY_APPEARANCE
+	category = PREFERENCE_CATEGORY_SUPPLEMENTAL_FEATURES
 	savefile_identifier = PREFERENCE_CHARACTER
 	savefile_key = "facial_hair_gradient"
 	relevant_species_trait = FACEHAIR
 	should_generate_icons = TRUE
-	main_feature_name = "Facial hair gradient"
+	var/icon/hair_icon
+
+/datum/preference/choiced/facial_hair_gradient/New()
+	. = ..()
+	var/datum/sprite_accessory/hair/hair = SSaccessories.facial_hairstyles_list["Beard (Very Long)"]
+	hair_icon = icon(hair.icon, hair.icon_state, SOUTH)
 
 /datum/preference/choiced/facial_hair_gradient/init_possible_values()
 	var/list/hair_gradients = list()
@@ -99,23 +98,22 @@
 	var/icon/hair_icon = icon(hair.icon, hair.icon_state, NORTH)
 
 	for(var/gradient_key in GLOB.facial_hair_gradients_list)
-		if(gradient_key == "None")
+		if(gradient_key == SPRITE_ACCESSORY_NONE)
 			hair_gradients[gradient_key] = icon('icons/mob/landmarks.dmi', "x")
 			continue
 
-		var/datum/sprite_accessory/gradient/gradient = GLOB.facial_hair_gradients_list[gradient_key]
+		var/datum/sprite_accessory/gradient/gradient = SSaccessories.facial_hair_gradients_list[value]
 		var/icon/temp = icon(gradient.icon, gradient.icon_state)
 		temp.Blend(hair_icon, ICON_ADD)
 		temp.Blend("#ff0000", ICON_MULTIPLY)
 		var/icon/temp_hair = icon(hair_icon)
 		temp_hair.Blend(temp, ICON_OVERLAY)
+		temp_hair.Crop(8, 29, 24, 14)
+		temp_hair.Scale(32, 32)
+		return temp_hair
 		hair_gradients[gradient_key] = temp_hair
 
 	return hair_gradients
-
-/datum/preference/choiced/facial_hair_gradient/compile_constant_data()
-	. = ..()
-	.[SUPPLEMENTAL_FEATURE_KEY] = "facial_hair_gradient_color"
 
 /datum/preference/choiced/facial_hair_gradient/apply_to_human(mob/living/carbon/human/target, value, datum/preferences/preferences)
 	LAZYSETLEN(target.grad_style, GRADIENTS_LEN)
@@ -123,7 +121,7 @@
 	target.update_body_parts()
 
 /datum/preference/choiced/facial_hair_gradient/create_default_value()
-	return "None"
+	return SPRITE_ACCESSORY_NONE
 
 /datum/preference/color/facial_hair_gradient
 	category = PREFERENCE_CATEGORY_SUPPLEMENTAL_FEATURES
@@ -139,7 +137,7 @@
 /datum/preference/color/facial_hair_gradient/is_accessible(datum/preferences/preferences)
 	if (!..(preferences))
 		return FALSE
-	return preferences.read_preference(/datum/preference/choiced/facial_hair_gradient) != "None"
+	return preferences.read_preference(/datum/preference/choiced/facial_hair_gradient) != SPRITE_ACCESSORY_NONE
 
 /datum/preference/color/hair_color
 	savefile_key = "hair_color"
@@ -157,6 +155,7 @@
 	main_feature_name = "Hairstyle"
 	should_generate_icons = TRUE
 	relevant_species_trait = HAIR
+	supplemental_features = list("hair_color", "hair_gradient", "hair_gradient_color", "feature_hair_opacity")
 
 /datum/preference/choiced/hairstyle/init_possible_values()
 	return generate_possible_values_for_sprite_accessories_on_head(GLOB.hairstyles_list)
@@ -172,12 +171,18 @@
 	return data
 
 /datum/preference/choiced/hair_gradient
-	category = PREFERENCE_CATEGORY_APPEARANCE
+	category = PREFERENCE_CATEGORY_SUPPLEMENTAL_FEATURES
 	savefile_identifier = PREFERENCE_CHARACTER
 	savefile_key = "hair_gradient"
 	relevant_species_trait = HAIR
 	should_generate_icons = TRUE
 	main_feature_name = "Hair gradient"
+	var/icon/hair_icon
+
+/datum/preference/choiced/hair_gradient/New()
+	. = ..()
+	var/datum/sprite_accessory/hair/hair = SSaccessories.hairstyles_list["Floorlength Bedhead"]
+	hair_icon = icon(hair.icon, hair.icon_state, NORTH)
 
 /datum/preference/choiced/hair_gradient/init_possible_values()
 	var/list/hair_gradients = list()
@@ -185,7 +190,7 @@
 	var/icon/hair_icon = icon(hair.icon, hair.icon_state, NORTH)
 
 	for(var/gradient_key in GLOB.hair_gradients_list)
-		if(gradient_key == "None")
+		if(gradient_key == SPRITE_ACCESSORY_NONE)
 			hair_gradients[gradient_key] = icon('icons/mob/landmarks.dmi', "x")
 			continue
 
@@ -199,17 +204,13 @@
 
 	return hair_gradients
 
-/datum/preference/choiced/hair_gradient/compile_constant_data()
-	. = ..()
-	.[SUPPLEMENTAL_FEATURE_KEY] = "hair_gradient_color"
-
 /datum/preference/choiced/hair_gradient/apply_to_human(mob/living/carbon/human/target, value, datum/preferences/preferences)
 	LAZYSETLEN(target.grad_style, GRADIENTS_LEN)
 	target.grad_style[GRADIENT_HAIR_KEY] = value
 	target.update_body_parts()
 
 /datum/preference/choiced/hair_gradient/create_default_value()
-	return "None"
+	return SPRITE_ACCESSORY_NONE
 
 /datum/preference/color/hair_gradient
 	category = PREFERENCE_CATEGORY_SUPPLEMENTAL_FEATURES
@@ -225,4 +226,4 @@
 /datum/preference/color/hair_gradient/is_accessible(datum/preferences/preferences)
 	if (!..(preferences))
 		return FALSE
-	return preferences.read_preference(/datum/preference/choiced/hair_gradient) != "None"
+	return preferences.read_preference(/datum/preference/choiced/hair_gradient) != SPRITE_ACCESSORY_NONE

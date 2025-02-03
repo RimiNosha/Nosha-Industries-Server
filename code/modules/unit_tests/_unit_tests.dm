@@ -160,7 +160,6 @@
 #include "spawn_mobs.dm"
 #include "species_change_clothing.dm"
 #include "species_change_organs.dm"
-#include "species_config_sanity.dm"
 #include "species_unique_id.dm"
 #include "species_whitelists.dm"
 #include "spell_invocations.dm"
